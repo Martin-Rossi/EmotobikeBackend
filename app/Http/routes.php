@@ -15,14 +15,21 @@ Route::get( '/', function () {
     return view( 'welcome' );
 } );
 
-// Authentication routes...
-Route::get( 'auth/login', 'Auth\AuthController@getLogin' );
+// Authentication routes
 Route::post( 'auth/login', 'Auth\AuthController@postLogin' );
+Route::get( 'auth/login', 'Auth\AuthController@getLogin' );
 Route::get( 'auth/logout', 'Auth\AuthController@getLogout' );
 
 /*
-| User routes
+| Object routes
 */
 Route::resource( 'objects', 'ObjectController', [
+	'only' => ['index', 'show', 'update', 'store', 'destroy']
+] );
+
+/*
+| Catalog routes
+*/
+Route::resource( 'catalogs', 'CatalogController', [
 	'only' => ['index', 'show', 'update', 'store', 'destroy']
 ] );

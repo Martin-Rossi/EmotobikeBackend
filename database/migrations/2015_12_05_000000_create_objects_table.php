@@ -8,8 +8,8 @@ class CreateObjectsTable extends Migration {
     public function up() {
         Schema::create( 'objects', function( Blueprint $table ) {
             $table->increments( 'id' );
-            $table->integer( 'parent' )->nullable()->default( null );
-            $table->integer( 'category_id' )->references( 'id' )->on( 'categories' );
+            $table->integer( 'catalog_id' )->references( 'id' )->on( 'catalogs' )->default( 0 );
+            $table->integer( 'category_id' )->references( 'id' )->on( 'categories' )->default( 0 );
             $table->integer( 'type_id' )->references( 'id' )->on( 'types' );
             $table->string( 'name', 255 );
             $table->text( 'description' )->nullable()->default( null );
