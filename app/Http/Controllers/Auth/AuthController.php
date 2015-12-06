@@ -101,6 +101,8 @@ class AuthController extends Controller {
     }
 
     protected function handleUserWasAuthenticated( Request $request, $throttles ) {
+        $response = new APIResponse();
+
         if ( $throttles)
             $this->clearLoginAttempts( $request );
 
