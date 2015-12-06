@@ -15,7 +15,7 @@ class ObjectTest extends TestCase {
              ->see( $object->name );
     }
 
-    public function testShowObjects() {
+    public function testShowObject() {
         $object = factory( App\Object::class, 1 )->create();
 
         $this->visit( '/objects/' . $object->id )

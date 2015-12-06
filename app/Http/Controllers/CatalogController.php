@@ -11,7 +11,7 @@ use App\Extensions\APIResponse;
 class CatalogController extends Controller {
 
     public function index( ApiResponse $response ) {
-        $catalogs = Catalogs::all();
+        $catalogs = Catalog::all();
 
         return $response->result( $catalogs );
     }
