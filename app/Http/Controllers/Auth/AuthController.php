@@ -4,12 +4,15 @@ namespace App\Http\Controllers\Auth;
 
 use App\User;
 use Validator;
+use App\Http\Requests;
 use App\Http\Controllers\Controller;
+use App\Extensions\APIResponse;
 use Illuminate\Foundation\Auth\ThrottlesLogins;
 use Illuminate\Foundation\Auth\AuthenticatesAndRegistersUsers;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
-class AuthController extends Controller
-{
+class AuthController extends Controller {
     /*
     |--------------------------------------------------------------------------
     | Registration & Login Controller
@@ -28,9 +31,8 @@ class AuthController extends Controller
      *
      * @return void
      */
-    public function __construct()
-    {
-        $this->middleware('guest', ['except' => 'getLogout']);
+    public function __construct() {
+        $this->middleware( 'guest', ['except' => 'getLogout'] );
     }
 
     /**
@@ -39,13 +41,15 @@ class AuthController extends Controller
      * @param  array  $data
      * @return \Illuminate\Contracts\Validation\Validator
      */
-    protected function validator(array $data)
-    {
-        return Validator::make($data, [
-            'name' => 'required|max:255',
-            'email' => 'required|email|max:255|unique:users',
-            'password' => 'required|confirmed|min:6',
-        ]);
+    protected function validator( array $data ) {
+        return Validator::make(
+            $data,
+            [
+                'name'      => 'required|max:255',
+                'email'     => 'required|email|max:255|unique:users',
+                'password'  => 'required|confirmed|min:6',
+            ]
+        );
     }
 
     /**
@@ -54,12 +58,56 @@ class AuthController extends Controller
      * @param  array  $data
      * @return User
      */
-    protected function create(array $data)
-    {
-        return User::create([
-            'name' => $data['name'],
-            'email' => $data['email'],
-            'password' => bcrypt($data['password']),
-        ]);
+    protected function create( array $data ) {
+        return User::create(
+            [
+                'name'      => $data['name'],
+                'email'     => $data['email'],
+                'password'  => bcrypt( $data['password'] ),
+            ]
+        );
     }
+
+    public function getLogin( ApiResponse $response ) {
+        if ( ! auth()->check() )
+            return $response->error( 'User is not authenticated' );
+
+        return $response->success( 'User is authenticated' );
+    }
+
+    public function postLogin( Request $request, ApiResponse $response ) {
+        $this->validate(
+            $request,
+            [
+                $this->loginUsername()  => 'required',
+                'password'              => 'required',
+            ]
+        );
+
+        $throttles = $this->isUsingThrottlesLoginsTrait();
+
+        if ( $throttles && $this->hasTooManyLoginAttempts( $request ) )
+            return $this->sendLockoutResponse( $request );
+
+        $credentials = $this->getCredentials( $request );
+
+        if ( Auth::attempt( $credentials, $request->has( 'remember' ) ) )
+            return $this->handleUserWasAuthenticated( $request, $throttles );
+
+        if ( $throttles )
+            $this->incrementLoginAttempts( $request );
+
+        return $response->error( 'Login failed' );
+    }
+
+    protected function handleUserWasAuthenticated( Request $request, $throttles ) {
+        if ( $throttles)
+            $this->clearLoginAttempts( $request );
+
+        if ( method_exists( $this, 'authenticated' ) )
+            return $this->authenticated( $request, Auth::user() );
+
+        return $response->success( 'Login successfull' );
+    }
+
 }
