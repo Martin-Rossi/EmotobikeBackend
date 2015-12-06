@@ -8,7 +8,7 @@ class CreateObjectsTable extends Migration {
     public function up() {
         Schema::create( 'objects', function( Blueprint $table ) {
             $table->increments( 'id' );
-            $table->integer( 'parent' );
+            $table->integer( 'parent' )->nullable()->default( null );
             $table->integer( 'category_id' )->references( 'id' )->on( 'categories' );
             $table->integer( 'type_id' )->references( 'id' )->on( 'types' );
             $table->string( 'name', 255 );
