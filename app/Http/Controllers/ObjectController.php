@@ -28,6 +28,8 @@ class ObjectController extends Controller {
     public function store( Request $request, ApiResponse $response ) {
         $inputs = $request->all();
 
+        $inputs['author'] = auth()->user()->id;
+
         try {
             Object::create( $inputs );
         } catch ( Exception $e ) {
@@ -44,6 +46,8 @@ class ObjectController extends Controller {
             abort( 404 );
 
         $inputs = $request->all();
+
+        $inputs['author'] = auth()->user()->id;
 
         try {
             $object->update( $inputs );
