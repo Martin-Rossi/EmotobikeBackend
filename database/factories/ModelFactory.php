@@ -11,11 +11,28 @@
 |
 */
 
-$factory->define(App\User::class, function (Faker\Generator $faker) {
+$factory->define( App\User::class, function( Faker\Generator $faker ) {
     return [
-        'name' => $faker->name,
-        'email' => $faker->email,
-        'password' => bcrypt(str_random(10)),
-        'remember_token' => str_random(10),
+        'name' 				=> $faker->name,
+        'email' 			=> $faker->email,
+        'password' 			=> bcrypt( str_random( 10 ) ),
+        'remember_token' 	=> str_random( 10 ),
     ];
-});
+} );
+
+$factory->define( App\Object::class, function( Faker\Generator $faker ) {
+	$user = factory( App\User::class, 1 )->create();
+
+    return [
+        'category_id' 		=> 1,
+        'type_id'			=> 1,
+        'name'				=> implode( ' ', $faker->words( 3 ) ),
+        'description'		=> $faker->paragraph( 5 ),
+        'retail_price'		=> $faker->randomFloat( 2, 100, 10000 ),
+        'sale_price' 		=> $faker->randomFloat( 2, 100, 10000 ),
+        'competitor_flag'	=> $faker->randomElement( [0, 1] ),
+        'recomended'		=> $faker->randomElement( [0, 1] ),
+        'curated'			=> $faker->randomElement( [0, 1] ),
+        'author'			=> $user->id
+    ];
+} );
