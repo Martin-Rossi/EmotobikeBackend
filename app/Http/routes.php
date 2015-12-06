@@ -27,6 +27,8 @@ Route::resource( 'objects', 'ObjectController', [
 	'only' => ['index', 'show', 'update', 'store', 'destroy']
 ] );
 
+Route::get( 'objects/{id}/catalog', 'ObjectController@catalog' );
+
 /*
 | Catalog routes
 */

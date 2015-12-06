@@ -22,4 +22,8 @@ class Object extends Model {
         'curated',
         'author'
     ];
+
+    public function catalog() {
+        return $this->belongsTo( 'App\Catalog', 'catalog_id', 'id' );
+    }
 }
