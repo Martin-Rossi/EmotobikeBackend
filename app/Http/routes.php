@@ -11,6 +11,13 @@
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get( '/', function () {
+    return view( 'welcome' );
+} );
+
+/*
+| User routes
+*/
+Route::resource( 'objects', 'ObjectController', [
+	'only' => ['index', 'show', 'update', 'store', 'destroy']
+] );
