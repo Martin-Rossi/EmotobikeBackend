@@ -25,7 +25,9 @@ class ObjectTest extends TestCase {
     public function testAddObject() {
         $object = factory( App\Object::class, 1 )->make()->toArray();
 
-        $response = $this->call( 'POST', '/objects', $object );
+        $user = factory( App\User::class )->create();
+
+        $response = $this->actingAs( $user )->call( 'POST', '/objects', $object );
 
         $this->seeInDatabase( 'objects', ['name' => $object['name']] )
              ->assertEquals( 200, $response->status() );
@@ -35,7 +37,9 @@ class ObjectTest extends TestCase {
         $object = factory( App\Object::class, 1 )->create();
         $data = factory( App\Object::class, 1 )->make()->toArray();
 
-        $response = $this->call( 'PUT', '/objects/' . $object->id, $data );
+        $user = factory( App\User::class )->create();
+
+        $response = $this->actingAs( $user )->call( 'PUT', '/objects/' . $object->id, $data );
 
         $this->seeInDatabase( 'objects', ['name' => $data['name']] )
              ->assertEquals( 200, $response->status() );
