@@ -39,6 +39,9 @@ class CatalogTest extends TestCase {
 
         $user = factory( App\User::class )->create();
 
+        $catalog->author = $user->id;
+        $catalog->save();
+
         $response = $this->actingAs( $user )->call( 'PUT', '/catalogs/' . $catalog->id, $data );
 
         $this->seeInDatabase( 'catalogs', ['name' => $data['name']] )

@@ -40,14 +40,14 @@ class ObjectController extends Controller {
     }
 
     public function update( $id, Request $request, ApiResponse $response ) {
-        $object = Object::find( $id );
+        $object = Object::where( 'id', '=', $id )
+                        ->where( 'author', '=', auth()->user()->id )
+                        ->first();
 
         if ( is_null( $object ) )
             abort( 404 );
 
         $inputs = $request->all();
-
-        $inputs['author'] = auth()->user()->id;
 
         try {
             $object->update( $inputs );

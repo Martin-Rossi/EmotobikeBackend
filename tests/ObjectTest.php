@@ -39,6 +39,9 @@ class ObjectTest extends TestCase {
 
         $user = factory( App\User::class )->create();
 
+        $object->author = $user->id;
+        $object->save();
+
         $response = $this->actingAs( $user )->call( 'PUT', '/objects/' . $object->id, $data );
 
         $this->seeInDatabase( 'objects', ['name' => $data['name']] )

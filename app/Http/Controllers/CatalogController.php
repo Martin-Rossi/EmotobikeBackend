@@ -40,14 +40,14 @@ class CatalogController extends Controller {
     }
 
     public function update( $id, Request $request, ApiResponse $response ) {
-        $catalog = Catalog::find( $id );
+        $catalog = Catalog::where( 'id', '=', $id )
+                          ->where( 'author', '=', auth()->user()->id )
+                          ->first();
 
         if ( is_null( $catalog ) )
             abort( 404 );
 
         $inputs = $request->all();
-
-        $inputs['author'] = auth()->user()->id;
 
         try {
             $catalog->update( $inputs );
