@@ -33,3 +33,4 @@ Route::resource( 'objects', 'ObjectController', [
 Route::resource( 'catalogs', 'CatalogController', [
 	'only' => ['index', 'show', 'update', 'store', 'destroy']
 ] );
+Route::get( 'catalogs/{id}/objects', 'CatalogController@objects' );

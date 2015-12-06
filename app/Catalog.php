@@ -14,4 +14,8 @@ class Catalog extends Model {
         'title',
         'author'
     ];
+
+    public function objects() {
+    	return $this->hasMany( 'App\Object', 'catalog_id', 'id' );
+    }
 }

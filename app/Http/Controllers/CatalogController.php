@@ -57,5 +57,14 @@ class CatalogController extends Controller {
 
         return $response->success( 'Catalog updated successfully' );
     }
+
+    public function objects( $id, ApiResponse $response ) {
+        $catalog = Catalog::find( $id );
+
+        if ( is_null( $catalog ) )
+            abort( 404 );
+
+        return $response->result( $catalog->objects );
+    }
     
 }
