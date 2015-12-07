@@ -23,16 +23,21 @@ Route::get( 'auth/logout', 'Auth\AuthController@getLogout' );
 /*
 | Object routes
 */
-Route::resource( 'objects', 'ObjectController', [
-	'only' => ['index', 'show', 'update', 'store', 'destroy']
-] );
+Route::group( ['middleware' => 'auth'], function () {
+	Route::resource( 'objects', 'ObjectController', [
+		'only' => ['index', 'show', 'update', 'store', 'destroy']
+	] );
 
-Route::get( 'objects/{id}/catalog', 'ObjectController@catalog' );
+	Route::get( 'objects/{id}/catalog', 'ObjectController@catalog' );
+} );
 
 /*
 | Catalog routes
 */
-Route::resource( 'catalogs', 'CatalogController', [
-	'only' => ['index', 'show', 'update', 'store', 'destroy']
-] );
-Route::get( 'catalogs/{id}/objects', 'CatalogController@objects' );
+Route::group( ['middleware' => 'auth'], function () {
+	Route::resource( 'catalogs', 'CatalogController', [
+		'only' => ['index', 'show', 'update', 'store', 'destroy']
+	] );
+	
+	Route::get( 'catalogs/{id}/objects', 'CatalogController@objects' );
+} );
