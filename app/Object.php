@@ -9,18 +9,16 @@ class Object extends Model {
     protected $table = 'objects';
 
     protected $fillable = [
-        'parent',
+        'catalog_id',
         'category_id',
         'type_id',
         'name',
         'description',
         'retail_price',
         'sale_price',
-        'likes',
         'competitor_flag',
         'recomended',
-        'curated',
-        'author'
+        'curated'
     ];
 
     public function catalog() {
