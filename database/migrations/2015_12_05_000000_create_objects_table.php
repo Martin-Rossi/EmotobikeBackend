@@ -13,6 +13,7 @@ class CreateObjectsTable extends Migration {
             $table->integer( 'type_id' )->references( 'id' )->on( 'types' );
             $table->string( 'name', 255 );
             $table->text( 'description' )->nullable()->default( null );
+            $table->string( 'url' )->nullable()->default( null );
             $table->double( 'retail_price', 12, 2 )->nullable()->default( null );
             $table->double( 'sale_price', 12, 2 )->nullable()->default( null );
             $table->integer( 'likes' )->default( 0 );

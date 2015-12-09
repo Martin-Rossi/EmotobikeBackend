@@ -28,6 +28,7 @@ $factory->define( App\Object::class, function( Faker\Generator $faker ) {
         'type_id'			=> 1,
         'name'				=> implode( ' ', $faker->words( 3 ) ),
         'description'		=> $faker->paragraph( 5 ),
+        'url'               => $faker->url,
         'retail_price'		=> $faker->randomFloat( 2, 100, 10000 ),
         'sale_price' 		=> $faker->randomFloat( 2, 100, 10000 ),
         'competitor_flag'	=> $faker->randomElement( [0, 1] ),
