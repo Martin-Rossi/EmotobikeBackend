@@ -24,6 +24,7 @@
 		type_id (INT 10 - references id on 'types', default: 0)
 		name (VARCHAR 255)
 		description (TEXT, nullable, default: null)
+		url (VARCHAR 255, nullable, default: null)
 		retail_price (DOUBLE(12,2), nullable, default: null)
 		sale_price (DOUBLE(12,2), nullable, default: null)
 		likes (INT 10, default: 0)
@@ -140,7 +141,7 @@ Add a new object.
 
 	URL: /objects 
 	Type: POST  
-	Parameters: catalog_id, category_id, type_id, name, description, retail_price, sale_price, competitor_flag, recomended, curated, _token  
+	Parameters: catalog_id, category_id, type_id, name, description, url, retail_price, sale_price, competitor_flag, recomended, curated, _token  
 	Returns:  
 		- response with type: success
 		- response with type: error
@@ -154,7 +155,7 @@ Note: not mandatory fields can be sent separately. For example to change under w
 	URL: /objects/{id} 
 	Type: PUT  
 	Parameters (URL): id
-	Parameters (POST): catalog_id, category_id, type_id, name, description, retail_price, sale_price, competitor_flag, recomended, curated, _token  
+	Parameters (POST): catalog_id, category_id, type_id, name, description, url, retail_price, sale_price, competitor_flag, recomended, curated, _token  
 	Returns:  
 		- response with type: success
 		- response with type: error
