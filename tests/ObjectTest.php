@@ -48,4 +48,15 @@ class ObjectTest extends TestCase {
              ->assertEquals( 200, $response->status() );
     }
 
+    public function testIndexObjectsCatalog() {
+        $catalog = factory( App\Catalog::class, 1 )->create();
+        $object = factory( App\Object::class, 1 )->create();
+
+        $object->catalog_id = $catalog->id;
+        $object->save();
+
+        $this->visit( '/objects/' . $object->id . '/catalog' )
+             ->see( $catalog->name );
+    }
+
 }

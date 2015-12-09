@@ -48,4 +48,27 @@ class CatalogTest extends TestCase {
              ->assertEquals( 200, $response->status() );
     }
 
+    public function testIndexCatalogObjects() {
+        $catalog = factory( App\Catalog::class, 1 )->create();
+        $object = factory( App\Object::class, 1 )->create();
+
+        $object->catalog_id = $catalog->id;
+        $object->save();
+
+        $this->visit( '/catalogs/' . $catalog->id . '/objects' )
+             ->see( $object->name );
+    }
+
+    public function testIndexCatalogContent() {
+        $catalog = factory( App\Catalog::class, 1 )->create();
+        $object = factory( App\Object::class, 1 )->create();
+
+        $object->catalog_id = $catalog->id;
+        $object->save();
+
+        $this->visit( '/catalogs/' . $catalog->id . '/content' )
+             ->see( $catalog->name )
+             ->see( $object->name );
+    }
+
 }
