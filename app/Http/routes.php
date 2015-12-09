@@ -40,4 +40,5 @@ Route::group( ['middleware' => ['auth', 'cors']], function () {
 	] );
 	
 	Route::get( 'catalogs/{id}/objects', 'CatalogController@objects' );
+	Route::get( 'catalogs/{id}/content', 'CatalogController@contents' );
 } );
