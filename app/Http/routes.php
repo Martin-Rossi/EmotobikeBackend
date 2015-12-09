@@ -23,7 +23,7 @@ Route::get( 'auth/logout', 'Auth\AuthController@getLogout' );
 /*
 | Object routes
 */
-Route::group( ['middleware' => 'auth'], function () {
+Route::group( ['middleware' => ['auth', 'cors']], function () {
 	Route::resource( 'objects', 'ObjectController', [
 		'only' => ['index', 'show', 'update', 'store', 'destroy']
 	] );
@@ -34,7 +34,7 @@ Route::group( ['middleware' => 'auth'], function () {
 /*
 | Catalog routes
 */
-Route::group( ['middleware' => 'auth'], function () {
+Route::group( ['middleware' => ['auth', 'cors']], function () {
 	Route::resource( 'catalogs', 'CatalogController', [
 		'only' => ['index', 'show', 'update', 'store', 'destroy']
 	] );
