@@ -16,9 +16,9 @@ Route::get( '/', function () {
 } );
 
 // Authentication routes
-Route::post( 'auth/login', 'Auth\AuthController@postLogin' );
-Route::get( 'auth/login', 'Auth\AuthController@getLogin' );
-Route::get( 'auth/logout', 'Auth\AuthController@getLogout' );
+Route::post( 'auth/login', ['middleware' => 'auth', 'uses' =>'Auth\AuthController@postLogin'] );
+Route::get( 'auth/login', ['middleware' => 'auth', 'uses' => 'Auth\AuthController@getLogin'] );
+Route::get( 'auth/logout', ['middleware' => 'auth', 'uses' => 'Auth\AuthController@getLogout'] );
 
 /*
 | Object routes
