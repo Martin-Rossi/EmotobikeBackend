@@ -149,7 +149,7 @@ Add a new object.
 
 Update object properties.  
 
-	* A note: not mandatory fields can be sent separately. For example to change under which catalog an object belongs, it is enough to send only the catalog_id value (and of course the _token).
+Note: not mandatory fields can be sent separately. For example to change under which catalog an object belongs, it is enough to send only the catalog_id value (and of course the _token).  
 
 	URL: /api/objects/{id} 
 	Type: PUT  
