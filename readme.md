@@ -113,45 +113,45 @@ Logout user.
 
 # Endpoints "object"  
 
-## /api/objects
+## /objects
 
 List all objects.
 
-	URL: /api/objects  
+	URL: /objects  
 	Type: GET  
 	Parameters: -  
 	Returns:  
 		- response with type: result ([ObjectObjects])  
 
-## /api/objects/{id}
+## /objects/{id}
 
 Show one particular object.
 
-	URL: /api/objects/{id} 
+	URL: /objects/{id} 
 	Type: GET  
 	Parameters: id  
 	Returns:  
 		- response with type: result (ObjectObject)
 		- response with type: error (object not found)  
 
-## /api/objects
+## /objects
 
 Add a new object.
 
-	URL: /api/objects 
+	URL: /objects 
 	Type: POST  
 	Parameters: catalog_id, category_id, type_id, name, description, retail_price, sale_price, competitor_flag, recomended, curated, _token  
 	Returns:  
 		- response with type: success
 		- response with type: error
 
-## /api/objects/{id}
+## /objects/{id}
 
 Update object properties.  
 
 Note: not mandatory fields can be sent separately. For example to change under which catalog an object belongs, it is enough to send only the catalog_id value (and of course the _token).  
 
-	URL: /api/objects/{id} 
+	URL: /objects/{id} 
 	Type: PUT  
 	Parameters (URL): id
 	Parameters (POST): catalog_id, category_id, type_id, name, description, retail_price, sale_price, competitor_flag, recomended, curated, _token  
@@ -159,11 +159,11 @@ Note: not mandatory fields can be sent separately. For example to change under w
 		- response with type: success
 		- response with type: error
 
-## /api/objects/{id}/catalog
+## /objects/{id}/catalog
 
 Show in which catalog the current object resides (empty if none).
 
-	URL: /api/objects/{id}/catalog  
+	URL: /objects/{id}/catalog  
 	Type: GET  
 	Parameters: id  
 	Returns:  
@@ -173,43 +173,43 @@ Show in which catalog the current object resides (empty if none).
 	
 # Endpoints "catalog"  
 
-## /api/catalogs
+## /catalogs
 
 List all catalogs.
 
-	URL: /api/catalogs  
+	URL: /catalogs  
 	Type: GET  
 	Parameters: -  
 	Returns:  
 		- response with type: result ([CatalogObjects])  
 
-## /api/catalogs/{id}
+## /catalogs/{id}
 
 Show one particular catalog.
 
-	URL: /api/catalogs/{id} 
+	URL: /catalogs/{id} 
 	Type: GET  
 	Parameters: id  
 	Returns:  
 		- response with type: result (CatalogObject)
 		- response with type: error (catalog not found)  
 
-## /api/catalogs
+## /catalogs
 
 Add a new catalog.
 
-	URL: /api/catalogs 
+	URL: /catalogs 
 	Type: POST  
 	Parameters: name, title, _token  
 	Returns:  
 		- response with type: success
 		- response with type: error
 
-## /api/catalogs/{id}
+## /catalogs/{id}
 
 Update catalog properties.
 
-	URL: /api/catalogs/{id} 
+	URL: /catalogs/{id} 
 	Type: PUT  
 	Parameters (URL): id
 	Parameters (POST): name, title, _token 
@@ -217,15 +217,26 @@ Update catalog properties.
 		- response with type: success
 		- response with type: error
 
-## /api/catalogs/{id}/objects
+## /catalogs/{id}/objects
 
 Display all objects residing in the catalog (empty if none).
 
-	URL: /api/catalogs/{id}/objects  
+	URL: /catalogs/{id}/objects  
 	Type: GET  
 	Parameters: id  
 	Returns:  
-		- response with type: result ([CatalogObjects])
+		- response with type: result ([ObjectObjects])
+		- response with type: error (catalog not found)
+
+## /catalogs/{id}/content  
+
+Display catalog's content. Catalog info and all objects residing in the catalog (empty if none).
+
+	URL: /catalogs/{id}/contents  
+	Type: GET  
+	Parameters: id  
+	Returns:  
+		- response with type: result (CatalogObject, [ObjectObjects])
 		- response with type: error (catalog not found)
 
 
