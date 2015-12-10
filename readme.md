@@ -60,6 +60,17 @@
 		text (TEXT)
 		author (INT 10, references id on 'users')
 		created_at (TIMESTAMP)
+		updated_at (TIMESTAMP)  
+		
+**Likes**  
+
+	route: /likes
+	Properties:
+		id (INT 10 - primary key, autoincrement)
+		foreign_id (INT 10)
+		foreign_type (ENUM['object','catalog'])
+		author (INT 10, references id on 'users')
+		created_at (TIMESTAMP)
 		updated_at (TIMESTAMP)
 		
 # Request Types
@@ -184,14 +195,36 @@ Show in which catalog the current object resides (empty if none).
 
 ## /objects/{id}/comments
 
-Display comments for an object.
+Display all comments for an object.
 
 	URL: /objects/{id}/comments  
 	Type: GET  
 	Parameters: id  
 	Returns:  
 		- response with type: result ([CommentObjects])
-		- response with type: error (object not found)
+		- response with type: error (object not found)  
+
+## /objects/{id}/like
+
+Like an object.
+
+	URL: /objects/{id}/like  
+	Type: POST
+	Parameters (URL): id
+	Returns:  
+		- response with type: success
+		- response with type: error  
+
+## /objects/{id}/likes
+
+List all likes for an object.
+
+	URL: /objects/{id}/likes  
+	Type: GET
+	Parameters: id
+	Returns:  
+		- response with type: result ([LikeObjects])
+		- response with type: error (object not found)  
 
 	
 # Endpoints "catalog"  
@@ -260,7 +293,29 @@ Display catalog's content. Catalog info and all objects residing in the catalog 
 	Parameters: id  
 	Returns:  
 		- response with type: result (CatalogObject, [ObjectObjects])
-		- response with type: error (catalog not found)
+		- response with type: error (catalog not found)  
+
+## /catalogs/{id}/like
+
+Like a catalog.
+
+	URL: /catalogs/{id}/like  
+	Type: POST
+	Parameters (URL): id
+	Returns:  
+		- response with type: success
+		- response with type: error  
+
+## /catalogs/{id}/likes
+
+List all likes for a catalog.
+
+	URL: /catalog/{id}/likes  
+	Type: GET
+	Parameters: id
+	Returns:  
+		- response with type: result ([LikeObjects])
+		- response with type: error (object not found) 
 
 # Endpoints "comment"   
 
@@ -298,6 +353,18 @@ Update comment properties (users can only updated comments owned by them).
 		- response with type: success
 		- response with type: error
 
+# Endpoints "like"   
+
+## /likes/{id}
+
+Delete a like (unlike).
+
+	URL: /likes/{id} 
+	Type: DELETE  
+	Parameters: id  
+	Returns:  
+		- response with type: success
+		- response with type: error  
 
 # Responses
 
