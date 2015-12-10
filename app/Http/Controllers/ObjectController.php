@@ -49,6 +49,8 @@ class ObjectController extends Controller {
 
         $inputs = $request->all();
 
+        $inputs['author'] = auth()->user()->id;
+
         try {
             $object->update( $inputs );
         } catch ( Exception $e ) {

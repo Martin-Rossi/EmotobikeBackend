@@ -49,6 +49,8 @@ class CatalogController extends Controller {
 
         $inputs = $request->all();
 
+        $inputs['author'] = auth()->user()->id;
+
         try {
             $catalog->update( $inputs );
         } catch ( Exception $e ) {
