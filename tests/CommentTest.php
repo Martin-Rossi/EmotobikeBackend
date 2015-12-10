@@ -8,6 +8,13 @@ class CommentTest extends TestCase {
 
     use WithoutMiddleware;
 
+    public function testShowComment() {
+        $comment = factory( App\Comment::class, 1 )->create();
+
+        $this->visit( '/comments/' . $comment->id )
+             ->see( $comment->text );
+    }
+
     public function testAddComment() {
         $comment = factory( App\Comment::class, 1 )->make()->toArray();
 
