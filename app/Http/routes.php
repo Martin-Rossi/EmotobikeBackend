@@ -30,6 +30,9 @@ Route::group( ['middleware' => ['auth', 'cors']], function () {
 
 	Route::get( 'objects/{id}/catalog', 'ObjectController@catalog' );
 	Route::get( 'objects/{id}/comments', 'ObjectController@comments' );
+	Route::get( 'objects/{id}/likes', 'ObjectController@likes' );
+
+	Route::post( 'objects/{id}/like', 'ObjectController@like' );
 } );
 
 /*
@@ -42,13 +45,25 @@ Route::group( ['middleware' => ['auth', 'cors']], function () {
 	
 	Route::get( 'catalogs/{id}/objects', 'CatalogController@objects' );
 	Route::get( 'catalogs/{id}/content', 'CatalogController@contents' );
+	Route::get( 'catalogs/{id}/likes', 'CatalogController@likes' );
+
+	Route::post( 'catalogs/{id}/like', 'CatalogController@like' );
 } );
 
 /*
 | Comment routes
 */
-Route::group( ['middleware' => 'cors'], function () {
+Route::group( ['middleware' => ['auth', 'cors']], function () {
 	Route::resource( 'comments', 'CommentController', [
 		'only' => ['show', 'update', 'store']
+	] );
+} );
+
+/*
+| Like routes
+*/
+Route::group( ['middleware' => ['auth', 'cors']], function () {
+	Route::resource( 'likes', 'LikeController', [
+		'only' => ['destroy']
 	] );
 } );

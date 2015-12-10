@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Object;
+use App\Like;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
@@ -76,6 +77,36 @@ class ObjectController extends Controller {
             abort( 404 );
 
         return $response->result( $object->comments );
+    }
+
+    public function like( $id, ApiResponse $response ) {
+        $object = Object::find( $id );
+
+        if ( is_null( $object ) )
+            abort( 404 );
+
+        $like = [
+            'foreign_id'    => $id,
+            'foreign_type'  => 'object',
+            'author'        => auth()->user()->id
+        ];
+
+        try {
+            Like::create( $like );
+        } catch ( Exception $e ) {
+            return $response->error( $e->getMessage() );
+        }
+
+        return $response->success( 'Like recorded successfully' );
+    }
+
+    public function likes( $id, ApiResponse $response ) {
+        $object = Object::find( $id );
+
+        if ( is_null( $object ) )
+            abort( 404 );
+
+        return $response->result( $object->likes() );
     }
     
 }

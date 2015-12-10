@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Catalog;
+use App\Like;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
@@ -76,6 +77,36 @@ class CatalogController extends Controller {
             abort( 404 );
 
         return $response->result( $catalog, $catalog->objects );
+    }
+
+    public function like( $id, ApiResponse $response ) {
+        $catalog = Catalog::find( $id );
+
+        if ( is_null( $catalog ) )
+            abort( 404 );
+
+        $like = [
+            'foreign_id'    => $id,
+            'foreign_type'  => 'catalog',
+            'author'        => auth()->user()->id
+        ];
+
+        try {
+            Like::create( $like );
+        } catch ( Exception $e ) {
+            return $response->error( $e->getMessage() );
+        }
+
+        return $response->success( 'Like recorded successfully' );
+    }
+
+    public function likes( $id, ApiResponse $response ) {
+        $catalog = Catalog::find( $id );
+
+        if ( is_null( $catalog ) )
+            abort( 404 );
+
+        return $response->result( $catalog->likes() );
     }
     
 }
