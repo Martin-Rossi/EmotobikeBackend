@@ -15,10 +15,10 @@ class Comment extends Model {
     ];
 
     public function object() {
-    	return $this->belongsTo( 'App\Object', 'id', 'object_id' );
+    	return $this->belongsTo( 'App\Object', 'object_id', 'id' );
     }
 
     public function user() {
-        return $this->belongsTo( 'App\User', 'id', 'author' );
+        return $this->belongsTo( 'App\User', 'author', 'id' );
     }
 }

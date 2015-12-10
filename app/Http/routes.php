@@ -23,12 +23,13 @@ Route::get( 'auth/logout', ['middleware' => 'cors', 'uses' => 'Auth\AuthControll
 /*
 | Object routes
 */
-Route::group( ['middleware' => ['auth', 'cors']], function () {
+Route::group( ['middleware' => 'cors'], function () {
 	Route::resource( 'objects', 'ObjectController', [
 		'only' => ['index', 'show', 'update', 'store', 'destroy']
 	] );
 
 	Route::get( 'objects/{id}/catalog', 'ObjectController@catalog' );
+	Route::get( 'objects/{id}/comments', 'ObjectController@comments' );
 } );
 
 /*

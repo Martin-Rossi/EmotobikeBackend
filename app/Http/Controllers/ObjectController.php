@@ -66,5 +66,14 @@ class ObjectController extends Controller {
 
         return $response->result( $object->catalog );
     }
+
+    public function comments( $id, ApiResponse $response ) {
+        $object = Object::find( $id );
+
+        if ( is_null( $object ) )
+            abort( 404 );
+
+        return $response->result( $object->comments );
+    }
     
 }

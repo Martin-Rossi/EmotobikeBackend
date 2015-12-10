@@ -18,10 +18,16 @@ class Object extends Model {
         'sale_price',
         'competitor_flag',
         'recomended',
-        'curated'
+        'curated',
+        'author'
     ];
 
     public function catalog() {
         return $this->belongsTo( 'App\Catalog', 'catalog_id', 'id' );
     }
+
+    public function comments() {
+        return $this->hasMany( 'App\Comment', 'object_id', 'id' )->with( 'user' );
+    }
+
 }
