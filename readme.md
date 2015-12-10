@@ -148,7 +148,7 @@ Add a new object.
 
 ## /objects/{id}
 
-Update object properties.  
+Update object properties (users can only updated objects owned by them).  
 
 Note: not mandatory fields can be sent separately. For example to change under which catalog an object belongs, it is enough to send only the catalog_id value (and of course the _token).  
 
@@ -169,6 +169,17 @@ Show in which catalog the current object resides (empty if none).
 	Parameters: id  
 	Returns:  
 		- response with type: result (CatalogObject)
+		- response with type: error (object not found)
+
+## /objects/{id}/comments
+
+Display comments for an object.
+
+	URL: /objects/{id}/comments  
+	Type: GET  
+	Parameters: id  
+	Returns:  
+		- response with type: result ([CommentObjects])
 		- response with type: error (object not found)
 
 	
@@ -208,7 +219,7 @@ Add a new catalog.
 
 ## /catalogs/{id}
 
-Update catalog properties.
+Update catalog properties (users can only updated catalogs owned by them).
 
 	URL: /catalogs/{id} 
 	Type: PUT  
@@ -239,6 +250,42 @@ Display catalog's content. Catalog info and all objects residing in the catalog 
 	Returns:  
 		- response with type: result (CatalogObject, [ObjectObjects])
 		- response with type: error (catalog not found)
+
+# Endpoints "comment"   
+
+## /comments/{id}
+
+Show one particular comment.
+
+	URL: /comments/{id} 
+	Type: GET  
+	Parameters: id  
+	Returns:  
+		- response with type: result (CommentObject)
+		- response with type: error (comment not found)  
+
+## /comments
+
+Add a new comment.
+
+	URL: /comments 
+	Type: POST  
+	Parameters: object_id, text, _token  
+	Returns:  
+		- response with type: success
+		- response with type: error
+
+## /comments/{id}
+
+Update comment properties (users can only updated comments owned by them).
+
+	URL: /comments/{id} 
+	Type: PUT  
+	Parameters (URL): id
+	Parameters (POST): text, _token 
+	Returns:  
+		- response with type: success
+		- response with type: error
 
 
 # Responses
