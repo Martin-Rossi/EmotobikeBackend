@@ -12,28 +12,13 @@ class CommentController extends Controller {
 
     public function show( $id, ApiResponse $response ) {
         $comment = Comment::where( 'id', '=', $id )
-                          ->with( 'object' )
-                          ->with( 'user' )
+                          ->with( 'author' )
                           ->get();
 
         if ( is_null( $comment ) )
             abort( 404 );
 
         return $response->result( $comment );
-    }
-
-    public function store( Request $request, ApiResponse $response ) {
-        $inputs = $request->all();
-
-        $inputs['author'] = auth()->user()->id;
-
-        try {
-            Comment::create( $inputs );
-        } catch ( Exception $e ) {
-            return $response->error( $e->getMessage() );
-        }
-
-        return $response->success( 'Comment added successfully' );
     }
 
     public function update( $id, Request $request, ApiResponse $response ) {
@@ -48,7 +33,8 @@ class CommentController extends Controller {
 
         $inputs['author'] = auth()->user()->id;
 
-        unset( $inputs['object_id'] );
+        unset( $inputs['foreign_id'] );
+        unset( $inputs['foreign_type'] );
 
         try {
             $comment->update( $inputs );

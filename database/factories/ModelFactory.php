@@ -50,7 +50,8 @@ $factory->define( App\Comment::class, function( Faker\Generator $faker ) {
     $user = factory( App\User::class, 1 )->create();
 
     return [
-        'object_id'         => $object->id,
+        'foreign_id'        => $object->id,
+        'foreign_type'      => 'object',
         'text'              => $faker->paragraph( 1 ),
         'author'            => $user->id
     ];

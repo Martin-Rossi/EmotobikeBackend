@@ -27,7 +27,12 @@ class Object extends Model {
     }
 
     public function comments() {
-        return $this->hasMany( 'App\Comment', 'object_id', 'id' )->with( 'user' );
+        $comments = \App\Comment::where( 'foreign_id', '=', $this->id )
+                                ->where( 'foreign_type', '=', 'object' )
+                                ->with( 'author' )
+                                ->get();
+
+        return $comments;
     }
 
     public function likes() {

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Object;
+use App\Comment;
 use App\Like;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
@@ -70,13 +71,35 @@ class ObjectController extends Controller {
         return $response->result( $object->catalog );
     }
 
+    public function comment( $id, Request $request, ApiResponse $response ) {
+        $object = Object::find( $id );
+
+        if ( is_null( $object ) )
+            abort( 404 );
+
+        $comment = [
+            'foreign_id'    => $id,
+            'foreign_type'  => 'object',
+            'text'          => $request->get( 'text' ),
+            'author'        => auth()->user()->id
+        ];
+
+        try {
+            Comment::create( $comment );
+        } catch ( Exception $e ) {
+            return $response->error( $e->getMessage() );
+        }
+
+        return $response->success( 'Comment recorded successfully' );
+    }
+
     public function comments( $id, ApiResponse $response ) {
         $object = Object::find( $id );
 
         if ( is_null( $object ) )
             abort( 404 );
 
-        return $response->result( $object->comments );
+        return $response->result( $object->comments() );
     }
 
     public function like( $id, ApiResponse $response ) {

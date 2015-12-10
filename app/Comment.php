@@ -9,16 +9,13 @@ class Comment extends Model {
     protected $table = 'comments';
 
     protected $fillable = [
-        'object_id',
+        'foreign_id',
+        'foreign_type',
         'text',
         'author'
     ];
 
-    public function object() {
-    	return $this->belongsTo( 'App\Object', 'object_id', 'id' );
-    }
-
-    public function user() {
+    public function author() {
         return $this->belongsTo( 'App\User', 'author', 'id' );
     }
 }

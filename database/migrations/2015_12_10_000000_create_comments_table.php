@@ -8,7 +8,8 @@ class CreateCommentsTable extends Migration {
     public function up() {
         Schema::create( 'comments', function( Blueprint $table ) {
             $table->increments( 'id' );
-            $table->integer( 'object_id' )->references( 'id' )->on( 'objects' );
+            $table->integer( 'foreign_id' );
+            $table->enum( 'foreign_type', ['object', 'catalog'] );
             $table->text( 'text' );
             $table->integer( 'author' )->references( 'id' )->on( 'users' );
             $table->timestamps();

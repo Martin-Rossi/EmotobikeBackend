@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Catalog;
+use App\Comment;
 use App\Like;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
@@ -77,6 +78,37 @@ class CatalogController extends Controller {
             abort( 404 );
 
         return $response->result( $catalog, $catalog->objects );
+    }
+
+    public function comment( $id, Request $request, ApiResponse $response ) {
+        $catalog = Catalog::find( $id );
+
+        if ( is_null( $catalog ) )
+            abort( 404 );
+
+        $comment = [
+            'foreign_id'    => $id,
+            'foreign_type'  => 'catalog',
+            'text'          => $request->get( 'text' ),
+            'author'        => auth()->user()->id
+        ];
+
+        try {
+            Comment::create( $comment );
+        } catch ( Exception $e ) {
+            return $response->error( $e->getMessage() );
+        }
+
+        return $response->success( 'Comment recorded successfully' );
+    }
+
+    public function comments( $id, ApiResponse $response ) {
+        $catalog = Catalog::find( $id );
+
+        if ( is_null( $catalog ) )
+            abort( 404 );
+
+        return $response->result( $catalog->comments() );
     }
 
     public function like( $id, ApiResponse $response ) {
