@@ -10,6 +10,18 @@ use App\Extensions\APIResponse;
 
 class CommentController extends Controller {
 
+    public function show( $id, ApiResponse $response ) {
+        $comment = Comment::where( 'id', '=', $id )
+                          ->with( 'object' )
+                          ->with( 'user' )
+                          ->get();
+
+        if ( is_null( $comment ) )
+            abort( 404 );
+
+        return $response->result( $comment );
+    }
+
     public function store( Request $request, ApiResponse $response ) {
         $inputs = $request->all();
 

@@ -23,7 +23,7 @@ Route::get( 'auth/logout', ['middleware' => 'cors', 'uses' => 'Auth\AuthControll
 /*
 | Object routes
 */
-Route::group( ['middleware' => 'cors'], function () {
+Route::group( ['middleware' => ['auth', 'cors']], function () {
 	Route::resource( 'objects', 'ObjectController', [
 		'only' => ['index', 'show', 'update', 'store', 'destroy']
 	] );
@@ -47,8 +47,8 @@ Route::group( ['middleware' => ['auth', 'cors']], function () {
 /*
 | Comment routes
 */
-Route::group( ['middleware' => ['auth', 'cors']], function () {
+Route::group( ['middleware' => 'cors'], function () {
 	Route::resource( 'comments', 'CommentController', [
-		'only' => ['update', 'store']
+		'only' => ['show', 'update', 'store']
 	] );
 } );
