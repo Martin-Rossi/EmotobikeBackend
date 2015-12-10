@@ -23,5 +23,28 @@ class CommentController extends Controller {
 
         return $response->success( 'Comment added successfully' );
     }
+
+    public function update( $id, Request $request, ApiResponse $response ) {
+        $comment = Comment::where( 'id', '=', $id )
+                          ->where( 'author', '=', auth()->user()->id )
+                          ->first();
+
+        if ( is_null( $comment ) )
+            abort( 404 );
+
+        $inputs = $request->all();
+
+        $inputs['author'] = auth()->user()->id;
+
+        unset( $inputs['object_id'] );
+
+        try {
+            $comment->update( $inputs );
+        } catch ( Exception $e ) {
+            return $response->error( $e->getMessage() );
+        }
+
+        return $response->success( 'Comment updated successfully' );
+    }
     
 }

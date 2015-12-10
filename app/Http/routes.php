@@ -49,6 +49,6 @@ Route::group( ['middleware' => ['auth', 'cors']], function () {
 */
 Route::group( ['middleware' => ['auth', 'cors']], function () {
 	Route::resource( 'comments', 'CommentController', [
-		'only' => ['store']
+		'only' => ['update', 'store']
 	] );
 } );
