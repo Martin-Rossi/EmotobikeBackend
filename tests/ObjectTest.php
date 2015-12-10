@@ -70,4 +70,27 @@ class ObjectTest extends TestCase {
              ->see( $comment->text );
     }
 
+    public function testLikeObject() {
+        $object = factory( App\Object::class, 1 )->create();
+        $user = factory( App\User::class )->create();
+
+        $response = $this->actingAs( $user )->call( 'POST', '/objects/' . $object->id . '/like' );
+
+        $this->seeInDatabase( 'likes', ['foreign_id' => $object->id, 'foreign_type' => 'object', 'author' => $user->id] )
+             ->assertEquals( 200, $response->status() );
+    }
+
+    public function testIndexObjectLikes() {
+        $like = factory( App\Like::class, 1 )->create();
+        $object = factory( App\Object::class, 1 )->create();
+
+        $like->foreign_id = $object->id;
+        $like->save();
+
+        $user = \App\User::find( $like->author );
+
+        $this->visit( '/objects/' . $object->id . '/likes' )
+             ->see( $user->email );
+    }
+
 }
