@@ -11,9 +11,9 @@ class CreateCatalogsTable extends Migration {
             $table->integer( 'collection_id' )->references( 'id' )->on( 'collections' )->default( 0 );
             $table->string( 'name', 255 );
             $table->string( 'title', 255 );
-            $table->integer( 'likes' )->default( 0 );
-            $table->integer( 'comments' )->default( 0 );
-            $table->integer( 'follows' )->default( 0 );
+            $table->integer( 'count_likes' )->default( 0 );
+            $table->integer( 'count_comments' )->default( 0 );
+            $table->integer( 'count_follows' )->default( 0 );
             $table->integer( 'author' )->references( 'id' )->on( 'users' );
             $table->timestamps();
         } );

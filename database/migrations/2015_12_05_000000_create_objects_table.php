@@ -16,9 +16,9 @@ class CreateObjectsTable extends Migration {
             $table->string( 'url' )->nullable()->default( null );
             $table->double( 'retail_price', 12, 2 )->nullable()->default( null );
             $table->double( 'sale_price', 12, 2 )->nullable()->default( null );
-            $table->integer( 'likes' )->default( 0 );
-            $table->integer( 'comments' )->default( 0 );
-            $table->integer( 'follows' )->default( 0 );
+            $table->integer( 'count_likes' )->default( 0 );
+            $table->integer( 'count_comments' )->default( 0 );
+            $table->integer( 'count_follows' )->default( 0 );
             $table->enum( 'competitor_flag', [0, 1] )->default( 0 );
             $table->enum( 'recomended', [0, 1] )->default( 0 );
             $table->enum( 'curated', [0, 1] )->default( 0 );
