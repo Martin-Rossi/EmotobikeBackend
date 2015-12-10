@@ -71,6 +71,32 @@ class CatalogTest extends TestCase {
              ->see( $object->name );
     }
 
+    public function testCommentCatalog() {
+        $catalog = factory( App\Catalog::class, 1 )->create();
+        $user = factory( App\User::class )->create();
+
+        $data = factory( App\Comment::class )->make()->toArray();
+
+        $response = $this->actingAs( $user )->call( 'POST', '/catalogs/' . $catalog->id . '/comment', $data );
+
+        $this->seeInDatabase( 'comments', ['foreign_id' => $catalog->id, 'foreign_type' => 'catalog', 'author' => $user->id] )
+             ->assertEquals( 200, $response->status() );
+    }
+
+    public function testIndexCatalogComments() {
+        $comment = factory( App\Comment::class, 1 )->create();
+        $catalog = factory( App\Catalog::class, 1 )->create();
+
+        $comment->foreign_id = $catalog->id;
+        $comment->foreign_type = 'catalog';
+        $comment->save();
+
+        $user = \App\User::find( $comment->author );
+
+        $this->visit( '/catalogs/' . $catalog->id . '/comments' )
+             ->see( $user->email );
+    }
+
     public function testLikeCatalog() {
         $catalog = factory( App\Catalog::class, 1 )->create();
         $user = factory( App\User::class )->create();

@@ -59,15 +59,30 @@ class ObjectTest extends TestCase {
              ->see( $catalog->name );
     }
 
-    public function testIndexObjectsComments() {
+    public function testCommentObject() {
+        $object = factory( App\Object::class, 1 )->create();
+        $user = factory( App\User::class )->create();
+
+        $data = factory( App\Comment::class )->make()->toArray();
+
+        $response = $this->actingAs( $user )->call( 'POST', '/objects/' . $object->id . '/comment', $data );
+
+        $this->seeInDatabase( 'comments', ['foreign_id' => $object->id, 'foreign_type' => 'object', 'author' => $user->id] )
+             ->assertEquals( 200, $response->status() );
+    }
+
+    public function testIndexObjectComments() {
         $comment = factory( App\Comment::class, 1 )->create();
         $object = factory( App\Object::class, 1 )->create();
 
-        $comment->object_id = $object->id;
+        $comment->foreign_id = $object->id;
+        $comment->foreign_type = 'object';
         $comment->save();
 
+        $user = \App\User::find( $comment->author );
+
         $this->visit( '/objects/' . $object->id . '/comments' )
-             ->see( $comment->text );
+             ->see( $user->email );
     }
 
     public function testLikeObject() {

@@ -15,18 +15,7 @@ class CommentTest extends TestCase {
              ->see( $comment->text );
     }
 
-    public function testAddComment() {
-        $comment = factory( App\Comment::class, 1 )->make()->toArray();
-
-        $user = factory( App\User::class )->create();
-
-        $response = $this->actingAs( $user )->call( 'POST', '/comments', $comment );
-
-        $this->seeInDatabase( 'comments', ['text' => $comment['text']] )
-             ->assertEquals( 200, $response->status() );
-    }
-
-    public function testUpdateObject() {
+    public function testUpdateComment() {
         $comment = factory( App\Comment::class, 1 )->create();
         $data = factory( App\Comment::class, 1 )->make()->toArray();
 
