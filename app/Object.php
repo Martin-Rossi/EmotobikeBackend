@@ -44,4 +44,13 @@ class Object extends Model {
         return $likes;
     }
 
+    public function follows() {
+        $follows = \App\Follow::where( 'foreign_id', '=', $this->id )
+                              ->where( 'foreign_type', '=', 'object' )
+                              ->with( 'author' )
+                              ->get();
+
+        return $follows;
+    }
+
 }

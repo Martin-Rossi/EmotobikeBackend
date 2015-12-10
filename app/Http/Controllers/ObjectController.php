@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Object;
 use App\Comment;
 use App\Like;
+use App\Follow;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
@@ -130,6 +131,36 @@ class ObjectController extends Controller {
             abort( 404 );
 
         return $response->result( $object->likes() );
+    }
+
+    public function follow( $id, ApiResponse $response ) {
+        $object = Object::find( $id );
+
+        if ( is_null( $object ) )
+            abort( 404 );
+
+        $follow = [
+            'foreign_id'    => $id,
+            'foreign_type'  => 'object',
+            'author'        => auth()->user()->id
+        ];
+
+        try {
+            Follow::create( $follow );
+        } catch ( Exception $e ) {
+            return $response->error( $e->getMessage() );
+        }
+
+        return $response->success( 'Follow recorded successfully' );
+    }
+
+    public function follows( $id, ApiResponse $response ) {
+        $object = Object::find( $id );
+
+        if ( is_null( $object ) )
+            abort( 404 );
+
+        return $response->result( $object->follows() );
     }
     
 }
