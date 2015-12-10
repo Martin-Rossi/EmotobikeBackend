@@ -51,6 +51,17 @@
 		created_at (TIMESTAMP)
 		updated_at (TIMESTAMP)
 		
+**Comments**  
+
+	route: /comments
+	Properties:
+		id (INT 10 - primary key, autoincrement)
+		object_id (INT 10 - references id on 'objects')
+		text (TEXT)
+		author (INT 10, references id on 'users')
+		created_at (TIMESTAMP)
+		updated_at (TIMESTAMP)
+		
 # Request Types
 
 GET, POST, PUT, DELETE
