@@ -44,3 +44,14 @@ $factory->define( App\Catalog::class, function( Faker\Generator $faker ) {
         'title'             => implode( ' ', $faker->words( 3 ) )
     ];
 } );
+
+$factory->define( App\Comment::class, function( Faker\Generator $faker ) {
+    $object = factory( App\Object::class, 1 )->create();
+    $user = factory( App\User::class, 1 )->create();
+
+    return [
+        'object_id'         => $object->id,
+        'text'              => $faker->paragraph( 1 ),
+        'author'            => $user->id
+    ];
+} );
