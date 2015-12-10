@@ -251,6 +251,29 @@ List all likes for an object.
 		- response with type: result ([LikeObjects])
 		- response with type: error (object not found)  
 
+## /objects/{id}/follow
+
+Follow an object.
+
+	URL: /objects/{id}/follow  
+	Type: POST
+	Parameters (URL): id
+	Parameters (POST): _token
+	Returns:  
+		- response with type: success
+		- response with type: error  
+
+## /objects/{id}/follows
+
+List all follows for an object.
+
+	URL: /objects/{id}/follows  
+	Type: GET
+	Parameters: id
+	Returns:  
+		- response with type: result ([FollowObjects])
+		- response with type: error (object not found)  
+
 	
 # Endpoints "catalog"  
 
@@ -366,6 +389,29 @@ List all likes for a catalog.
 		- response with type: result ([LikeObjects])
 		- response with type: error (object not found) 
 
+## /catalogs/{id}/follow
+
+Follow a catalog.
+
+	URL: /catalogs/{id}/follow  
+	Type: POST
+	Parameters (URL): id
+	Parameters (POST): _token
+	Returns:  
+		- response with type: success
+		- response with type: error  
+
+## /catalogs/{id}/follows
+
+List all follows for a catalog.
+
+	URL: /catalog/{id}/follows  
+	Type: GET
+	Parameters: id
+	Returns:  
+		- response with type: result ([FollowObjects])
+		- response with type: error (object not found)
+
 # Endpoints "comment"   
 
 ## /comments/{id}
@@ -398,6 +444,20 @@ Update comment properties (users can only updated comments owned by them).
 Delete a like (unlike).
 
 	URL: /likes/{id} 
+	Type: DELETE  
+	Parameters (URL): id
+	Parameters (POST): _token  
+	Returns:  
+		- response with type: success
+		- response with type: error  
+
+# Endpoints "follow"   
+
+## /follows/{id}
+
+Delete a follow (unfollow).
+
+	URL: /follows/{id} 
 	Type: DELETE  
 	Parameters (URL): id
 	Parameters (POST): _token  
