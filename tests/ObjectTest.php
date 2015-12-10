@@ -59,4 +59,15 @@ class ObjectTest extends TestCase {
              ->see( $catalog->name );
     }
 
+    public function testIndexObjectsComments() {
+        $comment = factory( App\Comment::class, 1 )->create();
+        $object = factory( App\Object::class, 1 )->create();
+
+        $comment->object_id = $object->id;
+        $comment->save();
+
+        $this->visit( '/objects/' . $object->id . '/comments' )
+             ->see( $comment->text );
+    }
+
 }
