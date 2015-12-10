@@ -56,7 +56,8 @@
 	route: /comments
 	Properties:
 		id (INT 10 - primary key, autoincrement)
-		object_id (INT 10 - references id on 'objects')
+		foreign_id (INT 10)
+		foreign_type (ENUM['object','catalog'])
 		text (TEXT)
 		author (INT 10, references id on 'users')
 		created_at (TIMESTAMP)
@@ -204,6 +205,29 @@ Display all comments for an object.
 		- response with type: result ([CommentObjects])
 		- response with type: error (object not found)  
 
+## /objects/{id}/comment
+
+Comment on an object.
+
+	URL: /objects/{id}/comment  
+	Type: POST
+	Parameters (URL): id
+	Parameters (POST): text, _token
+	Returns:  
+		- response with type: success
+		- response with type: error  
+
+## /objects/{id}/comments
+
+List all comments for an object.
+
+	URL: /objects/{id}/comments  
+	Type: GET
+	Parameters: id
+	Returns:  
+		- response with type: result ([CommentObjects])
+		- response with type: error (object not found) 
+
 ## /objects/{id}/like
 
 Like an object.
@@ -211,6 +235,7 @@ Like an object.
 	URL: /objects/{id}/like  
 	Type: POST
 	Parameters (URL): id
+	Parameters (POST): _token
 	Returns:  
 		- response with type: success
 		- response with type: error  
@@ -295,6 +320,29 @@ Display catalog's content. Catalog info and all objects residing in the catalog 
 		- response with type: result (CatalogObject, [ObjectObjects])
 		- response with type: error (catalog not found)  
 
+## /catalogs/{id}/comment
+
+Comment on a catalog.
+
+	URL: /catalogs/{id}/comment  
+	Type: POST
+	Parameters (URL): id
+	Parameters (POST): text, _token
+	Returns:  
+		- response with type: success
+		- response with type: error  
+
+## /catalogs/{id}/comments
+
+List all comments for a catalog.
+
+	URL: /catalog/{id}/comments  
+	Type: GET
+	Parameters: id
+	Returns:  
+		- response with type: result ([CommentObjects])
+		- response with type: error (object not found) 
+
 ## /catalogs/{id}/like
 
 Like a catalog.
@@ -302,6 +350,7 @@ Like a catalog.
 	URL: /catalogs/{id}/like  
 	Type: POST
 	Parameters (URL): id
+	Parameters (POST): _token
 	Returns:  
 		- response with type: success
 		- response with type: error  
@@ -330,17 +379,6 @@ Show one particular comment.
 		- response with type: result (CommentObject)
 		- response with type: error (comment not found)  
 
-## /comments
-
-Add a new comment.
-
-	URL: /comments 
-	Type: POST  
-	Parameters: object_id, text, _token  
-	Returns:  
-		- response with type: success
-		- response with type: error
-
 ## /comments/{id}
 
 Update comment properties (users can only updated comments owned by them).
@@ -361,7 +399,8 @@ Delete a like (unlike).
 
 	URL: /likes/{id} 
 	Type: DELETE  
-	Parameters: id  
+	Parameters (URL): id
+	Parameters (POST): _token  
 	Returns:  
 		- response with type: success
 		- response with type: error  
