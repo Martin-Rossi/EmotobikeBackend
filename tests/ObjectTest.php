@@ -108,4 +108,27 @@ class ObjectTest extends TestCase {
              ->see( $user->email );
     }
 
+    public function testFollowObject() {
+        $object = factory( App\Object::class, 1 )->create();
+        $user = factory( App\User::class )->create();
+
+        $response = $this->actingAs( $user )->call( 'POST', '/objects/' . $object->id . '/follow' );
+
+        $this->seeInDatabase( 'follows', ['foreign_id' => $object->id, 'foreign_type' => 'object', 'author' => $user->id] )
+             ->assertEquals( 200, $response->status() );
+    }
+
+    public function testIndexObjectFollows() {
+        $follow = factory( App\Follow::class, 1 )->create();
+        $object = factory( App\Object::class, 1 )->create();
+
+        $follow->foreign_id = $object->id;
+        $follow->save();
+
+        $user = \App\User::find( $follow->author );
+
+        $this->visit( '/objects/' . $object->id . '/follows' )
+             ->see( $user->email );
+    }
+
 }

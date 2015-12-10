@@ -121,4 +121,28 @@ class CatalogTest extends TestCase {
              ->see( $user->email );
     }
 
+    public function testFollowCatalog() {
+        $catalog = factory( App\Catalog::class, 1 )->create();
+        $user = factory( App\User::class )->create();
+
+        $response = $this->actingAs( $user )->call( 'POST', '/catalogs/' . $catalog->id . '/follow' );
+
+        $this->seeInDatabase( 'follows', ['foreign_id' => $catalog->id, 'foreign_type' => 'catalog', 'author' => $user->id] )
+             ->assertEquals( 200, $response->status() );
+    }
+
+    public function testIndexCatalogFollows() {
+        $follow = factory( App\Follow::class, 1 )->create();
+        $catalog = factory( App\Catalog::class, 1 )->create();
+
+        $follow->foreign_id = $catalog->id;
+        $follow->foreign_type = 'catalog';
+        $follow->save();
+
+        $user = \App\User::find( $follow->author );
+
+        $this->visit( '/catalogs/' . $catalog->id . '/follows' )
+             ->see( $user->email );
+    }
+
 }
