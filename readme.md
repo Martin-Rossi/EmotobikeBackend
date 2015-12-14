@@ -162,11 +162,13 @@ Show one particular object.
 
 ## /objects
 
-Add a new object.
+Add a new object.  
+
+Note: the "type" property can be a numeric id or string name. If type name is given, the API will try to locate that within the existing types and assign the id accordingly. If the given type name doesn't exists in the database, it will be created and the id assigned accordingly.
 
 	URL: /objects 
 	Type: POST  
-	Parameters: catalog_id, category_id, type_id, name, description, url, retail_price, sale_price, layout, position, competitor_flag, recomended, curated, _token  
+	Parameters: catalog_id, category_id, type, name, description, url, retail_price, sale_price, layout, position, competitor_flag, recomended, curated, _token  
 	Returns:  
 		- response with type: success
 		- response with type: error
@@ -176,6 +178,8 @@ Add a new object.
 Update object properties (users can only updated objects owned by them).  
 
 Note: not mandatory fields can be sent separately. For example to change under which catalog an object belongs, it is enough to send only the catalog_id value (and of course the _token).  
+
+Note: the "type" property can be a numeric id or string name. If type name is given, the API will try to locate that within the existing types and assign the id accordingly. If the given type name doesn't exists in the database, it will be created and the id assigned accordingly.
 
 	URL: /objects/{id} 
 	Type: PUT  
