@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Object;
+use App\Category;
 use App\Type;
 use App\Comment;
 use App\Like;
@@ -38,24 +39,8 @@ class ObjectController extends Controller {
 
         $inputs['author'] = auth()->user()->id;
 
-        if ( isset( $inputs['type'] ) && $inputs['type'] ) {
-            if ( is_numeric( $inputs['type'] ) )
-                $inputs['type_id'] = $inputs['type'];
-            else {
-                $type = Type::where( 'name', '=', $inputs['type'] )->first();
-
-                if ( $type )
-                    $inputs['type_id'] = $type->id;
-                else {
-                    $type = new Type();
-                    $type->name = $inputs['type'];
-
-                    $type->save();
-
-                    $inputs['type_id'] = $type->id;
-                }
-            }
-        }
+        $inputs = $this->assignCategory( $inputs );
+        $inputs = $this->assignType( $inputs );
 
         try {
             Object::create( $inputs );
@@ -78,24 +63,8 @@ class ObjectController extends Controller {
 
         $inputs['author'] = auth()->user()->id;
 
-        if ( isset( $inputs['type'] ) && $inputs['type'] ) {
-            if ( is_numeric( $inputs['type'] ) )
-                $inputs['type_id'] = $inputs['type'];
-            else {
-                $type = Type::where( 'name', '=', $inputs['type'] )->first();
-
-                if ( $type )
-                    $inputs['type_id'] = $type->id;
-                else {
-                    $type = new Type();
-                    $type->name = $inputs['type'];
-
-                    $type->save();
-
-                    $inputs['type_id'] = $type->id;
-                }
-            }
-        }
+        $inputs = $this->assignCategory( $inputs );
+        $inputs = $this->assignType( $inputs );
 
         try {
             $object->update( $inputs );
@@ -213,6 +182,52 @@ class ObjectController extends Controller {
             abort( 404 );
 
         return $response->result( $object->follows() );
+    }
+
+    private function assignCategory( $inputs ) {
+        if ( isset( $inputs['category'] ) && $inputs['category'] ) {
+            if ( is_numeric( $inputs['category'] ) )
+                $inputs['category_id'] = $inputs['category'];
+            else {
+                $category = Category::where( 'name', '=', $inputs['category'] )->first();
+
+                if ( $category )
+                    $inputs['category_id'] = $category->id;
+                else {
+                    $category = new Category();
+                    $category->name = $inputs['category'];
+
+                    $category->save();
+
+                    $inputs['category_id'] = $category->id;
+                }
+            }
+        }
+
+        return $inputs;
+    }
+
+    private function assignType( $inputs ) {
+        if ( isset( $inputs['type'] ) && $inputs['type'] ) {
+            if ( is_numeric( $inputs['type'] ) )
+                $inputs['type_id'] = $inputs['type'];
+            else {
+                $type = Type::where( 'name', '=', $inputs['type'] )->first();
+
+                if ( $type )
+                    $inputs['type_id'] = $type->id;
+                else {
+                    $type = new Type();
+                    $type->name = $inputs['type'];
+
+                    $type->save();
+
+                    $inputs['type_id'] = $type->id;
+                }
+            }
+        }
+
+        return $inputs;
     }
     
 }

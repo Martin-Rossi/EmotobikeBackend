@@ -25,6 +25,7 @@ class CatalogTest extends TestCase {
     public function testAddCatalog() {
         $catalog = factory( App\Catalog::class, 1 )->make()->toArray();
 
+        $catalog['category'] = 'test';
         $catalog['type'] = 'test';
 
         $user = factory( App\User::class )->create();
@@ -39,6 +40,7 @@ class CatalogTest extends TestCase {
         $catalog = factory( App\Catalog::class, 1 )->create();
         $data = factory( App\Catalog::class, 1 )->make()->toArray();
 
+        $data['category'] = 'test';
         $data['type'] = 'test';
 
         $user = factory( App\User::class )->create();

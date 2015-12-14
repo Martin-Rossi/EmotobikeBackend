@@ -10,14 +10,15 @@ class Catalog extends Model {
 
     protected $fillable = [
         'collection_id',
+        'catalog_id',
         'type_id',
         'name',
         'title',
         'author'
     ];
 
-    public function objects() {
-    	return $this->hasMany( 'App\Object', 'catalog_id', 'id' )->with( 'type', 'author' );
+    public function category() {
+        return $this->belongsTo( 'App\Category', 'category_id', 'id' );
     }
 
     public function type() {
@@ -26,6 +27,10 @@ class Catalog extends Model {
 
     public function author() {
         return $this->belongsTo( 'App\User', 'author', 'id' );
+    }
+
+    public function objects() {
+        return $this->hasMany( 'App\Object', 'catalog_id', 'id' )->with( 'category', 'type', 'author' );
     }
 
     public function comments() {

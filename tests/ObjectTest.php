@@ -25,6 +25,7 @@ class ObjectTest extends TestCase {
     public function testAddObject() {
         $object = factory( App\Object::class, 1 )->make()->toArray();
 
+        $object['category'] = 'test';
         $object['type'] = 'test';
 
         $user = factory( App\User::class )->create();
@@ -39,6 +40,7 @@ class ObjectTest extends TestCase {
         $object = factory( App\Object::class, 1 )->create();
         $data = factory( App\Object::class, 1 )->make()->toArray();
 
+        $data['category'] = 'test';
         $data['type'] = 'test';
 
         $user = factory( App\User::class )->create();

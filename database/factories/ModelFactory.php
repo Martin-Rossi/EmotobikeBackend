@@ -22,11 +22,13 @@ $factory->define( App\User::class, function( Faker\Generator $faker ) {
 
 $factory->define( App\Object::class, function( Faker\Generator $faker ) {
 	$catalog = factory( App\Catalog::class, 1 )->create();
+    $category = factory( App\Category::class, 1 )->create();
     $type = factory( App\Type::class, 1 )->create();
     $user = factory( App\User::class, 1 )->create();
 
     return [
         'catalog_id' 		=> $catalog->id,
+        'category_id'       => $category->id,
         'type_id'			=> $type->id,
         'name'				=> implode( ' ', $faker->words( 3 ) ),
         'description'		=> $faker->paragraph( 5 ),
@@ -43,15 +45,23 @@ $factory->define( App\Object::class, function( Faker\Generator $faker ) {
 } );
 
 $factory->define( App\Catalog::class, function( Faker\Generator $faker ) {
+    $category = factory( App\Category::class, 1 )->create();
     $type = factory( App\Type::class, 1 )->create();
     $user = factory( App\User::class, 1 )->create();
 
     return [
         'collection_id'     => 1,
+        'category_id'       => $category->id,
         'type_id'           => $type->id,
         'name'              => implode( ' ', $faker->words( 3 ) ),
         'title'             => implode( ' ', $faker->words( 3 ) ),
         'author'            => $user->id
+    ];
+} );
+
+$factory->define( App\Category::class, function( Faker\Generator $faker ) {
+    return [
+        'name'              => implode( ' ', $faker->words( 1 ) )
     ];
 } );
 
