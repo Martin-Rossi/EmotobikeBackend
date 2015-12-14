@@ -134,6 +134,9 @@ class ObjectController extends Controller {
             return $response->error( $e->getMessage() );
         }
 
+        $object->count_comments++;
+        $object->save();
+
         return $response->success( 'Comment recorded successfully' );
     }
 
@@ -164,6 +167,9 @@ class ObjectController extends Controller {
             return $response->error( $e->getMessage() );
         }
 
+        $object->count_likes++;
+        $object->save();
+
         return $response->success( 'Like recorded successfully' );
     }
 
@@ -193,6 +199,9 @@ class ObjectController extends Controller {
         } catch ( Exception $e ) {
             return $response->error( $e->getMessage() );
         }
+
+        $object->count_follows++;
+        $object->save();
 
         return $response->success( 'Follow recorded successfully' );
     }

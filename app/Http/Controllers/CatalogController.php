@@ -142,6 +142,9 @@ class CatalogController extends Controller {
             return $response->error( $e->getMessage() );
         }
 
+        $catalog->count_comments++;
+        $catalog->save();
+
         return $response->success( 'Comment recorded successfully' );
     }
 
@@ -172,6 +175,9 @@ class CatalogController extends Controller {
             return $response->error( $e->getMessage() );
         }
 
+        $catalog->count_likes++;
+        $catalog->save();
+
         return $response->success( 'Like recorded successfully' );
     }
 
@@ -201,6 +207,9 @@ class CatalogController extends Controller {
         } catch ( Exception $e ) {
             return $response->error( $e->getMessage() );
         }
+
+        $catalog->count_follows++;
+        $catalog->save();
 
         return $response->success( 'Follow recorded successfully' );
     }

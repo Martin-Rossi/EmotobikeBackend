@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Like;
+use App\Object;
+use App\Catalog;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
@@ -22,6 +24,16 @@ class LikeController extends Controller {
             $like->delete();
         } catch ( Exception $e ) {
             return $response->error( $e->getMessage() );
+        }
+
+        if ( 'catalog' == $like->foreign_type )
+            $obj = Catalog::find( $like->foreign_id );
+        else
+            $obj = Object::find( $like->foreign_id );
+
+        if ( $obj ) {
+            $obj->count_likes--;
+            $obj->save();
         }
 
         return $response->success( 'Like deleted successfully' );

@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Follow;
+use App\Object;
+use App\Catalog;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
@@ -22,6 +24,16 @@ class FollowController extends Controller {
             $follow->delete();
         } catch ( Exception $e ) {
             return $response->error( $e->getMessage() );
+        }
+
+        if ( 'catalog' == $follow->foreign_type )
+            $obj = Catalog::find( $follow->foreign_id );
+        else
+            $obj = Object::find( $follow->foreign_id );
+
+        if ( $obj ) {
+            $obj->count_follows--;
+            $obj->save();
         }
 
         return $response->success( 'Follow deleted successfully' );
