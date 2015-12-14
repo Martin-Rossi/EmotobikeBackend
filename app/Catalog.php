@@ -17,11 +17,15 @@ class Catalog extends Model {
     ];
 
     public function objects() {
-    	return $this->hasMany( 'App\Object', 'catalog_id', 'id' );
+    	return $this->hasMany( 'App\Object', 'catalog_id', 'id' )->with( 'type', 'author' );
     }
 
     public function type() {
         return $this->belongsTo( 'App\Type', 'type_id', 'id' );
+    }
+
+    public function author() {
+        return $this->belongsTo( 'App\User', 'author', 'id' );
     }
 
     public function comments() {

@@ -21,7 +21,11 @@ class ObjectController extends Controller {
     }
 
     public function show( $id, ApiResponse $response ) {
-        $object = Object::find( $id );
+        $object = Object::where( 'id', '=', $id )
+                        ->with( 'catalog' )
+                        ->with( 'type' )
+                        ->with( 'author' )
+                        ->first();
 
         if ( is_null( $object ) )
             abort( 404 );

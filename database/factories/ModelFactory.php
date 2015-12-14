@@ -23,6 +23,7 @@ $factory->define( App\User::class, function( Faker\Generator $faker ) {
 $factory->define( App\Object::class, function( Faker\Generator $faker ) {
 	$catalog = factory( App\Catalog::class, 1 )->create();
     $type = factory( App\Type::class, 1 )->create();
+    $user = factory( App\User::class, 1 )->create();
 
     return [
         'catalog_id' 		=> $catalog->id,
@@ -36,18 +37,21 @@ $factory->define( App\Object::class, function( Faker\Generator $faker ) {
         'position'          => implode( ' ', $faker->words( 1 ) ),
         'competitor_flag'	=> $faker->randomElement( [0, 1] ),
         'recomended'		=> $faker->randomElement( [0, 1] ),
-        'curated'			=> $faker->randomElement( [0, 1] )
+        'curated'			=> $faker->randomElement( [0, 1] ),
+        'author'            => $user->id
     ];
 } );
 
 $factory->define( App\Catalog::class, function( Faker\Generator $faker ) {
     $type = factory( App\Type::class, 1 )->create();
+    $user = factory( App\User::class, 1 )->create();
 
     return [
         'collection_id'     => 1,
         'type_id'           => $type->id,
         'name'              => implode( ' ', $faker->words( 3 ) ),
-        'title'             => implode( ' ', $faker->words( 3 ) )
+        'title'             => implode( ' ', $faker->words( 3 ) ),
+        'author'            => $user->id
     ];
 } );
 

@@ -25,11 +25,15 @@ class Object extends Model {
     ];
 
     public function catalog() {
-        return $this->belongsTo( 'App\Catalog', 'catalog_id', 'id' );
+        return $this->belongsTo( 'App\Catalog', 'catalog_id', 'id' )->with( 'type', 'author' );
     }
 
     public function type() {
         return $this->belongsTo( 'App\Type', 'type_id', 'id' );
+    }
+
+    public function author() {
+        return $this->belongsTo( 'App\User', 'author', 'id' );
     }
 
     public function comments() {

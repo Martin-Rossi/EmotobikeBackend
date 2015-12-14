@@ -21,7 +21,10 @@ class CatalogController extends Controller {
     }
 
     public function show( $id, ApiResponse $response ) {
-        $catalog = Catalog::find( $id );
+        $catalog = Catalog::where( 'id', '=', $id )
+                          ->with( 'type' )
+                          ->with( 'author' )
+                          ->first();
 
         if ( is_null( $catalog ) )
             abort( 404 );
