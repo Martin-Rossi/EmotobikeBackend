@@ -52,7 +52,16 @@
 		count_follows (INT 10, default: 0)
 		author (INT 10, references id on 'users')
 		created_at (TIMESTAMP)
-		updated_at (TIMESTAMP)
+		updated_at (TIMESTAMP)  
+		
+**Types**
+
+	route: /types
+	Properties:
+		id (INT 10 - primary key, autoincrement)
+		name (VARCHAR 55)
+		created_at (TIMESTAMP)
+		updated_at (TIMESTAMP)  
 		
 **Comments**  
 
@@ -75,7 +84,18 @@
 		foreign_type (ENUM['object','catalog'])
 		author (INT 10, references id on 'users')
 		created_at (TIMESTAMP)
-		updated_at (TIMESTAMP)
+		updated_at (TIMESTAMP)  
+		
+**Follows**  
+
+	route: /follows
+	Properties:
+		id (INT 10 - primary key, autoincrement)
+		foreign_id (INT 10)
+		foreign_type (ENUM['object','catalog'])
+		author (INT 10, references id on 'users')
+		created_at (TIMESTAMP)
+		updated_at (TIMESTAMP) 
 		
 # Request Types
 
@@ -165,7 +185,7 @@ Show one particular object.
 
 Add a new object.  
 
-Note: the "type" property can be a numeric id or string name. If type name is given, the API will try to locate that within the existing types and assign the id accordingly. If the given type name doesn't exists in the database, it will be created and the id assigned accordingly.
+> Note: the "type" property can be a numeric id or string name. If type name is given, the API will try to locate that within the existing types and assign the id accordingly. If the given type name doesn't exists in the database, it will be created and the id assigned accordingly.
 
 	URL: /objects 
 	Type: POST  
@@ -178,9 +198,10 @@ Note: the "type" property can be a numeric id or string name. If type name is gi
 
 Update object properties (users can only updated objects owned by them).  
 
-Note: not mandatory fields can be sent separately. For example to change under which catalog an object belongs, it is enough to send only the catalog_id value (and of course the _token).  
+> Note: not mandatory fields can be sent separately. For example to change under which catalog an object belongs, it is enough to send only the catalog_id value (and of course the _token).  
 
-Note: the "type" property can be a numeric id or string name. If type name is given, the API will try to locate that within the existing types and assign the id accordingly. If the given type name doesn't exists in the database, it will be created and the id assigned accordingly.
+> Note: the "type" property can be a numeric id or string name. If type name is given, the API will try to locate that within the existing types and assign the id accordingly. If the given type name doesn't exists in the database, it will be created and the id assigned accordingly.
+
 
 	URL: /objects/{id} 
 	Type: PUT  
@@ -309,7 +330,7 @@ Show one particular catalog.
 
 Add a new catalog.
 
-Note: the "type" property can be a numeric id or string name. If type name is given, the API will try to locate that within the existing types and assign the id accordingly. If the given type name doesn't exists in the database, it will be created and the id assigned accordingly.
+> Note: the "type" property can be a numeric id or string name. If type name is given, the API will try to locate that within the existing types and assign the id accordingly. If the given type name doesn't exists in the database, it will be created and the id assigned accordingly.
 
 	URL: /catalogs 
 	Type: POST  
@@ -322,7 +343,7 @@ Note: the "type" property can be a numeric id or string name. If type name is gi
 
 Update catalog properties (users can only updated catalogs owned by them).  
 
-Note: the "type" property can be a numeric id or string name. If type name is given, the API will try to locate that within the existing types and assign the id accordingly. If the given type name doesn't exists in the database, it will be created and the id assigned accordingly.
+> Note: the "type" property can be a numeric id or string name. If type name is given, the API will try to locate that within the existing types and assign the id accordingly. If the given type name doesn't exists in the database, it will be created and the id assigned accordingly.
 
 	URL: /catalogs/{id} 
 	Type: PUT  
@@ -421,7 +442,52 @@ List all follows for a catalog.
 	Parameters: id
 	Returns:  
 		- response with type: result ([FollowObjects])
-		- response with type: error (object not found)
+		- response with type: error (object not found)  
+
+# Endpoints "type"  
+
+## /types
+
+List all types.
+
+	URL: /types  
+	Type: GET  
+	Parameters: -  
+	Returns:  
+		- response with type: result ([TypeObjects])  
+
+## /types/{id}
+
+Show one particular type.
+
+	URL: /types/{id} 
+	Type: GET  
+	Parameters: id  
+	Returns:  
+		- response with type: result (TypeObject)
+		- response with type: error (type not found)  
+
+## /types/{id}/objects
+
+Display all objects belonging to this type (empty if none).
+
+	URL: /types/{id}/objects  
+	Type: GET  
+	Parameters: id  
+	Returns:  
+		- response with type: result ([ObjectObjects])
+		- response with type: error (type not found)  
+
+## /types/{id}/catalogs
+
+Display all catalogs belonging to this type (empty if none).
+
+	URL: /types/{id}/catalogs  
+	Type: GET  
+	Parameters: id  
+	Returns:  
+		- response with type: result ([CatalogObjects])
+		- response with type: error (type not found)
 
 # Endpoints "comment"   
 
