@@ -31,6 +31,8 @@ $factory->define( App\Object::class, function( Faker\Generator $faker ) {
         'url'               => $faker->url,
         'retail_price'		=> $faker->randomFloat( 2, 100, 10000 ),
         'sale_price' 		=> $faker->randomFloat( 2, 100, 10000 ),
+        'layout'            => implode( ' ', $faker->words( 1 ) ),
+        'position'          => implode( ' ', $faker->words( 1 ) ),
         'competitor_flag'	=> $faker->randomElement( [0, 1] ),
         'recomended'		=> $faker->randomElement( [0, 1] ),
         'curated'			=> $faker->randomElement( [0, 1] )

@@ -16,6 +16,8 @@ class Object extends Model {
         'description',
         'retail_price',
         'sale_price',
+        'layout',
+        'position',
         'competitor_flag',
         'recomended',
         'curated',

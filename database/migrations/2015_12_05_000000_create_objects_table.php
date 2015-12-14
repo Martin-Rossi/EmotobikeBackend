@@ -16,6 +16,8 @@ class CreateObjectsTable extends Migration {
             $table->string( 'url' )->nullable()->default( null );
             $table->double( 'retail_price', 12, 2 )->nullable()->default( null );
             $table->double( 'sale_price', 12, 2 )->nullable()->default( null );
+            $table->string( 'layout', 55 )->nullable()->default( null );
+            $table->string( 'position', 55 )->nullable()->default( null );
             $table->integer( 'count_likes' )->default( 0 );
             $table->integer( 'count_comments' )->default( 0 );
             $table->integer( 'count_follows' )->default( 0 );
