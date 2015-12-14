@@ -462,6 +462,51 @@ List all follows for a catalog.
 		- response with type: result ([FollowObjects])
 		- response with type: error (object not found)  
 
+# Endpoints "category"  
+
+## /categories
+
+List all categories.
+
+	URL: /categories  
+	Type: GET  
+	Parameters: -  
+	Returns:  
+		- response with type: result ([CategoryObjects])  
+
+## /categories/{id}
+
+Show one particular category.
+
+	URL: /categories/{id} 
+	Type: GET  
+	Parameters: id  
+	Returns:  
+		- response with type: result (CategoryObject)
+		- response with type: error (category not found)  
+
+## /categories/{id}/objects
+
+Display all objects belonging to this category (empty if none).
+
+	URL: /categories/{id}/objects  
+	Type: GET  
+	Parameters: id  
+	Returns:  
+		- response with type: result ([ObjectObjects])
+		- response with type: error (category not found)  
+
+## /categories/{id}/catalogs
+
+Display all catalogs belonging to this category (empty if none).
+
+	URL: /categories/{id}/catalogs  
+	Type: GET  
+	Parameters: id  
+	Returns:  
+		- response with type: result ([CatalogObjects])
+		- response with type: error (category not found)  
+
 # Endpoints "type"  
 
 ## /types
