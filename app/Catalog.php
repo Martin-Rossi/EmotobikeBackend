@@ -10,6 +10,7 @@ class Catalog extends Model {
 
     protected $fillable = [
         'collection_id',
+        'type_id',
         'name',
         'title',
         'author'
@@ -17,6 +18,10 @@ class Catalog extends Model {
 
     public function objects() {
     	return $this->hasMany( 'App\Object', 'catalog_id', 'id' );
+    }
+
+    public function type() {
+        return $this->hasOne( 'App\Type', 'type_id', 'id' );
     }
 
     public function comments() {

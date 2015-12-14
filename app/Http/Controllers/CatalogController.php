@@ -6,6 +6,7 @@ use App\Catalog;
 use App\Comment;
 use App\Like;
 use App\Follow;
+use App\Type;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
@@ -33,6 +34,25 @@ class CatalogController extends Controller {
 
         $inputs['author'] = auth()->user()->id;
 
+        if ( isset( $inputs['type'] ) && $inputs['type'] ) {
+            if ( is_numeric( $inputs['type'] ) )
+                $inputs['type_id'] = $inputs['type'];
+            else {
+                $type = Type::where( 'name', '=', $inputs['type'] )->first();
+
+                if ( $type )
+                    $inputs['type_id'] = $type->id;
+                else {
+                    $type = new Type();
+                    $type->name = $inputs['type'];
+
+                    $type->save();
+
+                    $inputs['type_id'] = $type->id;
+                }
+            }
+        }
+
         try {
             Catalog::create( $inputs );
         } catch ( Exception $e ) {
@@ -53,6 +73,25 @@ class CatalogController extends Controller {
         $inputs = $request->all();
 
         $inputs['author'] = auth()->user()->id;
+
+        if ( isset( $inputs['type'] ) && $inputs['type'] ) {
+            if ( is_numeric( $inputs['type'] ) )
+                $inputs['type_id'] = $inputs['type'];
+            else {
+                $type = Type::where( 'name', '=', $inputs['type'] )->first();
+
+                if ( $type )
+                    $inputs['type_id'] = $type->id;
+                else {
+                    $type = new Type();
+                    $type->name = $inputs['type'];
+
+                    $type->save();
+
+                    $inputs['type_id'] = $type->id;
+                }
+            }
+        }
 
         try {
             $catalog->update( $inputs );

@@ -41,8 +41,11 @@ $factory->define( App\Object::class, function( Faker\Generator $faker ) {
 } );
 
 $factory->define( App\Catalog::class, function( Faker\Generator $faker ) {
+    $type = factory( App\Type::class, 1 )->create();
+
     return [
         'collection_id'     => 1,
+        'type_id'           => $type->id,
         'name'              => implode( ' ', $faker->words( 3 ) ),
         'title'             => implode( ' ', $faker->words( 3 ) )
     ];
