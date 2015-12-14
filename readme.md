@@ -44,6 +44,7 @@
 	route: /catalogs
 	Properties:
 		id (INT 10 - primary key, autoincrement)
+		category_id (INT 10 - references id on 'categories', default: 0)
 		type_id (INT 10 - references id on 'types', default: 0)
 		name (VARCHAR 255)
 		title (VARCHAR 255)
@@ -51,6 +52,15 @@
 		count_comments (INT 10, default: 0)
 		count_follows (INT 10, default: 0)
 		author (INT 10, references id on 'users')
+		created_at (TIMESTAMP)
+		updated_at (TIMESTAMP)  
+		
+**Category**
+
+	route: /categories
+	Properties:
+		id (INT 10 - primary key, autoincrement)
+		name (VARCHAR 55)
 		created_at (TIMESTAMP)
 		updated_at (TIMESTAMP)  
 		
@@ -185,11 +195,13 @@ Show one particular object.
 
 Add a new object.  
 
-> Note: the "type" property can be a numeric id or string name. If type name is given, the API will try to locate that within the existing types and assign the id accordingly. If the given type name doesn't exists in the database, it will be created and the id assigned accordingly.
+> Note: the "type" property can be a numeric id or string name. If type name is given, the API will try to locate that within the existing types and assign the id accordingly. If the given type name doesn't exists in the database, it will be created and the id assigned accordingly.  
+
+> Note: the "category" property can be a numeric id or string name. If category name is given, the API will try to locate that within the existing categories and assign the id accordingly. If the given category name doesn't exists in the database, it will be created and the id assigned accordingly.
 
 	URL: /objects 
 	Type: POST  
-	Parameters: catalog_id, category_id, type, name, description, url, retail_price, sale_price, layout, position, competitor_flag, recomended, curated, _token  
+	Parameters: catalog_id, category, type, name, description, url, retail_price, sale_price, layout, position, competitor_flag, recomended, curated, _token  
 	Returns:  
 		- response with type: success
 		- response with type: error
@@ -202,11 +214,13 @@ Update object properties (users can only updated objects owned by them).
 
 > Note: the "type" property can be a numeric id or string name. If type name is given, the API will try to locate that within the existing types and assign the id accordingly. If the given type name doesn't exists in the database, it will be created and the id assigned accordingly.
 
+> Note: the "category" property can be a numeric id or string name. If category name is given, the API will try to locate that within the existing categories and assign the id accordingly. If the given category name doesn't exists in the database, it will be created and the id assigned accordingly.
+
 
 	URL: /objects/{id} 
 	Type: PUT  
 	Parameters (URL): id
-	Parameters (POST): catalog_id, category_id, type_id, name, description, url, retail_price, sale_price, layout, position, competitor_flag, recomended, curated, _token  
+	Parameters (POST): catalog_id, category, type, name, description, url, retail_price, sale_price, layout, position, competitor_flag, recomended, curated, _token  
 	Returns:  
 		- response with type: success
 		- response with type: error
@@ -332,9 +346,11 @@ Add a new catalog.
 
 > Note: the "type" property can be a numeric id or string name. If type name is given, the API will try to locate that within the existing types and assign the id accordingly. If the given type name doesn't exists in the database, it will be created and the id assigned accordingly.
 
+> Note: the "category" property can be a numeric id or string name. If category name is given, the API will try to locate that within the existing categories and assign the id accordingly. If the given category name doesn't exists in the database, it will be created and the id assigned accordingly.
+
 	URL: /catalogs 
 	Type: POST  
-	Parameters: type, name, title, _token  
+	Parameters: category, type, name, title, _token  
 	Returns:  
 		- response with type: success
 		- response with type: error
@@ -345,10 +361,12 @@ Update catalog properties (users can only updated catalogs owned by them).
 
 > Note: the "type" property can be a numeric id or string name. If type name is given, the API will try to locate that within the existing types and assign the id accordingly. If the given type name doesn't exists in the database, it will be created and the id assigned accordingly.
 
+> Note: the "category" property can be a numeric id or string name. If category name is given, the API will try to locate that within the existing categories and assign the id accordingly. If the given category name doesn't exists in the database, it will be created and the id assigned accordingly.
+
 	URL: /catalogs/{id} 
 	Type: PUT  
 	Parameters (URL): id
-	Parameters (POST): type, name, title, _token 
+	Parameters (POST): category, type, name, title, _token 
 	Returns:  
 		- response with type: success
 		- response with type: error
