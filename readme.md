@@ -44,6 +44,7 @@
 	route: /catalogs
 	Properties:
 		id (INT 10 - primary key, autoincrement)
+		type_id (INT 10 - references id on 'types', default: 0)
 		name (VARCHAR 255)
 		title (VARCHAR 255)
 		count_likes (INT 10, default: 0)
@@ -308,21 +309,25 @@ Show one particular catalog.
 
 Add a new catalog.
 
+Note: the "type" property can be a numeric id or string name. If type name is given, the API will try to locate that within the existing types and assign the id accordingly. If the given type name doesn't exists in the database, it will be created and the id assigned accordingly.
+
 	URL: /catalogs 
 	Type: POST  
-	Parameters: name, title, _token  
+	Parameters: type, name, title, _token  
 	Returns:  
 		- response with type: success
 		- response with type: error
 
 ## /catalogs/{id}
 
-Update catalog properties (users can only updated catalogs owned by them).
+Update catalog properties (users can only updated catalogs owned by them).  
+
+Note: the "type" property can be a numeric id or string name. If type name is given, the API will try to locate that within the existing types and assign the id accordingly. If the given type name doesn't exists in the database, it will be created and the id assigned accordingly.
 
 	URL: /catalogs/{id} 
 	Type: PUT  
 	Parameters (URL): id
-	Parameters (POST): name, title, _token 
+	Parameters (POST): type, name, title, _token 
 	Returns:  
 		- response with type: success
 		- response with type: error
