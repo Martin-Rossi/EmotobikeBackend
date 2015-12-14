@@ -21,7 +21,7 @@ class Catalog extends Model {
     }
 
     public function type() {
-        return $this->hasOne( 'App\Type', 'type_id', 'id' );
+        return $this->belongsTo( 'App\Type', 'type_id', 'id' );
     }
 
     public function comments() {

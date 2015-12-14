@@ -58,6 +58,18 @@ Route::group( ['middleware' => ['auth', 'cors']], function () {
 } );
 
 /*
+| Type routes
+*/
+Route::group( ['middleware' => ['auth', 'cors']], function () {
+	Route::resource( 'types', 'TypeController', [
+		'only' => ['index', 'show']
+	] );
+	
+	Route::get( 'types/{id}/objects', 'TypeController@objects' );
+	Route::get( 'types/{id}/catalogs', 'TypeController@catalogs' );
+} );
+
+/*
 | Comment routes
 */
 Route::group( ['middleware' => ['auth', 'cors']], function () {

@@ -12,4 +12,12 @@ class Type extends Model {
         'name'
     ];
     
+    public function objects() {
+    	return $this->hasMany( 'App\Object', 'type_id', 'id' );
+    }
+
+    public function catalogs() {
+    	return $this->hasMany( 'App\Catalog', 'type_id', 'id' );
+    }
+
 }
