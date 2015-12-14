@@ -13,11 +13,11 @@ class Category extends Model {
     ];
     
     public function objects() {
-    	return $this->hasMany( 'App\Object', 'type_id', 'id' );
+    	return $this->hasMany( 'App\Object', 'category_id', 'id' );
     }
 
     public function catalogs() {
-    	return $this->hasMany( 'App\Catalog', 'type_id', 'id' );
+    	return $this->hasMany( 'App\Catalog', 'category_id', 'id' );
     }
 
 }
