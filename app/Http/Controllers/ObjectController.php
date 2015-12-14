@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Object;
+use App\Type;
 use App\Comment;
 use App\Like;
 use App\Follow;
@@ -33,6 +34,25 @@ class ObjectController extends Controller {
 
         $inputs['author'] = auth()->user()->id;
 
+        if ( isset( $inputs['type'] ) && $inputs['type'] ) {
+            if ( is_numeric( $inputs['type'] ) )
+                $inputs['type_id'] = $inputs['type'];
+            else {
+                $type = Type::where( 'name', '=', $inputs['type'] )->first();
+
+                if ( $type )
+                    $inputs['type_id'] = $type->id;
+                else {
+                    $type = new Type();
+                    $type->name = $inputs['type'];
+
+                    $type->save();
+
+                    $inputs['type_id'] = $type->id;
+                }
+            }
+        }
+
         try {
             Object::create( $inputs );
         } catch ( Exception $e ) {
@@ -53,6 +73,25 @@ class ObjectController extends Controller {
         $inputs = $request->all();
 
         $inputs['author'] = auth()->user()->id;
+
+        if ( isset( $inputs['type'] ) && $inputs['type'] ) {
+            if ( is_numeric( $inputs['type'] ) )
+                $inputs['type_id'] = $inputs['type'];
+            else {
+                $type = Type::where( 'name', '=', $inputs['type'] )->first();
+
+                if ( $type )
+                    $inputs['type_id'] = $type->id;
+                else {
+                    $type = new Type();
+                    $type->name = $inputs['type'];
+
+                    $type->save();
+
+                    $inputs['type_id'] = $type->id;
+                }
+            }
+        }
 
         try {
             $object->update( $inputs );

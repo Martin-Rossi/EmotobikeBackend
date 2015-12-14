@@ -10,7 +10,7 @@ class CreateObjectsTable extends Migration {
             $table->increments( 'id' );
             $table->integer( 'catalog_id' )->references( 'id' )->on( 'catalogs' )->default( 0 );
             $table->integer( 'category_id' )->references( 'id' )->on( 'categories' )->default( 0 );
-            $table->integer( 'type_id' )->references( 'id' )->on( 'types' );
+            $table->integer( 'type_id' )->references( 'id' )->on( 'types' )->default( 0 );
             $table->string( 'name', 255 );
             $table->text( 'description' )->nullable()->default( null );
             $table->string( 'url' )->nullable()->default( null );

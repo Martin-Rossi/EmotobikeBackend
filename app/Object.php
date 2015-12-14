@@ -28,6 +28,10 @@ class Object extends Model {
         return $this->belongsTo( 'App\Catalog', 'catalog_id', 'id' );
     }
 
+    public function type() {
+        return $this->hasOne( 'App\Type', 'type_id', 'id' );
+    }
+
     public function comments() {
         $comments = \App\Comment::where( 'foreign_id', '=', $this->id )
                                 ->where( 'foreign_type', '=', 'object' )

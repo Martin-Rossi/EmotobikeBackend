@@ -25,6 +25,8 @@ class ObjectTest extends TestCase {
     public function testAddObject() {
         $object = factory( App\Object::class, 1 )->make()->toArray();
 
+        $object['type'] = 'test';
+
         $user = factory( App\User::class )->create();
 
         $response = $this->actingAs( $user )->call( 'POST', '/objects', $object );
@@ -36,6 +38,8 @@ class ObjectTest extends TestCase {
     public function testUpdateObject() {
         $object = factory( App\Object::class, 1 )->create();
         $data = factory( App\Object::class, 1 )->make()->toArray();
+
+        $data['type'] = 'test';
 
         $user = factory( App\User::class )->create();
 
