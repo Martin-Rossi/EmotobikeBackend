@@ -55,6 +55,17 @@
 		created_at (TIMESTAMP)
 		updated_at (TIMESTAMP)  
 		
+**Collection**  
+
+	route: /collections
+	Properties:
+		id (BIGINT 20 - primary key, autoincrement)
+		collection_id (INT 10)
+		catalog_id (INT 10 - references id on 'catalogs')
+		author (INT 10, references id on 'users')
+		created_at (TIMESTAMP)
+		updated_at (TIMESTAMP)  
+		
 **Category**
 
 	route: /categories
@@ -461,6 +472,81 @@ List all follows for a catalog.
 	Returns:  
 		- response with type: result ([FollowObjects])
 		- response with type: error (object not found)  
+
+# Endpoints "collection"  
+
+## /collections
+
+List all collections for the current, authenticated user.
+
+	URL: /collections  
+	Type: GET  
+	Parameters: -  
+	Returns:  
+		- response with type: result ([[CollectionObjects]])  
+
+## /collections/{collection_id}
+
+Show one particular collection belonging to the current, authenticated user.
+
+	URL: /collections/{collection_id} 
+	Type: GET  
+	Parameters: collection_id  
+	Returns:  
+		- response with type: result ([CollectionObject])
+		- response with type: error (collection not found) 
+
+## /collections/{collection_id}/catalogs
+
+List all catalogs belonging to this collection.  
+
+> Note: only reaches to collections belonging to the current, authenticated user.
+
+	URL: /collections/{collection_id}/catalogs 
+	Type: GET  
+	Parameters: collection_id  
+	Returns:  
+		- response with type: result ([CatalogObjects])
+		- response with type: error (collection not found)  
+
+## /collections
+
+Add a new collection.
+
+> Note: when adding a new collection the first catalog's id must be sent with the POST parameters. Additional catalogs to this collection can be added via the /collection/{id}/add endpoint.
+
+	URL: /collections 
+	Type: POST  
+	Parameters: catalog_id, _token  
+	Returns:  
+		- response with type: success
+		- response with type: error
+
+## /collections/{collection_id}/add
+
+Add a catalog to a specified collection.
+
+	URL: /collections/{collection_id}/add 
+	Type: POST  
+	Parameters (URL): collection_id
+	Parameters (POST): catalog_id, _token  
+	Returns:  
+		- response with type: success
+		- response with type: error
+		- response with type: error (collection not found)  
+
+## /collections/{collection_id}/remove
+
+Remove a catalog from a specified collection.
+
+	URL: /collections/{collection_id}/remove 
+	Type: POST  
+	Parameters (URL): collection_id
+	Parameters (POST): catalog_id, _token  
+	Returns:  
+		- response with type: success
+		- response with type: error
+		- response with type: error (collection not found)  
 
 # Endpoints "category"  
 
