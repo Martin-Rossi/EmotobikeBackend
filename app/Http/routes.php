@@ -58,6 +58,20 @@ Route::group( ['middleware' => ['auth', 'cors']], function () {
 } );
 
 /*
+| Collection routes
+*/
+Route::group( ['middleware' => ['auth', 'cors']], function () {
+	Route::resource( 'collections', 'CollectionController', [
+		'only' => ['index', 'show', 'store', 'destroy']
+	] );
+
+	Route::get( 'collections/{id}/catalogs', 'CollectionController@catalogs' );
+
+	Route::post( 'collections/{id}/add', 'CollectionController@addCatalog' );
+	Route::post( 'collections/{id}/remove', 'CollectionController@removeCatalog' );
+} );
+
+/*
 | Category routes
 */
 Route::group( ['middleware' => ['auth', 'cors']], function () {
