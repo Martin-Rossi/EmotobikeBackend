@@ -50,11 +50,21 @@ $factory->define( App\Catalog::class, function( Faker\Generator $faker ) {
     $user = factory( App\User::class, 1 )->create();
 
     return [
-        'collection_id'     => 1,
         'category_id'       => $category->id,
         'type_id'           => $type->id,
         'name'              => implode( ' ', $faker->words( 3 ) ),
         'title'             => implode( ' ', $faker->words( 3 ) ),
+        'author'            => $user->id
+    ];
+} );
+
+$factory->define( App\Collection::class, function( Faker\Generator $faker ) {
+    $catalog = factory( App\Catalog::class, 1 )->create();
+    $user = factory( App\User::class, 1 )->create();
+
+    return [
+        'collection_id'     => $faker->numberBetween( 1, 20 ),
+        'catalog_id'        => $catalog->id,
         'author'            => $user->id
     ];
 } );

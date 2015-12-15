@@ -8,7 +8,6 @@ class CreateCatalogsTable extends Migration {
     public function up() {
         Schema::create( 'catalogs', function( Blueprint $table ) {
             $table->increments( 'id' );
-            $table->integer( 'collection_id' )->references( 'id' )->on( 'collections' )->default( 0 );
             $table->integer( 'category_id' )->references( 'id' )->on( 'categories' )->default( 0 );
             $table->integer( 'type_id' )->references( 'id' )->on( 'types' )->default( 0 );
             $table->string( 'name', 255 );
