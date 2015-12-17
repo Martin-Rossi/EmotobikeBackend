@@ -27,6 +27,11 @@
 		url (VARCHAR 255, nullable, default: null)
 		retail_price (DOUBLE(12,2), nullable, default: null)
 		sale_price (DOUBLE(12,2), nullable, default: null)
+		offer_value (DOUBLE(12,2), nullable, default: null)
+		offer_url (VARCHAR 255, nullable, default: null)
+		offer_description (TEXT, nullable, default: null)
+		offer_start (DATETIME YYYY-MM-DD HH:II:SS)
+		offer_stop (DATETIME YYYY-MM-DD HH:II:SS)
 		layout (VARCHAR 55, nullable, default: null)
 		position (VARCHAR 55, nullable, default: null)
 		count_likes (INT 10, default: 0)
@@ -212,7 +217,7 @@ Add a new object.
 
 	URL: /objects 
 	Type: POST  
-	Parameters: catalog_id, category, type, name, description, url, retail_price, sale_price, layout, position, competitor_flag, recomended, curated, _token  
+	Parameters: catalog_id, category, type, name, description, url, retail_price, sale_price, offer_value, offer_url, offer_description, offer_start, offer_stop, layout, position, competitor_flag, recomended, curated, _token  
 	Returns:  
 		- response with type: success
 		- response with type: error
@@ -230,7 +235,7 @@ Update object properties (users can only updated objects owned by them).
 	URL: /objects/{id} 
 	Type: PUT  
 	Parameters (URL): id
-	Parameters (POST): catalog_id, category, type, name, description, url, retail_price, sale_price, layout, position, competitor_flag, recomended, curated, _token  
+	Parameters (POST): catalog_id, category, type, name, description, url, retail_price, sale_price, offer_value, offer_url, offer_description, offer_start, offer_stop, layout, position, competitor_flag, recomended, curated, _token  
 	Returns:  
 		- response with type: success
 		- response with type: error
