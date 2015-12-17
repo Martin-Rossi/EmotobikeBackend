@@ -13,9 +13,14 @@ class CreateObjectsTable extends Migration {
             $table->integer( 'type_id' )->references( 'id' )->on( 'types' )->default( 0 );
             $table->string( 'name', 255 );
             $table->text( 'description' )->nullable()->default( null );
-            $table->string( 'url' )->nullable()->default( null );
+            $table->string( 'url', 255 )->nullable()->default( null );
             $table->double( 'retail_price', 12, 2 )->nullable()->default( null );
             $table->double( 'sale_price', 12, 2 )->nullable()->default( null );
+            $table->double( 'offer_value', 12, 2 )->nullable()->default( null );
+            $table->string( 'offer_url', 255 )->nullable()->default( null );
+            $table->text( 'offer_description' )->nullable()->default( null );
+            $table->datetime( 'offer_start' )->nullable()->default( null );
+            $table->datetime( 'offer_stop' )->nullable()->default( null );
             $table->string( 'layout', 55 )->nullable()->default( null );
             $table->string( 'position', 55 )->nullable()->default( null );
             $table->integer( 'count_likes' )->default( 0 );
