@@ -74,6 +74,49 @@ class CatalogController extends Controller {
         return $response->success( 'Catalog updated successfully' );
     }
 
+    public function search( Request $request, ApiResponse $response ) {
+        $catalogs = Catalog::where( 'name', 'LIKE', '%' . $request->get( 'term' ) . '%' )
+                           ->orWhere( 'title', 'LIKE', '%' . $request->get( 'term' ) . '%' )
+                           ->with( 'category', 'type', 'objects', 'author' )
+                           ->get();
+
+        return $response->result( $catalogs->toArray() );
+    }
+
+    public function filter( Request $request, ApiResponse $response ) {
+        $catalogs = [];
+
+        $operators = [
+            '=',
+            '<',
+            '>'
+        ];
+
+        $operator = $request->get( 'operator' );
+
+        if ( ! in_array( $operator, $operators ) )
+            return $response->result( $catalogs );
+
+        $filters = [
+            'category_id',
+            'type_id',
+            'author',
+            'created_at',
+            'updated_at'
+        ];
+
+        $filter = $request->get( 'filter' );
+
+        if ( ! in_array( $filter, $filters ) )
+            return $response->result( $catalogs );
+
+        $catalogs = Catalog::where( $filter, $operator, $request->get( 'value' ) )
+                           ->with( 'category', 'type', 'objects', 'author' )
+                           ->get();
+
+        return $response->result( $catalogs );
+    }
+
     public function objects( $id, ApiResponse $response ) {
         $catalog = Catalog::find( $id );
 

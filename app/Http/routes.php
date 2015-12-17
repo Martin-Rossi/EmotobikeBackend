@@ -36,6 +36,9 @@ Route::group( ['middleware' => ['auth', 'cors']], function () {
 	Route::post( 'objects/{id}/comment', 'ObjectController@comment' );
 	Route::post( 'objects/{id}/like', 'ObjectController@like' );
 	Route::post( 'objects/{id}/follow', 'ObjectController@follow' );
+
+	Route::post( 'search/objects', 'ObjectController@search' );
+	Route::post( 'filter/objects', 'ObjectController@filter' );
 } );
 
 /*
@@ -55,6 +58,9 @@ Route::group( ['middleware' => ['auth', 'cors']], function () {
 	Route::post( 'catalogs/{id}/comment', 'CatalogController@comment' );
 	Route::post( 'catalogs/{id}/like', 'CatalogController@like' );
 	Route::post( 'catalogs/{id}/follow', 'CatalogController@follow' );
+
+	Route::post( 'search/catalogs', 'CatalogController@search' );
+	Route::post( 'filter/catalogs', 'CatalogController@filter' );
 } );
 
 /*

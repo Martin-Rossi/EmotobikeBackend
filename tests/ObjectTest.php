@@ -54,6 +54,36 @@ class ObjectTest extends TestCase {
              ->assertEquals( 200, $response->status() );
     }
 
+    public function testSearchObjects() {
+        $object = factory( App\Object::class, 1 )->create();
+
+        $data = [
+            'term' => substr( $object->name, 0, 4 )
+        ];
+
+        $response = $this->call( 'POST', '/search/objects', $data );
+            
+        $this->see( $object->name );
+    }
+
+    public function testFilterObjects() {
+        $object = factory( App\Object::class, 1 )->create();
+        $catalog = factory( App\Catalog::class, 1 )->create();
+
+        $object->catalog_id = $catalog->id;
+        $object->save();
+
+        $data = [
+            'filter'   => 'catalog_id',
+            'operator' => '=',
+            'value'    => $catalog->id
+        ];
+
+        $response = $this->call( 'POST', '/filter/objects', $data );
+            
+        $this->see( $object->name );
+    }
+
     public function testIndexObjectsCatalog() {
         $catalog = factory( App\Catalog::class, 1 )->create();
         $object = factory( App\Object::class, 1 )->create();

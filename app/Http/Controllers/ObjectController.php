@@ -75,6 +75,57 @@ class ObjectController extends Controller {
         return $response->success( 'Object updated successfully' );
     }
 
+    public function search( Request $request, ApiResponse $response ) {
+        $objects = Object::where( 'name', 'LIKE', '%' . $request->get( 'term' ) . '%' )
+                         ->orWhere( 'description', 'LIKE', '%' . $request->get( 'term' ) . '%' )
+                         ->with( 'catalog', 'category', 'type', 'author' )
+                         ->get();
+
+        return $response->result( $objects->toArray() );
+    }
+
+    public function filter( Request $request, ApiResponse $response ) {
+        $objects = [];
+
+        $operators = [
+            '=',
+            '<',
+            '>'
+        ];
+
+        $operator = $request->get( 'operator' );
+
+        if ( ! in_array( $operator, $operators ) )
+            return $response->result( $objects );
+
+        $filters = [
+            'catalog_id',
+            'category_id',
+            'type_id',
+            'retail_price',
+            'sale_price',
+            'layout',
+            'position',
+            'competitor_flag',
+            'recomended',
+            'curated',
+            'author',
+            'created_at',
+            'updated_at'
+        ];
+
+        $filter = $request->get( 'filter' );
+
+        if ( ! in_array( $filter, $filters ) )
+            return $response->result( $objects );
+
+        $objects = Object::where( $filter, $operator, $request->get( 'value' ) )
+                         ->with( 'catalog', 'category', 'type', 'author' )
+                         ->get();
+
+        return $response->result( $objects );
+    }
+
     public function catalog( $id, ApiResponse $response ) {
         $object = Object::find( $id );
 

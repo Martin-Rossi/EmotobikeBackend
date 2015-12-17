@@ -54,6 +54,36 @@ class CatalogTest extends TestCase {
              ->assertEquals( 200, $response->status() );
     }
 
+    public function testSearchCatalogs() {
+        $catalog = factory( App\Catalog::class, 1 )->create();
+
+        $data = [
+            'term' => substr( $catalog->name, 0, 4 )
+        ];
+
+        $response = $this->call( 'POST', '/search/catalogs', $data );
+            
+        $this->see( $catalog->name );
+    }
+
+    public function testFilterCatalogs() {
+        $catalog = factory( App\Catalog::class, 1 )->create();
+        $category = factory( App\Category::class, 1 )->create();
+
+        $catalog->category_id = $category->id;
+        $catalog->save();
+
+        $data = [
+            'filter'   => 'category_id',
+            'operator' => '=',
+            'value'    => $category->id
+        ];
+
+        $response = $this->call( 'POST', '/filter/catalogs', $data );
+            
+        $this->see( $catalog->name );
+    }
+
     public function testIndexCatalogObjects() {
         $catalog = factory( App\Catalog::class, 1 )->create();
         $object = factory( App\Object::class, 1 )->create();
