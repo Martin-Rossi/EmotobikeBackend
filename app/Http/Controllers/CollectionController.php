@@ -65,7 +65,7 @@ class CollectionController extends Controller {
         foreach ( $collection as $catalog )
             $catalog_ids[] = $catalog->catalog_id;
 
-        $catalogs = Catalog::whereIn( 'id', $catalog_ids )->get();
+        $catalogs = Catalog::whereIn( 'id', $catalog_ids )->with( 'objects' )->get();
         $catalogs->toArray();
 
         return $response->result( $catalogs );
