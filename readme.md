@@ -227,7 +227,6 @@ Update object properties (users can only updated objects owned by them).
 
 > Note: the "category" property can be a numeric id or string name. If category name is given, the API will try to locate that within the existing categories and assign the id accordingly. If the given category name doesn't exists in the database, it will be created and the id assigned accordingly.
 
-
 	URL: /objects/{id} 
 	Type: PUT  
 	Parameters (URL): id
@@ -326,6 +325,30 @@ List all follows for an object.
 	Returns:  
 		- response with type: result ([FollowObjects])
 		- response with type: error (object not found)  
+
+## /search/objects
+
+Search objects by name and description  
+
+	URL: /search/objects
+	Type: POST
+	Parameters: term, _token
+	Returns:
+		- response with type: result ([ObjectObjects])
+
+## /filter/objects
+
+Filter objects  
+
+	URL: /filter/objects
+	Type: POST
+	Parameters: filter, operator, value, _token
+	Returns:
+		- response with type: result ([ObjectObjects])
+
+* supported filters: [catalog _ id, category _ id, type _ id, retail _ price, sale _ price, layout, position, competitor _ flag, recomended, curated, author, created _ at, updated _ at]
+
+* supported operators: [=, <, >]
 
 	
 # Endpoints "catalog"  
@@ -472,6 +495,30 @@ List all follows for a catalog.
 	Returns:  
 		- response with type: result ([FollowObjects])
 		- response with type: error (object not found)  
+
+## /search/catalogs
+
+Search catalogs by name and title
+
+	URL: /search/catalogs
+	Type: POST
+	Parameters: term, _token
+	Returns:
+		- response with type: result ([CatalogObjects])
+
+## /filter/catalogs
+
+Filter catalogs  
+
+	URL: /filter/catalogs
+	Type: POST
+	Parameters: filter, operator, value, _token
+	Returns:
+		- response with type: result ([CatalogObjects])
+
+* supported filters: [category _ id, type _ id, author, created _ at, updated _ at]
+
+* supported operators: [=, <, >]
 
 # Endpoints "collection"  
 
