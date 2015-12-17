@@ -10,7 +10,7 @@ class Catalog extends Model {
 
     protected $fillable = [
         'collection_id',
-        'catalog_id',
+        'category_id',
         'type_id',
         'name',
         'title',

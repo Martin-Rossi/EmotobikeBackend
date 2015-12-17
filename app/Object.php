@@ -14,6 +14,7 @@ class Object extends Model {
         'type_id',
         'name',
         'description',
+        'url',
         'retail_price',
         'sale_price',
         'layout',
