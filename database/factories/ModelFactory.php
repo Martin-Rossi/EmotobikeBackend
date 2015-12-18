@@ -63,6 +63,8 @@ $factory->define( App\Catalog::class, function( Faker\Generator $faker ) {
         'tags'              => implode( ';', $faker->words( 5 ) ),
         'name'              => implode( ' ', $faker->words( 3 ) ),
         'title'             => implode( ' ', $faker->words( 3 ) ),
+        'layout'            => implode( ' ', $faker->words( 1 ) ),
+        'position'          => implode( ' ', $faker->words( 1 ) ),
         'publish'           => $faker->randomElement( [0, 1] ),
         'trending'          => $faker->randomElement( [0, 1] ),
         'popular'           => $faker->randomElement( [0, 1] ),
