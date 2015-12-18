@@ -130,6 +130,18 @@
 		created_at (TIMESTAMP)
 		updated_at (TIMESTAMP) 
 		
+**Feedbacks**  
+
+	route: /feedbacks
+	Properties:
+		id (INT 10 - primary key, autoincrement)
+		foreign_id (INT 10)
+		foreign_type (ENUM['object','catalog'])
+		value (BIGINT 20)
+		author (INT 10, references id on 'users')
+		created_at (TIMESTAMP)
+		updated_at (TIMESTAMP)  
+		
 # Request Types
 
 GET, POST, PUT, DELETE
@@ -342,6 +354,29 @@ List all follows for an object.
 		- response with type: result ([FollowObjects])
 		- response with type: error (object not found)  
 
+## /objects/{id}/feedback
+
+Feedback on an object.
+
+	URL: /objects/{id}/feedback  
+	Type: POST
+	Parameters (URL): id
+	Parameters (POST): value, _token
+	Returns:  
+		- response with type: success
+		- response with type: error  
+
+## /objects/{id}/feedbacks
+
+List all feedbacks for an object.
+
+	URL: /objects/{id}/feedbacks  
+	Type: GET
+	Parameters: id
+	Returns:  
+		- response with type: result ([FeedbackObjects])
+		- response with type: error (object not found) 
+
 ## /search/objects
 
 Search objects by name and description  
@@ -515,6 +550,29 @@ List all follows for a catalog.
 	Returns:  
 		- response with type: result ([FollowObjects])
 		- response with type: error (object not found)  
+
+## /catalogs/{id}/feedback
+
+Feedback on a catalogs.
+
+	URL: /catalogs/{id}/feedback  
+	Type: POST
+	Parameters (URL): id
+	Parameters (POST): value, _token
+	Returns:  
+		- response with type: success
+		- response with type: error  
+
+## /catalogs/{id}/feedbacks
+
+List all feedbacks for a catalog.
+
+	URL: /catalogs/{id}/feedbacks  
+	Type: GET
+	Parameters: id
+	Returns:  
+		- response with type: result ([FeedbackObjects])
+		- response with type: error (catalog not found) 
 
 ## /search/catalogs
 
