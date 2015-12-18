@@ -54,6 +54,31 @@ class CatalogTest extends TestCase {
              ->assertEquals( 200, $response->status() );
     }
 
+    public function testDeleteCatalog() {
+        $catalog = factory( App\Catalog::class, 1 )->create();
+        $user = factory( App\User::class, 1 )->create();
+
+        $catalog->author = $user->id;
+        $catalog->save();
+
+        $this->actingAs( $user )->call( 'DELETE', '/catalogs/' . $catalog->id );
+
+        $this->actingAs( $user )->visit( '/catalogs' )
+             ->dontSeeJson( ['id' => $catalog->id] );
+    }
+
+    public function testIndexDeletedCatalogs() {
+        $catalog = factory( App\Catalog::class, 1 )->create();
+        $user = factory( App\User::class, 1 )->create();
+
+        $catalog->status = -1;
+        $catalog->author = $user->id;
+        $catalog->save();
+
+        $this->actingAs( $user )->visit( '/deleted/catalogs' )
+             ->see( $catalog->name );
+    }
+
     public function testSearchCatalogs() {
         $catalog = factory( App\Catalog::class, 1 )->create();
 

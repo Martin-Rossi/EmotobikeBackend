@@ -17,9 +17,9 @@ use App\Extensions\APIResponse;
 class ObjectController extends Controller {
 
     public function index( ApiResponse $response ) {
-        $objects = Object::all();
+        $objects = Object::where( 'status', '>', 0 )->get();
 
-        return $response->result( $objects );
+        return $response->result( $objects->toArray() );
     }
 
     public function show( $id, ApiResponse $response ) {
@@ -76,8 +76,31 @@ class ObjectController extends Controller {
         return $response->success( 'Object updated successfully' );
     }
 
+    public function destroy( $id, ApiResponse $response ) {
+        $object = Object::where( 'id', '=', $id )
+                        ->where( 'author', '=', auth()->user()->id )
+                        ->first();
+
+        if ( is_null( $object ) )
+            return $response->error( 'Object not found' );
+
+        $object->status = -1;
+        $object->save();
+
+        return $response->success( 'Object succesfully deleted' );
+    }
+
+    public function deleted( ApiResponse $response ) {
+        $objects = Object::where( 'status', '<', 0 )
+                         ->where( 'author', '=', auth()->user()->id )
+                         ->get();
+
+        return $response->result( $objects->toArray() );
+    }
+
     public function search( Request $request, ApiResponse $response ) {
-        $objects = Object::where( 'name', 'LIKE', '%' . $request->get( 'term' ) . '%' )
+        $objects = Object::where( 'status', '>', 0 )
+                         ->where( 'name', 'LIKE', '%' . $request->get( 'term' ) . '%' )
                          ->orWhere( 'description', 'LIKE', '%' . $request->get( 'term' ) . '%' )
                          ->with( 'catalog', 'category', 'type', 'author' )
                          ->get();
@@ -120,11 +143,12 @@ class ObjectController extends Controller {
         if ( ! in_array( $filter, $filters ) )
             return $response->result( $objects );
 
-        $objects = Object::where( $filter, $operator, $request->get( 'value' ) )
+        $objects = Object::where( 'status', '>', 0 )
+                         ->where( $filter, $operator, $request->get( 'value' ) )
                          ->with( 'catalog', 'category', 'type', 'author' )
                          ->get();
 
-        return $response->result( $objects );
+        return $response->result( $objects->toArray() );
     }
 
     public function catalog( $id, ApiResponse $response ) {

@@ -39,6 +39,8 @@ Route::group( ['middleware' => ['auth', 'cors']], function () {
 	Route::post( 'objects/{id}/follow', 'ObjectController@follow' );
 	Route::post( 'objects/{id}/feedback', 'ObjectController@feedback' );
 
+	Route::get( 'deleted/objects', 'ObjectController@deleted' );
+
 	Route::post( 'search/objects', 'ObjectController@search' );
 	Route::post( 'filter/objects', 'ObjectController@filter' );
 } );
@@ -63,6 +65,8 @@ Route::group( ['middleware' => ['auth', 'cors']], function () {
 	Route::post( 'catalogs/{id}/follow', 'CatalogController@follow' );
 	Route::post( 'catalogs/{id}/feedback', 'CatalogController@feedback' );
 
+	Route::get( 'deleted/catalogs', 'CatalogController@deleted' );
+
 	Route::post( 'search/catalogs', 'CatalogController@search' );
 	Route::post( 'filter/catalogs', 'CatalogController@filter' );
 } );
@@ -82,6 +86,8 @@ Route::group( ['middleware' => ['auth', 'cors']], function () {
 	Route::post( 'collections/{id}/add/catalog', 'CollectionController@addCatalog' );
 	Route::post( 'collections/{id}/remove/object', 'CollectionController@removeObject' );
 	Route::post( 'collections/{id}/remove/catalog', 'CollectionController@removeCatalog' );
+
+	Route::get( 'deleted/collections', 'CollectionController@deleted' );
 } );
 
 /*

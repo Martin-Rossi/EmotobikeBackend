@@ -13,7 +13,8 @@ use App\Extensions\APIResponse;
 class CollectionController extends Controller {
 
     public function index( ApiResponse $response ) {
-        $collections = Collection::where( 'author', '=', auth()->user()->id )
+        $collections = Collection::where( 'status', '>', 0 )
+                                 ->where( 'author', '=', auth()->user()->id )
                                  ->get();
 
         return $response->result( $collections );
@@ -64,10 +65,20 @@ class CollectionController extends Controller {
         if ( ! sizeof( $collection ) > 0 )
             return $response->error( 'Collection not found' );
 
-        foreach ( $collection as $c )
-            $c->delete();
+        foreach ( $collection as $c ) {
+            $c->status = -1;
+            $c->save();
+        }
 
         return $response->success( 'Collection succesfully deleted' );
+    }
+
+    public function deleted( ApiResponse $response ) {
+        $collections = Collection::where( 'status', '<', 0 )
+                                 ->where( 'author', '=', auth()->user()->id )
+                                 ->get();
+
+        return $response->result( $collections->toArray() );
     }
 
     public function objects( $id, ApiResponse $response ) {

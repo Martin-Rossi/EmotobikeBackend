@@ -54,6 +54,31 @@ class ObjectTest extends TestCase {
              ->assertEquals( 200, $response->status() );
     }
 
+    public function testDeleteObject() {
+        $object = factory( App\Object::class, 1 )->create();
+        $user = factory( App\User::class, 1 )->create();
+
+        $object->author = $user->id;
+        $object->save();
+
+        $this->actingAs( $user )->call( 'DELETE', '/objects/' . $object->id );
+
+        $this->actingAs( $user )->visit( '/objects' )
+             ->dontSeeJson( ['id' => $object->id] );
+    }
+
+    public function testIndexDeletedObjects() {
+        $object = factory( App\Object::class, 1 )->create();
+        $user = factory( App\User::class, 1 )->create();
+
+        $object->status = -1;
+        $object->author = $user->id;
+        $object->save();
+
+        $this->actingAs( $user )->visit( '/deleted/objects' )
+             ->see( $object->name );
+    }
+
     public function testSearchObjects() {
         $object = factory( App\Object::class, 1 )->create();
 

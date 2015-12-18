@@ -33,6 +33,7 @@ class CreateObjectsTable extends Migration {
             $table->enum( 'recomended', [0, 1] )->default( 0 );
             $table->enum( 'curated', [0, 1] )->default( 0 );
             $table->integer( 'author' )->references( 'id' )->on( 'users' );
+            $table->enum( 'status', [-1, 0, 1] )->default( 1 );
             $table->timestamps();
         } );
     }

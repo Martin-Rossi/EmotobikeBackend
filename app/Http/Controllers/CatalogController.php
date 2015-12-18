@@ -17,9 +17,9 @@ use App\Extensions\APIResponse;
 class CatalogController extends Controller {
 
     public function index( ApiResponse $response ) {
-        $catalogs = Catalog::all();
+        $catalogs = Catalog::where( 'status', '>', 0 )->get();
 
-        return $response->result( $catalogs );
+        return $response->result( $catalogs->toArray() );
     }
 
     public function show( $id, ApiResponse $response ) {
@@ -75,8 +75,31 @@ class CatalogController extends Controller {
         return $response->success( 'Catalog updated successfully' );
     }
 
+    public function destroy( $id, ApiResponse $response ) {
+        $catalog = Catalog::where( 'id', '=', $id )
+                          ->where( 'author', '=', auth()->user()->id )
+                          ->first();
+
+        if ( is_null( $catalog ) )
+            return $response->error( 'Catalog not found' );
+
+        $catalog->status = -1;
+        $catalog->save();
+
+        return $response->success( 'Catalog succesfully deleted' );
+    }
+
+    public function deleted( ApiResponse $response ) {
+        $catalogs = Catalog::where( 'status', '<', 0 )
+                           ->where( 'author', '=', auth()->user()->id )
+                           ->get();
+
+        return $response->result( $catalogs->toArray() );
+    }
+
     public function search( Request $request, ApiResponse $response ) {
-        $catalogs = Catalog::where( 'name', 'LIKE', '%' . $request->get( 'term' ) . '%' )
+        $catalogs = Catalog::where( 'status', '>', 0 )
+                           ->where( 'name', 'LIKE', '%' . $request->get( 'term' ) . '%' )
                            ->orWhere( 'title', 'LIKE', '%' . $request->get( 'term' ) . '%' )
                            ->with( 'category', 'type', 'objects', 'author' )
                            ->get();
@@ -111,7 +134,8 @@ class CatalogController extends Controller {
         if ( ! in_array( $filter, $filters ) )
             return $response->result( $catalogs );
 
-        $catalogs = Catalog::where( $filter, $operator, $request->get( 'value' ) )
+        $catalogs = Catalog::where( 'status', '>', 0 )
+                           ->where( $filter, $operator, $request->get( 'value' ) )
                            ->with( 'category', 'type', 'objects', 'author' )
                            ->get();
 

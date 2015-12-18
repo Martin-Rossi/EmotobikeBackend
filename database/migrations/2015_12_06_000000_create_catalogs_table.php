@@ -23,6 +23,7 @@ class CreateCatalogsTable extends Migration {
             $table->integer( 'count_comments' )->default( 0 );
             $table->integer( 'count_follows' )->default( 0 );
             $table->integer( 'author' )->references( 'id' )->on( 'users' );
+            $table->enum( 'status', [-1, 0, 1] )->default( 1 );
             $table->timestamps();
         } );
     }

@@ -12,6 +12,7 @@ class CreateCollectionsTable extends Migration {
             $table->integer( 'foreign_id' );
             $table->enum( 'foreign_type', ['object', 'catalog'] );
             $table->integer( 'author' )->references( 'id' )->on( 'users' );
+            $table->enum( 'status', [-1, 0, 1] )->default( 1 );
             $table->timestamps();
         } );
     }
