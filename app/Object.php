@@ -16,6 +16,8 @@ class Object extends Model {
         'name',
         'description',
         'url',
+        'image',
+        'weight',
         'retail_price',
         'sale_price',
         'offer_value',

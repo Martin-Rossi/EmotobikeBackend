@@ -15,6 +15,8 @@ class CreateObjectsTable extends Migration {
             $table->string( 'name', 255 );
             $table->text( 'description' )->nullable()->default( null );
             $table->string( 'url', 255 )->nullable()->default( null );
+            $table->string( 'image', 255 )->nullable()->default( null );
+            $table->double( 'weight', 12, 4 )->nullable()->default( null );
             $table->double( 'retail_price', 12, 2 )->nullable()->default( null );
             $table->double( 'sale_price', 12, 2 )->nullable()->default( null );
             $table->double( 'offer_value', 12, 2 )->nullable()->default( null );
