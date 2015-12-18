@@ -57,6 +57,8 @@
 		tags (VARCHAR 255, nullable, default: null)
 		name (VARCHAR 255)
 		title (VARCHAR 255)
+		layout (VARCHAR 55, nullable, default: null)
+		position (VARCHAR 55, nullable, default: null)
 		publish (ENUM[0,1], default: 0)
 		trending (ENUM[0,1], default: 0)
 		popular (ENUM[0,1], default: 0)
@@ -439,7 +441,7 @@ Add a new catalog.
 
 	URL: /catalogs 
 	Type: POST  
-	Parameters: category, type, tags, name, title, publish, trending, popular, recomended, _token  
+	Parameters: category, type, tags, name, title, layout, position, publish, trending, popular, recomended, _token  
 	Returns:  
 		- response with type: success
 		- response with type: error
@@ -457,7 +459,7 @@ Update catalog properties (users can only updated catalogs owned by them).
 	URL: /catalogs/{id} 
 	Type: PUT  
 	Parameters (URL): id
-	Parameters (POST): category, type, tags, name, title, publish, trending, popular, recomended, _token 
+	Parameters (POST): category, type, tags, name, title, layout, position, publish, trending, popular, recomended, _token 
 	Returns:  
 		- response with type: success
 		- response with type: error
