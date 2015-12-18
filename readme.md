@@ -72,7 +72,8 @@
 	Properties:
 		id (BIGINT 20 - primary key, autoincrement)
 		collection_id (INT 10)
-		catalog_id (INT 10 - references id on 'catalogs')
+		foreign_id (INT 10)
+		foreign_type (ENUM['object','catalog'])
 		author (INT 10, references id on 'users')
 		created_at (TIMESTAMP)
 		updated_at (TIMESTAMP)  
@@ -560,7 +561,20 @@ Show one particular collection belonging to the current, authenticated user.
 	Parameters: collection_id  
 	Returns:  
 		- response with type: result ([CollectionObject])
-		- response with type: error (collection not found) 
+		- response with type: error (collection not found)  
+
+## /collections/{collection_id}/objects
+
+List all objects belonging to this collection.  
+
+> Note: only reaches to collections belonging to the current, authenticated user.
+
+	URL: /collections/{collection_id}/objects 
+	Type: GET  
+	Parameters: collection_id  
+	Returns:  
+		- response with type: result ([ObjectObjects])
+		- response with type: error (collection not found)
 
 ## /collections/{collection_id}/catalogs
 
@@ -579,20 +593,35 @@ List all catalogs belonging to this collection.
 
 Add a new collection.
 
-> Note: when adding a new collection the first catalog's id must be sent with the POST parameters. Additional catalogs to this collection can be added via the /collection/{id}/add endpoint.
+> Note: when adding a new collection the first catalog's or object's id (foreign_id) must be sent with the POST parameters. Additional catalogs, objects to this collection can be added via the /collection/{id}/add/... endpoints.
 
 	URL: /collections 
 	Type: POST  
-	Parameters: catalog_id, _token  
+	Parameters: foreign_id, foreign_type, _token  
+	Returns:  
+		- response with type: success
+		- response with type: error  
+
+* supported foreign types: ['object', 'catalog']
+
+## /collections/{collection_id}/add/object
+
+Add an object to a specified collection.
+
+	URL: /collections/{collection_id}/add/object  
+	Type: POST  
+	Parameters (URL): collection_id
+	Parameters (POST): object_id, _token  
 	Returns:  
 		- response with type: success
 		- response with type: error
+		- response with type: error (collection not found)
 
-## /collections/{collection_id}/add
+## /collections/{collection_id}/add/catalog
 
 Add a catalog to a specified collection.
 
-	URL: /collections/{collection_id}/add 
+	URL: /collections/{collection_id}/add/catalog  
 	Type: POST  
 	Parameters (URL): collection_id
 	Parameters (POST): catalog_id, _token  
@@ -601,11 +630,24 @@ Add a catalog to a specified collection.
 		- response with type: error
 		- response with type: error (collection not found)  
 
-## /collections/{collection_id}/remove
+## /collections/{collection_id}/remove/object
+
+Remove an object from a specified collection.
+
+	URL: /collections/{collection_id}/remove/object 
+	Type: POST  
+	Parameters (URL): collection_id
+	Parameters (POST): object_id, _token  
+	Returns:  
+		- response with type: success
+		- response with type: error
+		- response with type: error (collection not found) 
+
+## /collections/{collection_id}/remove/catalog
 
 Remove a catalog from a specified collection.
 
-	URL: /collections/{collection_id}/remove 
+	URL: /collections/{collection_id}/remove/catalog 
 	Type: POST  
 	Parameters (URL): collection_id
 	Parameters (POST): catalog_id, _token  
