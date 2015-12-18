@@ -79,6 +79,7 @@ class ActivityController extends Controller {
             return $response->result( $activities );
 
         $filters = [
+            'catalog_id',
             'type_id',
             'created_at',
             'updated_at'
