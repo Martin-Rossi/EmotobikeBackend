@@ -44,6 +44,7 @@
 		recomended (ENUM[0,1], default: 0)
 		curated (ENUM[0,1], default: 0)
 		author (INT 10, references id on 'users')
+		status (ENUM[-1,0,1], default: 1)
 		created_at (TIMESTAMP)
 		updated_at (TIMESTAMP)
 		
@@ -67,6 +68,7 @@
 		count_comments (INT 10, default: 0)
 		count_follows (INT 10, default: 0)
 		author (INT 10, references id on 'users')
+		status (ENUM[-1,0,1], default: 1)
 		created_at (TIMESTAMP)
 		updated_at (TIMESTAMP)  
 		
@@ -79,6 +81,7 @@
 		foreign_id (INT 10)
 		foreign_type (ENUM['object','catalog'])
 		author (INT 10, references id on 'users')
+		status (ENUM[-1,0,1], default: 1)
 		created_at (TIMESTAMP)
 		updated_at (TIMESTAMP)  
 		
@@ -265,7 +268,18 @@ Update object properties (users can only updated objects owned by them).
 	Parameters (POST): catalog_id, category, type, tags, name, description, url, image, weight, retail_price, sale_price, offer_value, offer_url, offer_description, offer_start, offer_stop, layout, position, competitor_flag, recomended, curated, _token  
 	Returns:  
 		- response with type: success
-		- response with type: error
+		- response with type: error  
+
+## /objects/{id}
+
+Delete an object (a user can only delete his objects)
+
+	URL: /objects/{id}
+	Type: DELETE
+	Parameters: id
+	Returns:
+		- response with type: success
+		- response with type: error (object not found)
 
 ## /objects/{id}/catalog
 
@@ -381,6 +395,15 @@ List all feedbacks for an object.
 		- response with type: result ([FeedbackObjects])
 		- response with type: error (object not found) 
 
+## /deleted/objects
+
+View objects deleted by the user
+
+	URL: /deleted/objects
+	Type: GET
+	Returns:
+		- response with type: result ([ObjectObjects])
+
 ## /search/objects
 
 Search objects by name and description  
@@ -462,7 +485,18 @@ Update catalog properties (users can only updated catalogs owned by them).
 	Parameters (POST): category, type, tags, name, title, layout, position, publish, trending, popular, recomended, _token 
 	Returns:  
 		- response with type: success
-		- response with type: error
+		- response with type: error  
+
+## /catalogs/{id}
+
+Delete a catalog (a user can only delete his catalogs)
+
+	URL: /catalogs/{id}
+	Type: DELETE
+	Parameters: id
+	Returns:
+		- response with type: success
+		- response with type: error (catalog not found)
 
 ## /catalogs/{id}/objects
 
@@ -577,6 +611,15 @@ List all feedbacks for a catalog.
 	Returns:  
 		- response with type: result ([FeedbackObjects])
 		- response with type: error (catalog not found) 
+		
+## /deleted/catalogs
+
+View catalogs deleted by the user
+
+	URL: /deleted/catalogs
+	Type: GET
+	Returns:
+		- response with type: result ([CatalogObjects])
 
 ## /search/catalogs
 
@@ -664,7 +707,18 @@ Add a new collection.
 		- response with type: success
 		- response with type: error  
 
-* supported foreign types: ['object', 'catalog']
+* supported foreign types: ['object', 'catalog']  
+
+## /collections/{id}
+
+Delete a collection (a user can only delete his collections)
+
+	URL: /collections/{id}
+	Type: DELETE
+	Parameters: id
+	Returns:
+		- response with type: success
+		- response with type: error (collection not found)
 
 ## /collections/{collection_id}/add/object
 
@@ -728,7 +782,16 @@ Delete a collection.
 	Parameters (POST): _token  
 	Returns:  
 		- response with type: success
-		- response with type: error 
+		- response with type: error  
+
+## /deleted/collections
+
+View collections deleted by the user
+
+	URL: /deleted/collections
+	Type: GET
+	Returns:
+		- response with type: result ([CollectionObjects])
 
 # Endpoints "category"  
 
