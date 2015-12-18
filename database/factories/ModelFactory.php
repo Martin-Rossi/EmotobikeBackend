@@ -126,3 +126,15 @@ $factory->define( App\Follow::class, function( Faker\Generator $faker ) {
         'author'            => $user->id
     ];
 } );
+
+$factory->define( App\Feedback::class, function( Faker\Generator $faker ) {
+    $object = factory( App\Object::class, 1 )->create();
+    $user = factory( App\User::class, 1 )->create();
+
+    return [
+        'foreign_id'        => $object->id,
+        'foreign_type'      => 'object',
+        'value'             => $faker->numberBetween( 100, 100000 ),
+        'author'            => $user->id
+    ];
+} );

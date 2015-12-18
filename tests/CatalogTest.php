@@ -181,4 +181,30 @@ class CatalogTest extends TestCase {
              ->see( $user->email );
     }
 
+    public function testFeedbackCatalog() {
+        $catalog = factory( App\Catalog::class, 1 )->create();
+        $user = factory( App\User::class )->create();
+
+        $data = factory( App\Feedback::class )->make()->toArray();
+
+        $response = $this->actingAs( $user )->call( 'POST', '/catalogs/' . $catalog->id . '/feedback', $data );
+
+        $this->seeInDatabase( 'feedbacks', ['foreign_id' => $catalog->id, 'foreign_type' => 'catalog', 'author' => $user->id] )
+             ->assertEquals( 200, $response->status() );
+    }
+
+    public function testIndexCatalogFeedbacks() {
+        $feedback = factory( App\Feedback::class, 1 )->create();
+        $catalog = factory( App\Catalog::class, 1 )->create();
+
+        $feedback->foreign_id = $catalog->id;
+        $feedback->foreign_type = 'catalog';
+        $feedback->save();
+
+        $user = \App\User::find( $feedback->author );
+
+        $this->visit( '/catalogs/' . $catalog->id . '/feedbacks' )
+             ->see( $user->email );
+    }
+
 }

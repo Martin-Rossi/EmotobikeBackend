@@ -167,4 +167,30 @@ class ObjectTest extends TestCase {
              ->see( $user->email );
     }
 
+    public function testFeedbackObject() {
+        $object = factory( App\Object::class, 1 )->create();
+        $user = factory( App\User::class )->create();
+
+        $data = factory( App\Feedback::class )->make()->toArray();
+
+        $response = $this->actingAs( $user )->call( 'POST', '/objects/' . $object->id . '/feedback', $data );
+
+        $this->seeInDatabase( 'feedbacks', ['foreign_id' => $object->id, 'foreign_type' => 'object', 'author' => $user->id] )
+             ->assertEquals( 200, $response->status() );
+    }
+
+    public function testIndexObjectFeedbacks() {
+        $feedback = factory( App\Feedback::class, 1 )->create();
+        $object = factory( App\Object::class, 1 )->create();
+
+        $feedback->foreign_id = $object->id;
+        $feedback->foreign_type = 'object';
+        $feedback->save();
+
+        $user = \App\User::find( $feedback->author );
+
+        $this->visit( '/objects/' . $object->id . '/feedbacks' )
+             ->see( $user->email );
+    }
+
 }

@@ -8,6 +8,7 @@ use App\Type;
 use App\Comment;
 use App\Like;
 use App\Follow;
+use App\Feedback;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
@@ -233,6 +234,37 @@ class ObjectController extends Controller {
             abort( 404 );
 
         return $response->result( $object->follows() );
+    }
+
+    public function feedback( $id, Request $request, ApiResponse $response ) {
+        $object = Object::find( $id );
+
+        if ( is_null( $object ) )
+            abort( 404 );
+
+        $feedback = [
+            'foreign_id'    => $id,
+            'foreign_type'  => 'object',
+            'value'         => $request->get( 'value' ),
+            'author'        => auth()->user()->id
+        ];
+
+        try {
+            Feedback::create( $feedback );
+        } catch ( Exception $e ) {
+            return $response->error( $e->getMessage() );
+        }
+
+        return $response->success( 'Feedback recorded successfully' );
+    }
+
+    public function feedbacks( $id, ApiResponse $response ) {
+        $object = Object::find( $id );
+
+        if ( is_null( $object ) )
+            abort( 404 );
+
+        return $response->result( $object->feedbacks() );
     }
 
     private function assignCategory( $inputs ) {

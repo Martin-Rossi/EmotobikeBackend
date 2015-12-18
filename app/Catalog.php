@@ -65,4 +65,13 @@ class Catalog extends Model {
         return $follows;
     }
 
+    public function feedbacks() {
+        $feedbacks = \App\Feedback::where( 'foreign_id', '=', $this->id )
+                                  ->where( 'foreign_type', '=', 'catalog' )
+                                  ->with( 'author' )
+                                  ->get();
+
+        return $feedbacks;
+    }
+
 }

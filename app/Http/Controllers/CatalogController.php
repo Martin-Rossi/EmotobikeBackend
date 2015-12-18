@@ -8,6 +8,7 @@ use App\Type;
 use App\Comment;
 use App\Like;
 use App\Follow;
+use App\Feedback;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
@@ -233,6 +234,37 @@ class CatalogController extends Controller {
             abort( 404 );
 
         return $response->result( $catalog->follows() );
+    }
+
+    public function feedback( $id, Request $request, ApiResponse $response ) {
+        $catalog = Catalog::find( $id );
+
+        if ( is_null( $catalog ) )
+            abort( 404 );
+
+        $feedback = [
+            'foreign_id'    => $id,
+            'foreign_type'  => 'catalog',
+            'value'         => $request->get( 'value' ),
+            'author'        => auth()->user()->id
+        ];
+
+        try {
+            Feedback::create( $feedback );
+        } catch ( Exception $e ) {
+            return $response->error( $e->getMessage() );
+        }
+
+        return $response->success( 'Feedback recorded successfully' );
+    }
+
+    public function feedbacks( $id, ApiResponse $response ) {
+        $catalog = Catalog::find( $id );
+
+        if ( is_null( $catalog ) )
+            abort( 404 );
+
+        return $response->result( $catalog->feedbacks() );
     }
 
     private function assignCategory( $inputs ) {

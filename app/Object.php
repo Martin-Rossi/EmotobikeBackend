@@ -74,4 +74,13 @@ class Object extends Model {
         return $follows;
     }
 
+    public function feedbacks() {
+        $feedbacks = \App\Feedback::where( 'foreign_id', '=', $this->id )
+                                  ->where( 'foreign_type', '=', 'object' )
+                                  ->with( 'author' )
+                                  ->get();
+
+        return $feedbacks;
+    }
+
 }
