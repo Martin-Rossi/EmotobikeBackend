@@ -22,6 +22,7 @@
 		catalog_id (INT 10 - references id on 'catalogs', default: 0)
 		category_id (INT 10 - references id on 'categories', default: 0)
 		type_id (INT 10 - references id on 'types', default: 0)
+		tags (VARCHAR 255, nullable, default: null)
 		name (VARCHAR 255)
 		description (TEXT, nullable, default: null)
 		url (VARCHAR 255, nullable, default: null)
@@ -51,8 +52,13 @@
 		id (INT 10 - primary key, autoincrement)
 		category_id (INT 10 - references id on 'categories', default: 0)
 		type_id (INT 10 - references id on 'types', default: 0)
+		tags (VARCHAR 255, nullable, default: null)
 		name (VARCHAR 255)
 		title (VARCHAR 255)
+		publish (ENUM[0,1], default: 0)
+		trending (ENUM[0,1], default: 0)
+		popular (ENUM[0,1], default: 0)
+		recomended (ENUM[0,1], default 0)
 		count_likes (INT 10, default: 0)
 		count_comments (INT 10, default: 0)
 		count_follows (INT 10, default: 0)
@@ -215,9 +221,11 @@ Add a new object.
 
 > Note: the "category" property can be a numeric id or string name. If category name is given, the API will try to locate that within the existing categories and assign the id accordingly. If the given category name doesn't exists in the database, it will be created and the id assigned accordingly.
 
+> Note: tags are divided by ";" (tag1;tag2;tag3;...;tagn)
+
 	URL: /objects 
 	Type: POST  
-	Parameters: catalog_id, category, type, name, description, url, retail_price, sale_price, offer_value, offer_url, offer_description, offer_start, offer_stop, layout, position, competitor_flag, recomended, curated, _token  
+	Parameters: catalog_id, category, type, tags, name, description, url, retail_price, sale_price, offer_value, offer_url, offer_description, offer_start, offer_stop, layout, position, competitor_flag, recomended, curated, _token  
 	Returns:  
 		- response with type: success
 		- response with type: error
@@ -232,10 +240,12 @@ Update object properties (users can only updated objects owned by them).
 
 > Note: the "category" property can be a numeric id or string name. If category name is given, the API will try to locate that within the existing categories and assign the id accordingly. If the given category name doesn't exists in the database, it will be created and the id assigned accordingly.
 
+> Note: tags are divided by ";" (tag1;tag2;tag3;...;tagn)
+
 	URL: /objects/{id} 
 	Type: PUT  
 	Parameters (URL): id
-	Parameters (POST): catalog_id, category, type, name, description, url, retail_price, sale_price, offer_value, offer_url, offer_description, offer_start, offer_stop, layout, position, competitor_flag, recomended, curated, _token  
+	Parameters (POST): catalog_id, category, type, tags, name, description, url, retail_price, sale_price, offer_value, offer_url, offer_description, offer_start, offer_stop, layout, position, competitor_flag, recomended, curated, _token  
 	Returns:  
 		- response with type: success
 		- response with type: error
@@ -387,9 +397,11 @@ Add a new catalog.
 
 > Note: the "category" property can be a numeric id or string name. If category name is given, the API will try to locate that within the existing categories and assign the id accordingly. If the given category name doesn't exists in the database, it will be created and the id assigned accordingly.
 
+> Note: tags are divided by ";" (tag1;tag2;tag3;...;tagn)
+
 	URL: /catalogs 
 	Type: POST  
-	Parameters: category, type, name, title, _token  
+	Parameters: category, type, tags, name, title, publish, trending, popular, recomended, _token  
 	Returns:  
 		- response with type: success
 		- response with type: error
@@ -402,10 +414,12 @@ Update catalog properties (users can only updated catalogs owned by them).
 
 > Note: the "category" property can be a numeric id or string name. If category name is given, the API will try to locate that within the existing categories and assign the id accordingly. If the given category name doesn't exists in the database, it will be created and the id assigned accordingly.
 
+> Note: tags are divided by ";" (tag1;tag2;tag3;...;tagn)
+
 	URL: /catalogs/{id} 
 	Type: PUT  
 	Parameters (URL): id
-	Parameters (POST): category, type, name, title, _token 
+	Parameters (POST): category, type, tags, name, title, publish, trending, popular, recomended, _token 
 	Returns:  
 		- response with type: success
 		- response with type: error
