@@ -30,6 +30,7 @@ $factory->define( App\Object::class, function( Faker\Generator $faker ) {
         'catalog_id' 		=> $catalog->id,
         'category_id'       => $category->id,
         'type_id'			=> $type->id,
+        'tags'              => implode( ';', $faker->words( 5 ) ),
         'name'				=> implode( ' ', $faker->words( 3 ) ),
         'description'		=> $faker->paragraph( 5 ),
         'url'               => $faker->url,
@@ -57,8 +58,13 @@ $factory->define( App\Catalog::class, function( Faker\Generator $faker ) {
     return [
         'category_id'       => $category->id,
         'type_id'           => $type->id,
+        'tags'              => implode( ';', $faker->words( 5 ) ),
         'name'              => implode( ' ', $faker->words( 3 ) ),
         'title'             => implode( ' ', $faker->words( 3 ) ),
+        'publish'           => $faker->randomElement( [0, 1] ),
+        'trending'          => $faker->randomElement( [0, 1] ),
+        'popular'           => $faker->randomElement( [0, 1] ),
+        'recomended'        => $faker->randomElement( [0, 1] ),
         'author'            => $user->id
     ];
 } );

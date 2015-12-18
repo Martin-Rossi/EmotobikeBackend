@@ -9,7 +9,8 @@ class CreateCollectionsTable extends Migration {
         Schema::create( 'collections', function( Blueprint $table ) {
             $table->bigIncrements( 'id' );
             $table->integer( 'collection_id' );
-            $table->integer( 'catalog_id' )->references( 'id' )->on( 'catalogs' );
+            $table->integer( 'foreign_id' );
+            $table->enum( 'foreign_type', ['object', 'catalog'] );
             $table->integer( 'author' )->references( 'id' )->on( 'users' );
             $table->timestamps();
         } );

@@ -12,8 +12,13 @@ class Catalog extends Model {
         'collection_id',
         'category_id',
         'type_id',
+        'tags',
         'name',
         'title',
+        'publish',
+        'trending',
+        'popular',
+        'recomended',
         'author'
     ];
 

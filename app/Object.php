@@ -12,6 +12,7 @@ class Object extends Model {
         'catalog_id',
         'category_id',
         'type_id',
+        'tags',
         'name',
         'description',
         'url',

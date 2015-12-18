@@ -11,6 +11,7 @@ class CreateObjectsTable extends Migration {
             $table->integer( 'catalog_id' )->references( 'id' )->on( 'catalogs' )->default( 0 );
             $table->integer( 'category_id' )->references( 'id' )->on( 'categories' )->default( 0 );
             $table->integer( 'type_id' )->references( 'id' )->on( 'types' )->default( 0 );
+            $table->string( 'tags', 255 )->nullable()->default( null );
             $table->string( 'name', 255 );
             $table->text( 'description' )->nullable()->default( null );
             $table->string( 'url', 255 )->nullable()->default( null );

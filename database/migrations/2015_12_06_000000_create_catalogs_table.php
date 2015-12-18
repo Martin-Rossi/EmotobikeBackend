@@ -10,8 +10,13 @@ class CreateCatalogsTable extends Migration {
             $table->increments( 'id' );
             $table->integer( 'category_id' )->references( 'id' )->on( 'categories' )->default( 0 );
             $table->integer( 'type_id' )->references( 'id' )->on( 'types' )->default( 0 );
+            $table->string( 'tags', 255 )->nullable()->default( null );
             $table->string( 'name', 255 );
             $table->string( 'title', 255 );
+            $table->enum( 'publish', [0, 1] )->default( 0 );
+            $table->enum( 'trending', [0, 1] )->default( 0 );
+            $table->enum( 'popular', [0, 1] )->default( 0 );
+            $table->enum( 'recomended', [0, 1] )->default( 0 );
             $table->integer( 'count_likes' )->default( 0 );
             $table->integer( 'count_comments' )->default( 0 );
             $table->integer( 'count_follows' )->default( 0 );
