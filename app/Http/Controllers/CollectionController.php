@@ -56,6 +56,20 @@ class CollectionController extends Controller {
         return $response->success( 'Collection created successfully' );
     }
 
+    public function destroy( $id, ApiResponse $response ) {
+        $collection = Collection::where( 'collection_id', '=', $id )
+                                ->where( 'author', '=', auth()->user()->id )
+                                ->get();
+
+        if ( ! sizeof( $collection ) > 0 )
+            return $response->error( 'Collection not found' );
+
+        foreach ( $collection as $c )
+            $c->delete();
+
+        return $response->success( 'Collection succesfully deleted' );
+    }
+
     public function objects( $id, ApiResponse $response ) {
         $collection = Collection::where( 'collection_id', '=', $id )
                                 ->where( 'foreign_type', '=', 'object' )

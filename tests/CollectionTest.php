@@ -46,6 +46,19 @@ class CollectionTest extends TestCase {
              ->assertEquals( 200, $response->status() );
     }
 
+    public function testDeleteCollection() {
+        $collection = factory( App\Collection::class, 1 )->create();
+        $user = factory( App\User::class, 1 )->create();
+
+        $collection->author = $user->id;
+        $collection->save();
+
+        $response = $this->actingAs( $user )->call( 'DELETE', '/collections/' . $collection->collection_id );
+
+        $this->notSeeInDatabase( 'collections', ['collection_id' => $collection->collection_id, 'foreign_id' => $collection->foreign_id, 'foreign_type' => $collection->foreign_type, 'author' => $user->id] )
+             ->assertEquals( 200, $response->status() );
+    }
+
     public function testIndexCollectionObjects() {
         $collection = factory( App\Collection::class, 1 )->create();
         $object = factory( App\Object::class, 1 )->create();
