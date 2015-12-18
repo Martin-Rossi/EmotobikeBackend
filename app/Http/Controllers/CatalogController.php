@@ -19,7 +19,7 @@ class CatalogController extends Controller {
     public function index( ApiResponse $response ) {
         $catalogs = Catalog::where( 'status', '>', 0 )->get();
 
-        return $response->result( $catalogs->toArray() );
+        return $response->result( $catalogs );
     }
 
     public function show( $id, ApiResponse $response ) {
@@ -94,7 +94,7 @@ class CatalogController extends Controller {
                            ->where( 'author', '=', auth()->user()->id )
                            ->get();
 
-        return $response->result( $catalogs->toArray() );
+        return $response->result( $catalogs );
     }
 
     public function search( Request $request, ApiResponse $response ) {
@@ -104,7 +104,7 @@ class CatalogController extends Controller {
                            ->with( 'category', 'type', 'objects', 'author' )
                            ->get();
 
-        return $response->result( $catalogs->toArray() );
+        return $response->result( $catalogs );
     }
 
     public function filter( Request $request, ApiResponse $response ) {
@@ -289,6 +289,15 @@ class CatalogController extends Controller {
             abort( 404 );
 
         return $response->result( $catalog->feedbacks() );
+    }
+
+    public function activities( $id, ApiResponse $response ) {
+        $catalog = Catalog::find( $id );
+
+        if ( is_null( $catalog ) )
+            abort( 404 );
+
+        return $response->result( $catalog->activities );
     }
 
     private function assignCategory( $inputs ) {

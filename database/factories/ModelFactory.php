@@ -142,3 +142,15 @@ $factory->define( App\Feedback::class, function( Faker\Generator $faker ) {
         'author'            => $user->id
     ];
 } );
+
+$factory->define( App\Activity::class, function( Faker\Generator $faker ) {
+    $catalog = factory( App\Catalog::class, 1 )->create();
+    $type = factory( App\Type::class, 1 )->create();
+
+    return [
+        'catalog_id'        => $catalog->id,
+        'type_id'           => $type->id,
+        'name'              => implode( ' ', $faker->words( 1 ) ),
+        'description'       => $faker->paragraph( 1 )
+    ];
+} );

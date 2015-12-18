@@ -19,7 +19,7 @@ class ObjectController extends Controller {
     public function index( ApiResponse $response ) {
         $objects = Object::where( 'status', '>', 0 )->get();
 
-        return $response->result( $objects->toArray() );
+        return $response->result( $objects );
     }
 
     public function show( $id, ApiResponse $response ) {
@@ -95,7 +95,7 @@ class ObjectController extends Controller {
                          ->where( 'author', '=', auth()->user()->id )
                          ->get();
 
-        return $response->result( $objects->toArray() );
+        return $response->result( $objects );
     }
 
     public function search( Request $request, ApiResponse $response ) {
@@ -105,7 +105,7 @@ class ObjectController extends Controller {
                          ->with( 'catalog', 'category', 'type', 'author' )
                          ->get();
 
-        return $response->result( $objects->toArray() );
+        return $response->result( $objects );
     }
 
     public function filter( Request $request, ApiResponse $response ) {
@@ -148,7 +148,7 @@ class ObjectController extends Controller {
                          ->with( 'catalog', 'category', 'type', 'author' )
                          ->get();
 
-        return $response->result( $objects->toArray() );
+        return $response->result( $objects );
     }
 
     public function catalog( $id, ApiResponse $response ) {

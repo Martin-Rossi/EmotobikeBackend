@@ -59,6 +59,7 @@ Route::group( ['middleware' => ['auth', 'cors']], function () {
 	Route::get( 'catalogs/{id}/likes', 'CatalogController@likes' );
 	Route::get( 'catalogs/{id}/follows', 'CatalogController@follows' );
 	Route::get( 'catalogs/{id}/feedbacks', 'CatalogController@feedbacks' );
+	Route::get( 'catalogs/{id}/activities', 'CatalogController@activities' );
 
 	Route::post( 'catalogs/{id}/comment', 'CatalogController@comment' );
 	Route::post( 'catalogs/{id}/like', 'CatalogController@like' );
@@ -139,4 +140,16 @@ Route::group( ['middleware' => ['auth', 'cors']], function () {
 	Route::resource( 'follows', 'FollowController', [
 		'only' => ['destroy']
 	] );
+} );
+
+/*
+| Activity routes
+*/
+Route::group( ['middleware' => ['auth', 'cors']], function () {
+	Route::resource( 'activities', 'ActivityController', [
+		'only' => ['show', 'update', 'store']
+	] );
+
+	Route::post( 'search/activities', 'ActivityController@search' );
+	Route::post( 'filter/activities', 'ActivityController@filter' );
 } );

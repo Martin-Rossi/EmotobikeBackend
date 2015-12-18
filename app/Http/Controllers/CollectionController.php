@@ -96,7 +96,6 @@ class CollectionController extends Controller {
             $object_ids[] = $object->foreign_id;
 
         $objects = Object::whereIn( 'id', $object_ids )->with( 'catalog' )->get();
-        $objects->toArray();
 
         return $response->result( $objects );
     }
@@ -116,7 +115,6 @@ class CollectionController extends Controller {
             $catalog_ids[] = $catalog->foreign_id;
 
         $catalogs = Catalog::whereIn( 'id', $catalog_ids )->with( 'objects' )->get();
-        $catalogs->toArray();
 
         return $response->result( $catalogs );
     }

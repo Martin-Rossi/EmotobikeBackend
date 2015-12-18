@@ -40,6 +40,10 @@ class Catalog extends Model {
         return $this->hasMany( 'App\Object', 'catalog_id', 'id' )->with( 'category', 'type', 'author' );
     }
 
+    public function activities() {
+        return $this->hasMany( 'App\Activity', 'catalog_id', 'id' );
+    }
+
     public function comments() {
         $comments = \App\Comment::where( 'foreign_id', '=', $this->id )
                                 ->where( 'foreign_type', '=', 'catalog' )

@@ -232,4 +232,15 @@ class CatalogTest extends TestCase {
              ->see( $user->email );
     }
 
+    public function testIndexCatalogActivities() {
+        $activity = factory( App\Activity::class, 1 )->create();
+        $catalog = factory( App\Catalog::class, 1 )->create();
+
+        $activity->catalog_id = $catalog->id;
+        $activity->save();
+
+        $this->visit( '/catalogs/' . $catalog->id . '/activities' )
+             ->see( $activity->name );
+    }
+
 }
