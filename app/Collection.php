@@ -10,9 +10,9 @@ class Collection extends Model {
 
     protected $fillable = [
         'collection_id',
-        'catalog_id',
-        'author',
-        'title'
+        'foreign_id',
+        'foreign_type',
+        'author'
     ];
 
 }

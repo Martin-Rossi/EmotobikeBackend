@@ -72,9 +72,12 @@ Route::group( ['middleware' => ['auth', 'cors']], function () {
 	] );
 
 	Route::get( 'collections/{id}/catalogs', 'CollectionController@catalogs' );
+	Route::get( 'collections/{id}/objects', 'CollectionController@objects' );
 
-	Route::post( 'collections/{id}/add', 'CollectionController@addCatalog' );
-	Route::post( 'collections/{id}/remove', 'CollectionController@removeCatalog' );
+	Route::post( 'collections/{id}/add/object', 'CollectionController@addObject' );
+	Route::post( 'collections/{id}/add/catalog', 'CollectionController@addCatalog' );
+	Route::post( 'collections/{id}/remove/object', 'CollectionController@removeObject' );
+	Route::post( 'collections/{id}/remove/catalog', 'CollectionController@removeCatalog' );
 } );
 
 /*

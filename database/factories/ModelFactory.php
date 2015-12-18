@@ -75,7 +75,8 @@ $factory->define( App\Collection::class, function( Faker\Generator $faker ) {
 
     return [
         'collection_id'     => $faker->numberBetween( 1, 20 ),
-        'catalog_id'        => $catalog->id,
+        'foreign_id'        => $catalog->id,
+        'foreign_type'      => 'catalog',
         'author'            => $user->id
     ];
 } );

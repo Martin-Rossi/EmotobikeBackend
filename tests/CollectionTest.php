@@ -17,7 +17,8 @@ class CollectionTest extends TestCase {
 
         $this->actingAs( $user )->visit( '/collections' )
              ->see( $collection->collection_id )
-             ->see( $collection->catalog_id )
+             ->see( $collection->foreign_id )
+             ->see( $collection->foreign_type )
              ->see( $collection->author );
     }
 
@@ -30,7 +31,8 @@ class CollectionTest extends TestCase {
 
         $this->actingAs( $user )->visit( '/collections/' . $collection->collection_id )
              ->see( $collection->collection_id )
-             ->see( $collection->catalog_id )
+             ->see( $collection->foreign_id )
+             ->see( $collection->foreign_type )
              ->see( $collection->author );
     }
 
@@ -40,8 +42,22 @@ class CollectionTest extends TestCase {
 
         $response = $this->actingAs( $user )->call( 'POST', '/collections', $collection );
 
-        $this->seeInDatabase( 'collections', ['catalog_id' => $collection['catalog_id'], 'author' => $user->id] )
+        $this->seeInDatabase( 'collections', ['foreign_id' => $collection['foreign_id'], 'foreign_type' => $collection['foreign_type'], 'author' => $user->id] )
              ->assertEquals( 200, $response->status() );
+    }
+
+    public function testIndexCollectionObjects() {
+        $collection = factory( App\Collection::class, 1 )->create();
+        $object = factory( App\Object::class, 1 )->create();
+        $user = factory( App\User::class, 1 )->create();
+
+        $collection->foreign_id = $object->id;
+        $collection->foreign_type = 'object';
+        $collection->author = $user->id;
+        $collection->save();
+
+        $this->actingAs( $user )->visit( '/collections/' . $collection->collection_id . '/objects' )
+             ->see( $object->name );
     }
 
     public function testIndexCollectionCatalogs() {
@@ -49,12 +65,26 @@ class CollectionTest extends TestCase {
         $catalog = factory( App\Catalog::class, 1 )->create();
         $user = factory( App\User::class, 1 )->create();
 
-        $collection->catalog_id = $catalog->id;
+        $collection->foreign_id = $catalog->id;
+        $collection->foreign_type = 'catalog';
         $collection->author = $user->id;
         $collection->save();
 
         $this->actingAs( $user )->visit( '/collections/' . $collection->collection_id . '/catalogs' )
              ->see( $catalog->name );
+    }
+
+    public function testAddObjectToCollection() {
+        $collection = factory( App\Collection::class, 1 )->create();
+        $object = factory( App\Object::class, 1 )->create();
+        $user = factory( App\User::class )->create();
+
+        $data['object_id'] = $object->id;
+
+        $response = $this->actingAs( $user )->call( 'POST', '/collections/' . $collection->collection_id . '/add/object', $data );
+
+        $this->seeInDatabase( 'collections', ['collection_id' => $collection->collection_id, 'foreign_id' => $object->id, 'foreign_type' => 'object', 'author' => $user->id] )
+             ->assertEquals( 200, $response->status() );
     }
 
     public function testAddCatalogToCollection() {
@@ -64,26 +94,45 @@ class CollectionTest extends TestCase {
 
         $data['catalog_id'] = $catalog->id;
 
-        $response = $this->actingAs( $user )->call( 'POST', '/collections/' . $collection->collection_id . '/add', $data );
+        $response = $this->actingAs( $user )->call( 'POST', '/collections/' . $collection->collection_id . '/add/catalog', $data );
 
-        $this->seeInDatabase( 'collections', ['collection_id' => $collection->collection_id, 'catalog_id' => $catalog->id, 'author' => $user->id] )
+        $this->seeInDatabase( 'collections', ['collection_id' => $collection->collection_id, 'foreign_id' => $catalog->id, 'foreign_type' => 'catalog', 'author' => $user->id] )
              ->assertEquals( 200, $response->status() );
     }
 
-    public function testRemoveCatalogToCollection() {
+    public function testRemoveObjectFromCollection() {
+        $collection = factory( App\Collection::class, 1 )->create();
+        $object = factory( App\Object::class, 1 )->create();
+        $user = factory( App\User::class )->create();
+
+        $collection->foreign_id = $object->id;
+        $collection->foreign_type = 'object';
+        $collection->author = $user->id;
+        $collection->save();
+
+        $data['object_id'] = $object->id;
+
+        $response = $this->actingAs( $user )->call( 'POST', '/collections/' . $collection->collection_id . '/remove/object', $data );
+
+        $this->notSeeInDatabase( 'collections', ['collection_id' => $collection->collection_id, 'foreign_id' => $object->id, 'foreign_type' => 'object', 'author' => $user->id] )
+             ->assertEquals( 200, $response->status() );
+    }
+
+    public function testRemoveCatalogFromCollection() {
         $collection = factory( App\Collection::class, 1 )->create();
         $catalog = factory( App\Catalog::class, 1 )->create();
         $user = factory( App\User::class )->create();
 
-        $collection->catalog_id = $catalog->id;
+        $collection->foreign_id = $catalog->id;
+        $collection->foreign_type = 'catalog';
         $collection->author = $user->id;
         $collection->save();
 
         $data['catalog_id'] = $catalog->id;
 
-        $response = $this->actingAs( $user )->call( 'POST', '/collections/' . $collection->collection_id . '/remove', $data );
+        $response = $this->actingAs( $user )->call( 'POST', '/collections/' . $collection->collection_id . '/remove/catalog', $data );
 
-        $this->notSeeInDatabase( 'collections', ['collection_id' => $collection->collection_id, 'catalog_id' => $catalog->id, 'author' => $user->id] )
+        $this->notSeeInDatabase( 'collections', ['collection_id' => $collection->collection_id, 'foreign_id' => $catalog->id, 'foreign_type' => 'catalog', 'author' => $user->id] )
              ->assertEquals( 200, $response->status() );
     }
 
