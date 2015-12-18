@@ -656,6 +656,18 @@ Remove a catalog from a specified collection.
 		- response with type: error
 		- response with type: error (collection not found)  
 
+## /collections/{id}
+
+Delete a collection.
+
+	URL: /collections/{id} 
+	Type: DELETE  
+	Parameters (URL): collection_id
+	Parameters (POST): _token  
+	Returns:  
+		- response with type: success
+		- response with type: error 
+
 # Endpoints "category"  
 
 ## /categories
