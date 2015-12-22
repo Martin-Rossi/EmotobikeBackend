@@ -75,6 +75,24 @@ class AuthController extends Controller {
         return $response->success( 'User is authenticated' );
     }
 
+    public function postRegistration( Request $request, ApiResponse $response ) {
+        $this->validate(
+            $request,
+            [
+                'name'                  => 'required|unique:users,name',
+                'email'                 => 'required|email|unique:users,email',
+                'password'              => 'required',
+            ]
+        );
+        $inputs = $request->all();
+        $user = $this->create( $inputs );
+
+        if(!($user instanceof User))
+            return $response->error( 'Register failed' );
+
+        return $response->success( 'Register successfull' );
+    }
+
     public function postLogin( Request $request, ApiResponse $response ) {
         $this->validate(
             $request,
