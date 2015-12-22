@@ -73,6 +73,20 @@ class UserTest extends TestCase {
              ->see( $catalog->name );
     }
 
+    public function testIndexUserCollections() {
+        $collection = factory( App\Collection::class, 1 )->create();
+        $object = factory( App\Object::class, 1 )->create();
+
+        $collection->foreign_id = $object->id;
+        $collection->foreign_type = 'object';
+        $collection->save();
+
+        $user = \App\User::find( $collection->author );
+
+        $this->visit( '/users/' . $user->id . '/collections' )
+             ->see( $object->id );
+    }
+
     public function testIndexUserComments() {
         $comment = factory( App\Comment::class, 1 )->create();
         $object = factory( App\Object::class, 1 )->create();
