@@ -13,6 +13,7 @@
 
 $factory->define( App\User::class, function( Faker\Generator $faker ) {
     return [
+        'tags'              => implode( ';', $faker->words( 5 ) ),
         'name' 				=> $faker->name,
         'email' 			=> $faker->email,
         'password' 			=> bcrypt( 'test' ),

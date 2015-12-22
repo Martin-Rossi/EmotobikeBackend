@@ -22,6 +22,25 @@ Route::get( 'auth/login', ['middleware' => 'cors', 'uses' => 'Auth\AuthControlle
 Route::get( 'auth/logout', ['middleware' => 'cors', 'uses' => 'Auth\AuthController@getLogout'] );
 
 /*
+| User routes
+*/
+Route::group( ['middleware' => ['cors']], function () {
+	Route::resource( 'users', 'UserController', [
+		'only' => ['show', 'update']
+	] );
+
+	Route::get( 'users/{id}/objects', 'UserController@objects' );
+	Route::get( 'users/{id}/catalogs', 'UserController@catalogs' );
+	Route::get( 'users/{id}/comments', 'UserController@comments' );
+	Route::get( 'users/{id}/likes', 'UserController@likes' );
+	Route::get( 'users/{id}/follows', 'UserController@follows' );
+	Route::get( 'users/{id}/feedbacks', 'UserController@feedbacks' );
+
+	Route::post( 'search/users', 'UserController@search' );
+	Route::post( 'filter/users', 'UserController@filter' );
+} );
+
+/*
 | Object routes
 */
 Route::group( ['middleware' => ['auth', 'cors']], function () {
