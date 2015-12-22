@@ -7,6 +7,7 @@
 	route: /users  
 	Properties:
 		id (INT 10 - primary key, autoincrement)
+		tags (VARCHAR 255, nullable, default: null)
 		name (VARCHAR 255)
 		email (VARCHAR 255, unique)
 		password (VARCHAR 60 - bcrypted)
@@ -222,7 +223,137 @@ Logout user.
 	Parameters: -  
 	Returns:  
 		- response with type: success  
-		- response with type: error
+		- response with type: error  
+
+# Endpoints "user"    
+
+## /users/{id}
+
+Show one particular user.
+
+	URL: /users/{id} 
+	Type: GET  
+	Parameters: id  
+	Returns:  
+		- response with type: result (UserObject)
+		- response with type: error (user not found)  
+
+## /users/{id}
+
+Update user properties (users can only updated their own properties).  
+
+> Note: not mandatory fields can be sent separately.  
+
+> Note: tags are divided by ";" (tag1;tag2;tag3;...;tagn)
+
+	URL: /users/{id} 
+	Type: PUT  
+	Parameters (URL): id
+	Parameters (POST): tags, name, _token  
+	Returns:  
+		- response with type: success
+		- response with type: error  
+
+## /users/{id}/objects
+
+List all objects belonging to the user (empty if none).
+
+	URL: /users/{id}/objects  
+	Type: GET  
+	Parameters: id  
+	Returns:  
+		- response with type: result ([ObjectObjects])
+		- response with type: error (user not found)
+
+## /users/{id}/catalogs
+
+List all catalogs belonging to the user (empty if none).
+
+	URL: /users/{id}/catalogs  
+	Type: GET  
+	Parameters: id  
+	Returns:  
+		- response with type: result ([CatalogObjects])
+		- response with type: error (user not found)  
+
+## /users/{id}/collections
+
+List all collections belonging to the user (empty if none).
+
+	URL: /users/{id}/collections  
+	Type: GET  
+	Parameters: id  
+	Returns:  
+		- response with type: result ([CollectionObjects])
+		- response with type: error (user not found)
+
+## /users/{id}/comments
+
+Display all comments made by the user.
+
+	URL: /users/{id}/comments  
+	Type: GET  
+	Parameters: id  
+	Returns:  
+		- response with type: result ([CommentObjects])
+		- response with type: error (user not found)  
+
+## /users/{id}/likes
+
+List all likes made by the user.
+
+	URL: /users/{id}/likes  
+	Type: GET
+	Parameters: id
+	Returns:  
+		- response with type: result ([LikeObjects])
+		- response with type: error (user not found)  
+
+## /users/{id}/follows
+
+List all follows made by the user.
+
+	URL: /users/{id}/follows  
+	Type: GET
+	Parameters: id
+	Returns:  
+		- response with type: result ([FollowObjects])
+		- response with type: error (user not found)  
+
+## /users/{id}/feedbacks
+
+List all feedbacks made by the user.
+
+	URL: /users/{id}/feedbacks  
+	Type: GET
+	Parameters: id
+	Returns:  
+		- response with type: result ([FeedbackObjects])
+		- response with type: error (user not found) 
+
+## /search/users
+
+Search users.  
+
+	URL: /search/users
+	Type: POST
+	Parameters: term, _token
+	Returns:
+		- response with type: result ([UserObjects])
+
+## /filter/users
+
+Filter users.
+
+	URL: /filter/users
+	Type: POST
+	Parameters: filter, operator, value, _token
+	Returns:
+		- response with type: result ([UserObjects])
+
+* supported filters: [created _ at, updated _ at]
+
+* supported operators: [=, <, >]
 
 # Endpoints "object"  
 

@@ -31,8 +31,8 @@ Route::group( ['middleware' => ['cors']], function () {
 
 	Route::get( 'users/{id}/objects', 'UserController@objects' );
 	Route::get( 'users/{id}/catalogs', 'UserController@catalogs' );
-	Route::get( 'users/{id}/comments', 'UserController@comments' );
 	Route::get( 'users/{id}/collections', 'UserController@collections' );
+	Route::get( 'users/{id}/comments', 'UserController@comments' );
 	Route::get( 'users/{id}/likes', 'UserController@likes' );
 	Route::get( 'users/{id}/follows', 'UserController@follows' );
 	Route::get( 'users/{id}/feedbacks', 'UserController@feedbacks' );
