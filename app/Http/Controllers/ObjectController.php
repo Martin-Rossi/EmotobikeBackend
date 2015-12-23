@@ -295,7 +295,7 @@ class ObjectController extends Controller {
 
         $objects = Object::where( 'status', '>', 0 )
             ->where( 'catalog_id', '=', $id )
-            ->orderBy('updated_at', 'desc')
+            ->orderBy('position', 'asc')
             ->groupBy('position')
             ->with( 'catalog', 'category', 'type', 'author' )
             ->take(19)

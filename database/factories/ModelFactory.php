@@ -18,6 +18,7 @@ $factory->define( App\User::class, function( Faker\Generator $faker ) {
         'email' 			=> $faker->email,
         'password' 			=> bcrypt( 'test' ),
         'remember_token' 	=> str_random( 10 ),
+        'avatar'            => $faker->imageUrl()
     ];
 } );
 
@@ -44,8 +45,8 @@ $factory->define( App\Object::class, function( Faker\Generator $faker ) {
         'offer_description' => $faker->paragraph( 1 ),
         'offer_start'       => $faker->dateTime(),
         'offer_stop'        => $faker->dateTime(),
-        'layout'            => implode( ' ', $faker->words( 1 ) ),
-        'position'          => implode( ' ', $faker->words( 1 ) ),
+        'layout'            => $faker->numberBetween( 1  ,12 ),
+        'position'          => $faker->numberBetween( 1  ,19 ),
         'competitor_flag'	=> $faker->randomElement( [0, 1] ),
         'recomended'		=> $faker->randomElement( [0, 1] ),
         'curated'			=> $faker->randomElement( [0, 1] ),
@@ -64,8 +65,8 @@ $factory->define( App\Catalog::class, function( Faker\Generator $faker ) {
         'tags'              => implode( ';', $faker->words( 5 ) ),
         'name'              => implode( ' ', $faker->words( 3 ) ),
         'title'             => implode( ' ', $faker->words( 3 ) ),
-        'layout'            => implode( ' ', $faker->words( 1 ) ),
-        'position'          => implode( ' ', $faker->words( 1 ) ),
+        'layout'            => $faker->numberBetween( 1  ,12 ),
+        'position'          => $faker->numberBetween( 1  ,19 ),
         'publish'           => $faker->randomElement( [0, 1] ),
         'trending'          => $faker->randomElement( [0, 1] ),
         'popular'           => $faker->randomElement( [0, 1] ),
