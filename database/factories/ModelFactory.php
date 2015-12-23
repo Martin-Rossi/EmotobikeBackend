@@ -36,7 +36,7 @@ $factory->define( App\Object::class, function( Faker\Generator $faker ) {
         'name'				=> implode( ' ', $faker->words( 3 ) ),
         'description'		=> $faker->paragraph( 5 ),
         'url'               => $faker->url,
-        'image'             => $faker->url,
+        'image'             => $faker->imageUrl(),
         'weight'            => $faker->randomFloat( 4, 10, 100 ),
         'retail_price'		=> $faker->randomFloat( 2, 100, 10000 ),
         'sale_price' 		=> $faker->randomFloat( 2, 100, 10000 ),
