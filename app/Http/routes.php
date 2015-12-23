@@ -64,6 +64,7 @@ Route::group( ['middleware' => ['auth', 'cors']], function () {
 
 	Route::post( 'search/objects', 'ObjectController@search' );
 	Route::post( 'filter/objects', 'ObjectController@filter' );
+	Route::get( 'positions/{id}/objects', 'ObjectController@positions' );
 } );
 
 /*
@@ -91,6 +92,7 @@ Route::group( ['middleware' => ['auth', 'cors']], function () {
 
 	Route::post( 'search/catalogs', 'CatalogController@search' );
 	Route::post( 'filter/catalogs', 'CatalogController@filter' );
+
 } );
 
 /*

@@ -290,7 +290,22 @@ class ObjectController extends Controller {
 
         return $response->result( $object->feedbacks() );
     }
+    public function positions($id,Request $request, ApiResponse $response){
 
+
+        $objects = Object::where( 'status', '>', 0 )
+            ->where( 'catalog_id', '=', $id )
+            ->orderBy('updated_at', 'desc')
+            ->groupBy('position')
+            ->with( 'catalog', 'category', 'type', 'author' )
+            ->take(19)
+            ->get();
+        return $response->result( $objects );
+
+
+
+
+    }
     private function assignCategory( $inputs ) {
         if ( isset( $inputs['category'] ) && $inputs['category'] ) {
             if ( is_numeric( $inputs['category'] ) )

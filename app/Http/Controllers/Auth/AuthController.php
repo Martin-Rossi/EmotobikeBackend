@@ -76,15 +76,11 @@ class AuthController extends Controller {
     }
 
     public function postRegistration( Request $request, ApiResponse $response ) {
-        $this->validate(
-            $request,
-            [
-                'name'                  => 'required|unique:users,name',
-                'email'                 => 'required|email|unique:users,email',
-                'password'              => 'required',
-            ]
-        );
         $inputs = $request->all();
+
+        $this->validator(
+            $inputs
+        );
         $user = $this->create( $inputs );
 
         if(!($user instanceof User))
@@ -104,8 +100,8 @@ class AuthController extends Controller {
 
         $throttles = $this->isUsingThrottlesLoginsTrait();
 
-        if ( $throttles && $this->hasTooManyLoginAttempts( $request ) )
-            return $this->sendLockoutResponse( $request );
+       /* if ( $throttles && $this->hasTooManyLoginAttempts( $request ) )
+            return $this->sendLockoutResponse( $request );*/
 
         $credentials = $this->getCredentials( $request );
 
