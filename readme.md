@@ -609,7 +609,7 @@ Add a new catalog.
 
 	URL: /catalogs 
 	Type: POST  
-	Parameters: category, type, tags, name, title, layout, position, publish, trending, popular, recomended, _token  
+	Parameters: category, type, tags, name, title, description, layout, position, publish, trending, popular, recomended, _token  
 	Returns:  
 		- response with type: success
 		- response with type: error
@@ -627,7 +627,7 @@ Update catalog properties (users can only updated catalogs owned by them).
 	URL: /catalogs/{id} 
 	Type: PUT  
 	Parameters (URL): id
-	Parameters (POST): category, type, tags, name, title, layout, position, publish, trending, popular, recomended, _token 
+	Parameters (POST): category, type, tags, name, title, description, layout, position, publish, trending, popular, recomended, _token 
 	Returns:  
 		- response with type: success
 		- response with type: error  

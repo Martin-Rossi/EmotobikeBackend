@@ -5,9 +5,13 @@ namespace App\Extensions;
 class APIResponse {
 
     protected $token;
+    protected $user_id;
     
     public function __construct() {
         $this->token = csrf_token();
+
+        if ( auth()->user() )
+            $this->user_id = auth()->user()->id;
     }
 
     public function error( $message = '' ) {
@@ -15,6 +19,7 @@ class APIResponse {
             [
                 'type'      => 'error',
                 'message'   => $message,
+                '_user_id'  => $this->user_id,
                 '_token'    => $this->token
             ]
         );
@@ -25,6 +30,7 @@ class APIResponse {
             [
                 'type'      => 'success', 
                 'message'   => $message,
+                '_user_id'  => $this->user_id,
                 '_token'    => $this->token
             ]
         );
@@ -35,6 +41,7 @@ class APIResponse {
             [
                 'type'      => 'result',
                 'content'   => $content,
+                '_user_id'  => $this->user_id,
                 '_token'    => $this->token
             ]
         );
