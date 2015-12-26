@@ -101,6 +101,7 @@ class CatalogController extends Controller {
         $catalogs = Catalog::where( 'status', '>', 0 )
                            ->where( 'name', 'LIKE', '%' . $request->get( 'term' ) . '%' )
                            ->orWhere( 'title', 'LIKE', '%' . $request->get( 'term' ) . '%' )
+                           ->orWhere( 'description', 'LIKE', '%' . $request->get( 'term' ) . '%' )
                            ->with( 'category', 'type', 'objects', 'author' )
                            ->get();
 

@@ -64,6 +64,7 @@ $factory->define( App\Catalog::class, function( Faker\Generator $faker ) {
         'tags'              => implode( ';', $faker->words( 5 ) ),
         'name'              => implode( ' ', $faker->words( 3 ) ),
         'title'             => implode( ' ', $faker->words( 3 ) ),
+        'description'       => $faker->paragraph( 5 ),
         'layout'            => implode( ' ', $faker->words( 1 ) ),
         'position'          => implode( ' ', $faker->words( 1 ) ),
         'publish'           => $faker->randomElement( [0, 1] ),

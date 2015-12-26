@@ -15,6 +15,7 @@ class Catalog extends Model {
         'tags',
         'name',
         'title',
+        'description',
         'layout',
         'position',
         'publish',
