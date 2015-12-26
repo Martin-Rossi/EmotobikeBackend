@@ -183,6 +183,7 @@ Each time an endpoint is requested with GET, every response will include the _to
 Each API endpoint (except: /auth/login) is protected with authentication. The client must do a valid login by POSTing to /auth/login before reaching other endpoints. Login status can be aquired by sending a GET request to /auth/login endpoint. The login status will return a success or an error message - depending on the current authentication status. When session expires, each protected endpoint will return an error response stating that the current session is not valid eny more. In this case re-authentication is needed from client.  
 With the authentication a "remember=1" parameter can be sent which will result an extended session.
 
+* Note: every response from the API will return the current, authenticated "_ user _ id". If the user is not authenticated, the "_ user _ id" is null.
 		
 # Endpoints  
 
@@ -1166,6 +1167,7 @@ All responses are JSON encoded strings. Each response will return the "_token" v
 	{
 		"type":"success",
 		"message":"Some success message",
+		"_user_id": 11,
 		"_token":"IFMJy3kdsaReScNLLrNuNNixT59A6aJ3ghHAgeuL"
 	}
 
@@ -1174,6 +1176,7 @@ All responses are JSON encoded strings. Each response will return the "_token" v
 	{
 		"type":"error",
 		"message":"Some error message",
+		"_user_id": 13,
 		"_token":"IFMJy3kdsaReScNLLrNuNNixT59A6aJ3ghHAgeuL"
 	}
 
@@ -1184,6 +1187,7 @@ With singular content:
 	{
 		"type":"result",
 		"content":13,
+		"_user_id": 23,
 		"_token":"IFMJy3kdsaReScNLLrNuNNixT59A6aJ3ghHAgeuL"
 	}
 
@@ -1204,6 +1208,7 @@ With object content:
 				"created_at":"2015-11-19 13:14:43",
 				"updated_at":"2015-11-19 20:40:35"
 			},
+		"_user_id": 14,
 		"_token":"IFMJy3kdsaReScNLLrNuNNixT59A6aJ3ghHAgeuL"
 	}  
 	
@@ -1274,6 +1279,7 @@ With array content:
 					"updated_at":"2015-11-19 20:40:35"
 				}
 			],
+		"_user_id": 28,
 		"_token":"IFMJy3kdsaReScNLLrNuNNixT59A6aJ3ghHAgeuL"
 	}
 
