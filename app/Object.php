@@ -86,4 +86,13 @@ class Object extends Model {
         return $feedbacks;
     }
 
+    public function personal_price() {
+        if ( ! auth()->user() )
+            return null;
+
+        return \App\PersonalPrice::where( 'object_id', '=', $this->id )
+                                 ->where( 'user_id', '=', auth()->user()->id )
+                                 ->first();
+    }
+
 }

@@ -174,3 +174,12 @@ Route::group( ['middleware' => ['auth', 'cors']], function () {
 	Route::post( 'search/activities', 'ActivityController@search' );
 	Route::post( 'filter/activities', 'ActivityController@filter' );
 } );
+
+/*
+| PersonalPrice routes
+*/
+Route::group( ['middleware' => ['auth', 'cors']], function() {
+	Route::resource( 'pprices', 'PersonalPriceController', [
+		'only' => ['update', 'store', 'destroy']
+	] );
+} );

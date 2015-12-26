@@ -87,22 +87,22 @@ $factory->define( App\Collection::class, function( Faker\Generator $faker ) {
     $user = factory( App\User::class, 1 )->create();
 
     return [
-        'collection_id'     => $faker->numberBetween( 1, 20 ),
-        'foreign_id'        => $catalog->id,
-        'foreign_type'      => 'catalog',
-        'author'            => $user->id
+        'collection_id'         => $faker->numberBetween( 1, 20 ),
+        'foreign_id'            => $catalog->id,
+        'foreign_type'          => 'catalog',
+        'author'                => $user->id
     ];
 } );
 
 $factory->define( App\Category::class, function( Faker\Generator $faker ) {
     return [
-        'name'              => implode( ' ', $faker->words( 1 ) )
+        'name'                  => implode( ' ', $faker->words( 1 ) )
     ];
 } );
 
 $factory->define( App\Type::class, function( Faker\Generator $faker ) {
     return [
-        'name'              => implode( ' ', $faker->words( 1 ) )
+        'name'                  => implode( ' ', $faker->words( 1 ) )
     ];
 } );
 
@@ -111,10 +111,10 @@ $factory->define( App\Comment::class, function( Faker\Generator $faker ) {
     $user = factory( App\User::class, 1 )->create();
 
     return [
-        'foreign_id'        => $object->id,
-        'foreign_type'      => 'object',
-        'text'              => $faker->paragraph( 1 ),
-        'author'            => $user->id
+        'foreign_id'            => $object->id,
+        'foreign_type'          => 'object',
+        'text'                  => $faker->paragraph( 1 ),
+        'author'                => $user->id
     ];
 } );
 
@@ -123,9 +123,9 @@ $factory->define( App\Like::class, function( Faker\Generator $faker ) {
     $user = factory( App\User::class, 1 )->create();
 
     return [
-        'foreign_id'        => $object->id,
-        'foreign_type'      => 'object',
-        'author'            => $user->id
+        'foreign_id'            => $object->id,
+        'foreign_type'          => 'object',
+        'author'                => $user->id
     ];
 } );
 
@@ -134,9 +134,9 @@ $factory->define( App\Follow::class, function( Faker\Generator $faker ) {
     $user = factory( App\User::class, 1 )->create();
 
     return [
-        'foreign_id'        => $object->id,
-        'foreign_type'      => 'object',
-        'author'            => $user->id
+        'foreign_id'            => $object->id,
+        'foreign_type'          => 'object',
+        'author'                => $user->id
     ];
 } );
 
@@ -145,10 +145,10 @@ $factory->define( App\Feedback::class, function( Faker\Generator $faker ) {
     $user = factory( App\User::class, 1 )->create();
 
     return [
-        'foreign_id'        => $object->id,
-        'foreign_type'      => 'object',
-        'value'             => $faker->numberBetween( 100, 100000 ),
-        'author'            => $user->id
+        'foreign_id'            => $object->id,
+        'foreign_type'          => 'object',
+        'value'                 => $faker->numberBetween( 100, 100000 ),
+        'author'                => $user->id
     ];
 } );
 
@@ -157,9 +157,20 @@ $factory->define( App\Activity::class, function( Faker\Generator $faker ) {
     $type = factory( App\Type::class, 1 )->create();
 
     return [
-        'catalog_id'        => $catalog->id,
-        'type_id'           => $type->id,
-        'name'              => implode( ' ', $faker->words( 1 ) ),
-        'description'       => $faker->paragraph( 1 )
+        'catalog_id'            => $catalog->id,
+        'type_id'               => $type->id,
+        'name'                  => implode( ' ', $faker->words( 1 ) ),
+        'description'           => $faker->paragraph( 1 )
+    ];
+} );
+
+$factory->define( App\PersonalPrice::class, function( Faker\Generator $faker ) {
+    $user = factory( App\User::class, 1 )->create();
+    $object = factory( App\Object::class, 1 )->create();
+
+    return [
+        'user_id'               => $user->id,
+        'object_id'             => $object->id,
+        'personal_price'        => $faker->randomFloat( 2, 100, 10000 )
     ];
 } );

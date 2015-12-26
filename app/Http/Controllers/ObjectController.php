@@ -32,6 +32,9 @@ class ObjectController extends Controller {
         if ( is_null( $object ) )
             abort( 404 );
 
+        $pprice = $object->personal_price();
+        $object->pprice = $pprice;
+
         return $response->result( $object );
     }
 
