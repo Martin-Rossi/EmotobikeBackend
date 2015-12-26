@@ -13,6 +13,10 @@
 		password (VARCHAR 60 - bcrypted)
 		remember_token (VARCHAR 100)
 		image (VARCHAR 255, nullable, default: null)
+		commissions_earned (INT 10, default: 0)
+		comission_rate (INT 10, default: 0)
+		personal_price_earned (INT 10, default: 0)
+		price_earner (INT 10, default: 0)
 		created_at (TIMESTAMP)
 		updated_at (TIMESTAMP)
 		
@@ -253,7 +257,7 @@ Update user properties (users can only updated their own properties).
 	URL: /users/{id} 
 	Type: PUT  
 	Parameters (URL): id
-	Parameters (POST): tags, name, image, _token  
+	Parameters (POST): tags, name, image, commissions_earned, commission_rate, personal_price_earned, price_earner, _token  
 	Returns:  
 		- response with type: success
 		- response with type: error  
