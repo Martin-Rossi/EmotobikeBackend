@@ -779,7 +779,7 @@ View catalogs deleted by the user
 
 ## /search/catalogs
 
-Search catalogs by name and title
+Search catalogs by name, title and description
 
 	URL: /search/catalogs
 	Type: POST
