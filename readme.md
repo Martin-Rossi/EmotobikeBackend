@@ -36,6 +36,7 @@
 		offer_description (TEXT, nullable, default: null)
 		offer_start (DATETIME YYYY-MM-DD HH:II:SS)
 		offer_stop (DATETIME YYYY-MM-DD HH:II:SS)
+		prod_detail_url (VARCHAR 255, nullable, default: null)
 		layout (VARCHAR 55, nullable, default: null)
 		position (VARCHAR 55, nullable, default: null)
 		count_likes (INT 10, default: 0)
@@ -59,6 +60,7 @@
 		tags (VARCHAR 255, nullable, default: null)
 		name (VARCHAR 255)
 		title (VARCHAR 255)
+		description (TEXT, nullable, default: null)
 		layout (VARCHAR 55, nullable, default: null)
 		position (VARCHAR 55, nullable, default: null)
 		publish (ENUM[0,1], default: 0)
@@ -391,7 +393,7 @@ Add a new object.
 
 	URL: /objects 
 	Type: POST  
-	Parameters: catalog_id, category, type, tags, name, description, url, image, weight, retail_price, sale_price, offer_value, offer_url, offer_description, offer_start, offer_stop, layout, position, competitor_flag, recomended, curated, _token  
+	Parameters: catalog_id, category, type, tags, name, description, url, image, weight, retail_price, sale_price, offer_value, offer_url, offer_description, offer_start, offer_stop, prod_detail_url, layout, position, competitor_flag, recomended, curated, _token  
 	Returns:  
 		- response with type: success
 		- response with type: error
@@ -411,7 +413,7 @@ Update object properties (users can only updated objects owned by them).
 	URL: /objects/{id} 
 	Type: PUT  
 	Parameters (URL): id
-	Parameters (POST): catalog_id, category, type, tags, name, description, url, image, weight, retail_price, sale_price, offer_value, offer_url, offer_description, offer_start, offer_stop, layout, position, competitor_flag, recomended, curated, _token  
+	Parameters (POST): catalog_id, category, type, tags, name, description, url, image, weight, retail_price, sale_price, offer_value, offer_url, offer_description, offer_start, offer_stop, prod_detail_url, layout, position, competitor_flag, recomended, curated, _token  
 	Returns:  
 		- response with type: success
 		- response with type: error  
