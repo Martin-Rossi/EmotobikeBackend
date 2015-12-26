@@ -12,6 +12,7 @@
 		email (VARCHAR 255, unique)
 		password (VARCHAR 60 - bcrypted)
 		remember_token (VARCHAR 100)
+		image (VARCHAR 255, nullable, default: null)
 		created_at (TIMESTAMP)
 		updated_at (TIMESTAMP)
 		
@@ -252,7 +253,7 @@ Update user properties (users can only updated their own properties).
 	URL: /users/{id} 
 	Type: PUT  
 	Parameters (URL): id
-	Parameters (POST): tags, name, _token  
+	Parameters (POST): tags, name, image, _token  
 	Returns:  
 		- response with type: success
 		- response with type: error  
