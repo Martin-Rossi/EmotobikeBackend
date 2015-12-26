@@ -13,12 +13,16 @@
 
 $factory->define( App\User::class, function( Faker\Generator $faker ) {
     return [
-        'tags'              => implode( ';', $faker->words( 5 ) ),
-        'name' 				=> $faker->name,
-        'email' 			=> $faker->email,
-        'password' 			=> bcrypt( 'test' ),
-        'remember_token' 	=> str_random( 10 ),
-        'image'             => $faker->url,
+        'tags'                  => implode( ';', $faker->words( 5 ) ),
+        'name' 				    => $faker->name,
+        'email' 			    => $faker->email,
+        'password' 			    => bcrypt( 'test' ),
+        'remember_token' 	    => str_random( 10 ),
+        'image'                 => $faker->url,
+        'commissions_earned'    => $faker->numberBetween( 1, 200 ),
+        'commission_rate'       => $faker->numberBetween( 1, 20 ),
+        'personal_price_earned' => $faker->numberBetween( 1, 2000 ),
+        'price_earner'          => $faker->numberBetween( 1, 20 )
     ];
 } );
 
@@ -29,10 +33,10 @@ $factory->define( App\Object::class, function( Faker\Generator $faker ) {
     $user = factory( App\User::class, 1 )->create();
 
     return [
-        'catalog_id' 		=> $catalog->id,
-        'category_id'       => $category->id,
-        'type_id'			=> $type->id,
-        'tags'              => implode( ';', $faker->words( 5 ) ),
+        'catalog_id' 		    => $catalog->id,
+        'category_id'           => $category->id,
+        'type_id'			    => $type->id,
+        'tags'                  => implode( ';', $faker->words( 5 ) ),
         'name'				=> implode( ' ', $faker->words( 3 ) ),
         'description'		=> $faker->paragraph( 5 ),
         'url'               => $faker->url,

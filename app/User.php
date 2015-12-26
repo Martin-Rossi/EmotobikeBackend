@@ -19,7 +19,11 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
     protected $fillable = [
         'tags',
         'name',
-        'image'
+        'image',
+        'commissions_earned',
+        'commission_rate',
+        'personal_price_earned',
+        'price_earner'
     ];
 
     protected $hidden = [
