@@ -75,6 +75,7 @@
 		count_likes (INT 10, default: 0)
 		count_comments (INT 10, default: 0)
 		count_follows (INT 10, default: 0)
+		total_transaction (DOUBLE(12,2), default: 0)
 		author (INT 10, references id on 'users')
 		status (ENUM[-1,0,1], default: 1)
 		created_at (TIMESTAMP)
