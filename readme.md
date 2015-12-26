@@ -172,6 +172,17 @@
 		created_at (TIMESTAMP)
 		updated_at (TIMESTAMP)  
 		
+**PersonalPrices**
+
+	route: /pprices
+	Properties:
+		id (INT 10 - primary key, autoincrement)
+		user_id (INT 10, references id on 'users')
+		object_id (INT 10, references id on 'objects')
+		personal_price (DOUBLE(12,2), nullable, default: null)
+		created_at (TIMESTAMP)
+		updated_at (TIMESTAMP) 
+		
 # Request Types
 
 GET, POST, PUT, DELETE
@@ -1136,7 +1147,7 @@ Update activity properties.
 	URL: /activities/{id} 
 	Type: PUT  
 	Parameters (URL): id
-	Parameters (POST): catalof, type, name, description, link_to, link_from, _token 
+	Parameters (POST): catalog, type, name, description, link_to, link_from, _token 
 	Returns:  
 		- response with type: success
 		- response with type: error  
@@ -1163,7 +1174,44 @@ Filter activities.
 
 * supported filters: [catalog _ id, type _ id, created _ at, updated _ at]
 
-* supported operators: [=, <, >]
+* supported operators: [=, <, >]  
+
+# Endpoints "pprice"   
+
+## /pprices
+
+Add a new personal price (authenticated user can only add personal prices to object where he is the owner).
+
+	URL: /pprices 
+	Type: POST  
+	Parameters: user_id, object_id, personal_price, _token  
+	Returns:  
+		- response with type: success
+		- response with type: error
+
+## /pprices/{id}
+
+Update personal price (authenticated user can only update personal price refering to his object).
+
+	URL: /pprices/{id} 
+	Type: PUT  
+	Parameters (URL): id
+	Parameters (POST): user_id, object_id, personal_price, _token 
+	Returns:  
+		- response with type: success
+		- response with type: error  
+
+## /pprices/{id}
+
+Delete personal price (authenticated user can only delete personal price refering to his object).
+
+	URL: /pprices/{id} 
+	Type: DELETE  
+	Parameters (URL): id
+	Parameters (POST): _token 
+	Returns:  
+		- response with type: success
+		- response with type: error  
 
 
 # Responses
