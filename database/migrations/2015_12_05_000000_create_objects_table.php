@@ -24,6 +24,7 @@ class CreateObjectsTable extends Migration {
             $table->text( 'offer_description' )->nullable()->default( null );
             $table->datetime( 'offer_start' )->nullable()->default( null );
             $table->datetime( 'offer_stop' )->nullable()->default( null );
+            $table->string( 'prod_detail_url', 255 )->nullable()->default( null );
             $table->string( 'layout', 55 )->nullable()->default( null );
             $table->string( 'position', 55 )->nullable()->default( null );
             $table->integer( 'count_likes' )->default( 0 );

@@ -25,6 +25,7 @@ class Object extends Model {
         'offer_description',
         'offer_start',
         'offer_stop',
+        'prod_detail_url',
         'layout',
         'position',
         'competitor_flag',

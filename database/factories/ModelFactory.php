@@ -44,6 +44,7 @@ $factory->define( App\Object::class, function( Faker\Generator $faker ) {
         'offer_description' => $faker->paragraph( 1 ),
         'offer_start'       => $faker->dateTime(),
         'offer_stop'        => $faker->dateTime(),
+        'prod_detail_url'   => $faker->url,
         'layout'            => implode( ' ', $faker->words( 1 ) ),
         'position'          => implode( ' ', $faker->words( 1 ) ),
         'competitor_flag'	=> $faker->randomElement( [0, 1] ),
