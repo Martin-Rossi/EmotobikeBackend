@@ -71,6 +71,7 @@ $factory->define( App\Catalog::class, function( Faker\Generator $faker ) {
         'name'                  => implode( ' ', $faker->words( 3 ) ),
         'title'                 => implode( ' ', $faker->words( 3 ) ),
         'description'           => $faker->paragraph( 5 ),
+        'image'                 => $faker->imageUrl(),
         'layout'                => $faker->randomElement( [2,3,9] ),
         'position'              => $faker->numberBetween( 1, 19 ),
         'publish'               => $faker->randomElement( [0, 1] ),
@@ -78,8 +79,7 @@ $factory->define( App\Catalog::class, function( Faker\Generator $faker ) {
         'popular'               => $faker->randomElement( [0, 1] ),
         'recomended'            => $faker->randomElement( [0, 1] ),
         'total_transaction'     => $faker->randomFloat( 2, 100, 10000 ),
-        'author'                => $user->id,
-        'image'                 => $faker->imageUrl()
+        'author'                => $user->id
     ];
 } );
 
