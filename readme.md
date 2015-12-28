@@ -17,6 +17,7 @@
 		comission_rate (INT 10, default: 0)
 		personal_price_earned (INT 10, default: 0)
 		price_earner (INT 10, default: 0)
+		count_follows (INT 10, default: 0)
 		created_at (TIMESTAMP)
 		updated_at (TIMESTAMP)
 		
@@ -184,6 +185,25 @@
 		created_at (TIMESTAMP)
 		updated_at (TIMESTAMP) 
 		
+**Messages**
+
+	route: /messages
+	Properties:
+		id (INT 10 - primary key, autoincrement)
+		type_id (INT 10, references id on 'types')
+		message_thread (INT 10, default: 0)
+		message_thread_id (INT 10, references id on 'messages', default: 0)
+		sender (INT 10, references id on 'users')
+		recipient (INT 10, references id on 'users')
+		message (TEXT)
+		image (VARCHAR 255, nullable, default: null)
+		actstem (VARCHAR 255, nullable, default: null)
+		count_trendup (INTEGER 10, default: 0)
+		count_trenddown (INTEGER 10, default: 0)
+		count_replies (INTEGER 10, default: 0)
+		created_at (TIMESTAMP)
+		updated_at (TIMESTAMP) 
+		
 # Request Types
 
 GET, POST, PUT, DELETE
@@ -330,11 +350,11 @@ List all likes made by the user.
 		- response with type: result ([LikeObjects])
 		- response with type: error (user not found)  
 
-## /users/{id}/follows
+## /users/{id}/following
 
 List all follows made by the user.
 
-	URL: /users/{id}/follows  
+	URL: /users/{id}/following  
 	Type: GET
 	Parameters: id
 	Returns:  
@@ -350,7 +370,52 @@ List all feedbacks made by the user.
 	Parameters: id
 	Returns:  
 		- response with type: result ([FeedbackObjects])
-		- response with type: error (user not found) 
+		- response with type: error (user not found)  
+
+## /users/{id}/follow
+
+Follow a user.
+
+	URL: /users/{id}/follow  
+	Type: POST
+	Parameters (URL): id
+	Parameters (POST): _token
+	Returns:  
+		- response with type: success
+		- response with type: error  
+
+## /users/{id}/follows
+
+List everyone who follows this user.
+
+	URL: /users/{id}/follows  
+	Type: GET
+	Parameters: id
+	Returns:  
+		- response with type: result ([FollowObjects])
+		- response with type: error (user not found)  
+
+## /users/{id}/messages/sent
+
+List messages sent by this user.
+
+	URL: /users/{id}/messages/sent
+	Type: GET
+	Parameters: id
+	Returns:
+		- response with type: result ([MessageObjects])
+		- reposnse with type: erro (user not found)  
+
+## /users/{id}/messages/received
+
+List messages received by this user.
+
+	URL: /users/{id}/messages/received
+	Type: GET
+	Parameters: id
+	Returns:
+		- response with type: result ([MessageObjects])
+		- reposnse with type: erro (user not found)
 
 ## /search/users
 
@@ -1212,7 +1277,55 @@ Delete personal price (authenticated user can only delete personal price referin
 	Parameters (POST): _token 
 	Returns:  
 		- response with type: success
+		- response with type: error 
+
+# Endpoints "message"  
+
+## /messages/{id}
+
+Show one particular message.
+
+	URL: /messages/{id} 
+	Type: GET  
+	Parameters: id  
+	Returns:  
+		- response with type: result (MessageObject)
+		- response with type: error (message not found)  
+
+## /messages
+
+Send a new message. The sender is always the current, authenticated user - while the recepient ID is specified in the request (recipient parameter).  
+
+> Note: the "type" property can be a numeric id or string name. If type name is given, the API will try to locate that within the existing types and assign the id accordingly. If the given type name doesn't exists in the database, it will be created and the id assigned accordingly.
+
+	URL: /messages 
+	Type: POST  
+	Parameters: type, recipient, message, image, actstem, _token 
+	Returns:  
+		- response with type: success
+		- response with type: error
+
+## /messages/{id}/reply
+
+Reply to a message. The sender is always the current, authenticated user - while the recepient ID is specified by the original message. 
+
+	URL: /messages/{id}/reply
+	Type: POST  
+	Parameters (URL): id
+	Parameters (POST): type, message, image, actstem, _token 
+	Returns:  
+		- response with type: success
 		- response with type: error  
+
+## /messages/from/follows
+
+This endpoint will return all the messages sent by the users who the current, authenticated user is following.
+
+	URL: /messages/from/follows 
+	Type: GET   
+	Parameters: -
+	Returns:  
+		- response with type: result (MessageObject) 
 
 
 # Responses
