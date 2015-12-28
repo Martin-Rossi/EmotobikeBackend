@@ -65,7 +65,7 @@ Route::group( ['middleware' => ['auth', 'cors']], function () {
 	Route::post( 'search/objects', 'ObjectController@search' );
 	Route::post( 'filter/objects', 'ObjectController@filter' );
 } );
-Route::get( 'positions/{id}/objects', ['middleware' => 'guest', 'uses' => 'ObjectController@positions'] );
+Route::get( 'positions/{id}/objects', ['middleware' => 'cors', 'uses' => 'ObjectController@positions'] );
 
 /*
 | Catalog routes

@@ -295,7 +295,7 @@ class ObjectController extends Controller {
     }
     public function positions($id,Request $request, ApiResponse $response){
 
-        header('Access-Control-Allow-Origin: *');
+
         $objects = Object::where( 'status', '>', 0 )
             ->where( 'catalog_id', '=', $id )
             ->orderBy('position', 'asc')
