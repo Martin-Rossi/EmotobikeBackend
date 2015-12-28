@@ -34,10 +34,13 @@ Route::group( ['middleware' => ['cors']], function () {
 	Route::get( 'users/{id}/collections', 'UserController@collections' );
 	Route::get( 'users/{id}/comments', 'UserController@comments' );
 	Route::get( 'users/{id}/likes', 'UserController@likes' );
-	Route::get( 'users/{id}/follows', 'UserController@follows' );
+	Route::get( 'users/{id}/following', 'UserController@following' );
 	Route::get( 'users/{id}/feedbacks', 'UserController@feedbacks' );
+	Route::get( 'users/{id}/follows', 'UserController@follows' );
 	Route::get( 'users/{id}/messages/sent', 'UserController@messages_sent' );
 	Route::get( 'users/{id}/messages/received', 'UserController@messages_received' );
+
+	Route::post( 'users/{id}/follow', 'UserController@follow' );
 
 	Route::post( 'search/users', 'UserController@search' );
 	Route::post( 'field/users', 'UserController@getByField' );
@@ -68,6 +71,7 @@ Route::group( ['middleware' => ['auth', 'cors']], function () {
 	Route::post( 'search/objects', 'ObjectController@search' );
 	Route::post( 'filter/objects', 'ObjectController@filter' );
 } );
+
 Route::get( 'positions/{id}/objects', ['middleware' => 'cors', 'uses' => 'ObjectController@positions'] );
 
 /*
@@ -198,4 +202,6 @@ Route::group( ['middleware' => ['auth', 'cors']], function() {
 	] );
 
 	Route::post( 'messages/{id}/reply', 'MessageController@reply' );
+
+	Route::get( 'messages/from/follows', 'MessageController@messages_from_follows' );
 } );

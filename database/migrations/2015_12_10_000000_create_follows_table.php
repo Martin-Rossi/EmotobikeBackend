@@ -9,7 +9,7 @@ class CreateFollowsTable extends Migration {
         Schema::create( 'follows', function( Blueprint $table ) {
             $table->increments( 'id' );
             $table->integer( 'foreign_id' );
-            $table->enum( 'foreign_type', ['object', 'catalog'] );
+            $table->enum( 'foreign_type', ['object', 'catalog', 'user'] );
             $table->integer( 'author' )->references( 'id' )->on( 'users' );
             $table->timestamps();
         } );

@@ -114,7 +114,7 @@ class UserTest extends TestCase {
              ->see( $like->foreign_id );
     }
 
-    public function testIndexUserFollows() {
+    public function testIndexUserFollowing() {
         $follow = factory( App\Follow::class, 1 )->create();
         $object = factory( App\Object::class, 1 )->create();
 
@@ -123,7 +123,7 @@ class UserTest extends TestCase {
 
         $user = \App\User::find( $follow->author );
 
-        $this->visit( '/users/' . $user->id . '/follows' )
+        $this->visit( '/users/' . $user->id . '/following' )
              ->see( $follow->foreign_id );
     }
 
@@ -139,6 +139,30 @@ class UserTest extends TestCase {
 
         $this->visit( '/users/' . $user->id . '/feedbacks' )
              ->see( $feedback->foreign_id );
+    }
+
+    public function testFollowUser() {
+        $tofollow = factory( App\User::class, 1 )->create();
+        $user = factory( App\User::class )->create();
+
+        $response = $this->actingAs( $user )->call( 'POST', '/users/' . $tofollow->id . '/follow' );
+
+        $this->seeInDatabase( 'follows', ['foreign_id' => $tofollow->id, 'foreign_type' => 'user', 'author' => $user->id] )
+             ->assertEquals( 200, $response->status() );
+    }
+
+    public function testIndexUserFollows() {
+        $follow = factory( App\Follow::class, 1 )->create();
+        $user = factory( App\User::class, 1 )->create();
+
+        $follow->foreign_id = $user->id;
+        $follow->foreign_type = 'user';
+        $follow->save();
+
+        $followed = \App\User::find( $follow->author );
+
+        $this->visit( '/users/' . $user->id . '/follows' )
+             ->see( $followed->email );
     }
 
     public function testIndexUserSentMessages() {

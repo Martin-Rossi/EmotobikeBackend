@@ -67,6 +67,30 @@ class MessageController extends Controller {
         return $response->success( 'New message added successfully' );
     }
 
+    public function messages_from_follows( ApiResponse $response ) {
+        $messages = [];
+        $users = [];
+
+        $follows = auth()->user()->following;
+
+        if ( ! sizeof( $follows ) > 0 )
+            return $response->result( $messages );
+
+        foreach ( $follows as $follow ) {
+            if ( 'user' == $follow->foreign_type )
+                $users[] = $follow->foreign_id;
+        }
+
+        if ( ! sizeof( $users ) > 0 )
+            return $response->result( $messages );
+
+        $messages = Message::whereIn( 'sender', $users )
+                           ->with( 'sender' )
+                           ->get();
+
+        return $response->result( $messages );
+    }
+
     private function assignType( $inputs ) {
         if ( isset( $inputs['type'] ) && $inputs['type'] ) {
             if ( is_numeric( $inputs['type'] ) )

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\User;
+use App\Follow;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
@@ -129,13 +130,46 @@ class UserController extends Controller {
         return $response->result( $user->likes );
     }
 
+    public function following( $id, ApiResponse $response ) {
+        $user = User::find( $id );
+
+        if ( is_null( $user ) )
+            abort( 404 );
+
+        return $response->result( $user->following );
+    }
+
+    public function follow( $id, ApiResponse $response ) {
+        $user = User::find( $id );
+
+        if ( is_null( $user ) )
+            abort( 404 );
+
+        $follow = [
+            'foreign_id'    => $id,
+            'foreign_type'  => 'user',
+            'author'        => auth()->user()->id
+        ];
+
+        try {
+            Follow::create( $follow );
+        } catch ( Exception $e ) {
+            return $response->error( $e->getMessage() );
+        }
+
+        $user->count_follows++;
+        $user->save();
+
+        return $response->success( 'Follow recorded successfully' );
+    }
+
     public function follows( $id, ApiResponse $response ) {
         $user = User::find( $id );
 
         if ( is_null( $user ) )
             abort( 404 );
 
-        return $response->result( $user->follows );
+        return $response->result( $user->follows() );
     }
 
     public function feedbacks( $id, ApiResponse $response ) {

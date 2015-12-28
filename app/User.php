@@ -51,7 +51,7 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
         return $this->hasMany( 'App\Like', 'author', 'id' );
     }
 
-    public function follows() {
+    public function following() {
         return $this->hasMany( 'App\Follow', 'author', 'id' );
     }
 
@@ -65,6 +65,15 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
 
     public function outbox() {
         return $this->hasMany( 'App\Message', 'sender', 'id' );
+    }
+
+    public function follows() {
+        $follows = \App\Follow::where( 'foreign_id', '=', $this->id )
+                              ->where( 'foreign_type', '=', 'user' )
+                              ->with( 'author' )
+                              ->get();
+
+        return $follows;
     }
 
 }

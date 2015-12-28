@@ -17,6 +17,7 @@ class CreateUsersTable extends Migration {
             $table->integer( 'commission_rate' )->default( 0 );
             $table->integer( 'personal_price_earned' )->default( 0 );
             $table->integer( 'price_earner' )->default( 0 );
+            $table->integer( 'count_follows' )->default( 0 );
             $table->rememberToken();
             $table->timestamps();
         } );
