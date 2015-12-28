@@ -38,6 +38,7 @@ Route::group( ['middleware' => ['cors']], function () {
 	Route::get( 'users/{id}/feedbacks', 'UserController@feedbacks' );
 
 	Route::post( 'search/users', 'UserController@search' );
+	Route::post( 'field/users', 'UserController@getByField' );
 	Route::post( 'filter/users', 'UserController@filter' );
 } );
 
