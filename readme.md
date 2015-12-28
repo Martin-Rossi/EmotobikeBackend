@@ -1339,4 +1339,55 @@ With array content:
 		"_token":"IFMJy3kdsaReScNLLrNuNNixT59A6aJ3ghHAgeuL"
 	}
 
+## Pagination
+
+Index listings are returning results paginated. Default is to return 10 results per one page. This behavior can be changed by sending the 'pp' parameter. The 'page' parameter can be used to move between pages.
+
+Sample pagination:
+
+		/objects
+		/objects?page=1
+		/objects?page=2
+		....
+		/objects?page=n
+		
+		OR
+		
+		/catalogs
+		/catalogs?page=1
+		/catalogs?page=2
+		....
+		/catalogs?page=n  
+		
+Sample setting the per page:
+
+		/objects?pp=20
+		/objects?page=1&pp=20
+		/objects?page=2&pp=20
+		....
+		/objects?page=n&pp=20
+		
+		OR
+		
+		/catalogs?pp=30
+		/catalogs?page=1&pp=30
+		/catalogs?page=2&pp=30
+		....
+		/catalogs?page=n&pp=30 
+
+### Routes where the pagination is applied
+
+		/objects
+		/search/objects
+		/filter/objects
+		/deleted/objects
+		
+		/catalogs
+		/search/catalogs
+		/filter/catalogs
+		/deleted/catalogs
+		
+		/collections
+		/deleted/collections
+
 ## -
