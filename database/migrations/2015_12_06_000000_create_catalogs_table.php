@@ -14,6 +14,7 @@ class CreateCatalogsTable extends Migration {
             $table->string( 'name', 255 );
             $table->string( 'title', 255 );
             $table->text( 'description' )->nullable()->default( null );
+            $table->string( 'image', 255 )->nullable()->default( null );
             $table->string( 'layout', 55 )->nullable()->default( null );
             $table->string( 'position', 55 )->nullable()->default( null );
             $table->enum( 'publish', [0, 1] )->default( 0 );

@@ -47,6 +47,13 @@ class UserController extends Controller {
         return $response->result( $users );
     }
 
+    public function getByField( Request $request, ApiResponse $response ) {
+
+        $users = User::where( $request->get( 'field' ), '=',  $request->get( 'term' ) )->get();
+
+        return $response->result( $users );
+    }
+
     public function filter( Request $request, ApiResponse $response ) {
         $users = [];
 

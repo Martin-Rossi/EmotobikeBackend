@@ -3,6 +3,8 @@
 Homestead.yaml
 Homestead.json
 .env
+.idea/*
+public/css/*
 
 # Elastic Beanstalk Files
 .elasticbeanstalk/*
