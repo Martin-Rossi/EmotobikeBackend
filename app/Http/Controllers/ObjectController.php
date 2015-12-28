@@ -16,10 +16,18 @@ use App\Extensions\APIResponse;
 
 class ObjectController extends Controller {
 
-    public function index( ApiResponse $response ) {
-        $objects = Object::where( 'status', '>', 0 )->get();
+    protected $pp = 10;
 
-        return $response->result( $objects );
+    public function __construct( Request $request ) {
+        if ( $request->get( 'pp' ) )
+            $this->pp = intval( $request->get( 'pp' ) );
+    }
+
+    public function index( ApiResponse $response ) {
+        $objects = Object::where( 'status', '>', 0 )
+                         ->paginate( $this->pp );
+
+        return $response->result( $objects->toArray() );
     }
 
     public function show( $id, ApiResponse $response ) {
@@ -96,9 +104,9 @@ class ObjectController extends Controller {
     public function deleted( ApiResponse $response ) {
         $objects = Object::where( 'status', '<', 0 )
                          ->where( 'author', '=', auth()->user()->id )
-                         ->get();
+                         ->paginate( $this->pp );
 
-        return $response->result( $objects );
+        return $response->result( $objects->toArray() );
     }
 
     public function search( Request $request, ApiResponse $response ) {
@@ -106,9 +114,9 @@ class ObjectController extends Controller {
                          ->where( 'name', 'LIKE', '%' . $request->get( 'term' ) . '%' )
                          ->orWhere( 'description', 'LIKE', '%' . $request->get( 'term' ) . '%' )
                          ->with( 'catalog', 'category', 'type', 'author' )
-                         ->get();
+                         ->paginate( $this->pp );
 
-        return $response->result( $objects );
+        return $response->result( $objects->toArray() );
     }
 
     public function filter( Request $request, ApiResponse $response ) {
@@ -149,9 +157,9 @@ class ObjectController extends Controller {
         $objects = Object::where( 'status', '>', 0 )
                          ->where( $filter, $operator, $request->get( 'value' ) )
                          ->with( 'catalog', 'category', 'type', 'author' )
-                         ->get();
+                         ->paginate( $this->pp );
 
-        return $response->result( $objects );
+        return $response->result( $objects->toArray() );
     }
 
     public function catalog( $id, ApiResponse $response ) {
@@ -293,22 +301,21 @@ class ObjectController extends Controller {
 
         return $response->result( $object->feedbacks() );
     }
-    public function positions($id,Request $request, ApiResponse $response){
 
-        header('Access-Control-Allow-Origin: *');
+    public function positions( $id, Request $request, ApiResponse $response ) {
+        header( 'Access-Control-Allow-Origin: *' );
+
         $objects = Object::where( 'status', '>', 0 )
-            ->where( 'catalog_id', '=', $id )
-            ->orderBy('position', 'asc')
-            ->groupBy('position')
-            ->with( 'catalog', 'category', 'type', 'author' )
-            ->take(19)
-            ->get();
+                         ->where( 'catalog_id', '=', $id )
+                         ->orderBy( 'position', 'asc' )
+                         ->groupBy( 'position' )
+                         ->with( 'catalog', 'category', 'type', 'author' )
+                         ->take( 19 )
+                         ->get();
+                         
         return $response->result( $objects );
-
-
-
-
     }
+
     private function assignCategory( $inputs ) {
         if ( isset( $inputs['category'] ) && $inputs['category'] ) {
             if ( is_numeric( $inputs['category'] ) )

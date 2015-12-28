@@ -12,12 +12,19 @@ use App\Extensions\APIResponse;
 
 class CollectionController extends Controller {
 
+    protected $pp = 10;
+
+    public function __construct( Request $request ) {
+        if ( $request->get( 'pp' ) )
+            $this->pp = intval( $request->get( 'pp' ) );
+    }
+
     public function index( ApiResponse $response ) {
         $collections = Collection::where( 'status', '>', 0 )
                                  ->where( 'author', '=', auth()->user()->id )
-                                 ->get();
+                                 ->paginate( $this->pp );
 
-        return $response->result( $collections );
+        return $response->result( $collections->toArray() );
     }
 
     public function show( $id, ApiResponse $response ) {
@@ -76,7 +83,7 @@ class CollectionController extends Controller {
     public function deleted( ApiResponse $response ) {
         $collections = Collection::where( 'status', '<', 0 )
                                  ->where( 'author', '=', auth()->user()->id )
-                                 ->get();
+                                 ->paginate( $this->pp );
 
         return $response->result( $collections->toArray() );
     }

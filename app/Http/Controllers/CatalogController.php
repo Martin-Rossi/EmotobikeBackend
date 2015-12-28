@@ -16,10 +16,18 @@ use App\Extensions\APIResponse;
 
 class CatalogController extends Controller {
 
-    public function index( ApiResponse $response ) {
-        $catalogs = Catalog::where( 'status', '>', 0 )->get();
+    protected $pp = 10;
 
-        return $response->result( $catalogs );
+    public function __construct( Request $request ) {
+        if ( $request->get( 'pp' ) )
+            $this->pp = intval( $request->get( 'pp' ) );
+    }
+
+    public function index( ApiResponse $response ) {
+        $catalogs = Catalog::where( 'status', '>', 0 )
+                           ->paginate( $this->pp );
+
+        return $response->result( $catalogs->toArray() );
     }
 
     public function show( $id, ApiResponse $response ) {
@@ -92,9 +100,9 @@ class CatalogController extends Controller {
     public function deleted( ApiResponse $response ) {
         $catalogs = Catalog::where( 'status', '<', 0 )
                            ->where( 'author', '=', auth()->user()->id )
-                           ->get();
+                           ->paginate( $this->pp );
 
-        return $response->result( $catalogs );
+        return $response->result( $catalogs->toArray() );
     }
 
     public function search( Request $request, ApiResponse $response ) {
@@ -103,9 +111,9 @@ class CatalogController extends Controller {
                            ->orWhere( 'title', 'LIKE', '%' . $request->get( 'term' ) . '%' )
                            ->orWhere( 'description', 'LIKE', '%' . $request->get( 'term' ) . '%' )
                            ->with( 'category', 'type', 'objects', 'author' )
-                           ->get();
+                           ->paginate( $this->pp );
 
-        return $response->result( $catalogs );
+        return $response->result( $catalogs->toArray() );
     }
 
     public function filter( Request $request, ApiResponse $response ) {
@@ -138,9 +146,9 @@ class CatalogController extends Controller {
         $catalogs = Catalog::where( 'status', '>', 0 )
                            ->where( $filter, $operator, $request->get( 'value' ) )
                            ->with( 'category', 'type', 'objects', 'author' )
-                           ->get();
+                           ->paginate( $this->pp );
 
-        return $response->result( $catalogs );
+        return $response->result( $catalogs->toArray() );
     }
 
     public function objects( $id, ApiResponse $response ) {
