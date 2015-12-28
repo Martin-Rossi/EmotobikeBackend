@@ -18,7 +18,7 @@ $factory->define( App\User::class, function( Faker\Generator $faker ) {
         'email' 			    => $faker->email,
         'password' 			    => bcrypt( 'test' ),
         'remember_token' 	    => str_random( 10 ),
-        'image'                 => $faker->url,
+        'image'                 => $faker->imageUrl() ,
         'commissions_earned'    => $faker->numberBetween( 1, 200 ),
         'commission_rate'       => $faker->numberBetween( 1, 20 ),
         'personal_price_earned' => $faker->numberBetween( 1, 2000 ),
@@ -27,7 +27,7 @@ $factory->define( App\User::class, function( Faker\Generator $faker ) {
 } );
 
 $factory->define( App\Object::class, function( Faker\Generator $faker ) {
-	$catalog = factory( App\Catalog::class, 1 )->create();
+    $catalog = factory( App\Catalog::class, 1 )->create();
     $category = factory( App\Category::class, 1 )->create();
     $type = factory( App\Type::class, 1 )->create();
     $user = factory( App\User::class, 1 )->create();
@@ -40,7 +40,7 @@ $factory->define( App\Object::class, function( Faker\Generator $faker ) {
         'name'				    => implode( ' ', $faker->words( 3 ) ),
         'description'           => $faker->paragraph( 5 ),
         'url'                   => $faker->url,
-        'image'                 => $faker->url,
+        'image'                 => $faker->imageUrl(),
         'weight'                => $faker->randomFloat( 4, 10, 100 ),
         'retail_price'		    => $faker->randomFloat( 2, 100, 10000 ),
         'sale_price' 		    => $faker->randomFloat( 2, 100, 10000 ),
@@ -50,8 +50,8 @@ $factory->define( App\Object::class, function( Faker\Generator $faker ) {
         'offer_start'           => $faker->dateTime(),
         'offer_stop'            => $faker->dateTime(),
         'prod_detail_url'       => $faker->url,
-        'layout'                => implode( ' ', $faker->words( 1 ) ),
-        'position'              => implode( ' ', $faker->words( 1 ) ),
+        'layout'                => $faker->randomElement( [2,3,9] ),
+        'position'              => $faker->numberBetween( 1, 19 ),
         'competitor_flag'	    => $faker->randomElement( [0, 1] ),
         'recomended'		    => $faker->randomElement( [0, 1] ),
         'curated'			    => $faker->randomElement( [0, 1] ),
@@ -71,14 +71,15 @@ $factory->define( App\Catalog::class, function( Faker\Generator $faker ) {
         'name'                  => implode( ' ', $faker->words( 3 ) ),
         'title'                 => implode( ' ', $faker->words( 3 ) ),
         'description'           => $faker->paragraph( 5 ),
-        'layout'                => implode( ' ', $faker->words( 1 ) ),
-        'position'              => implode( ' ', $faker->words( 1 ) ),
+        'layout'                => $faker->randomElement( [2,3,9] ),
+        'position'              => $faker->numberBetween( 1, 19 ),
         'publish'               => $faker->randomElement( [0, 1] ),
         'trending'              => $faker->randomElement( [0, 1] ),
         'popular'               => $faker->randomElement( [0, 1] ),
         'recomended'            => $faker->randomElement( [0, 1] ),
         'total_transaction'     => $faker->randomFloat( 2, 100, 10000 ),
-        'author'                => $user->id
+        'author'                => $user->id,
+        'image'                 => $faker->imageUrl()
     ];
 } );
 
