@@ -93,7 +93,7 @@ class ObjectController extends Controller {
                         ->first();
 
         if ( is_null( $object ) )
-            return $response->error( 'Object not found' );
+            abort( 404 );
 
         $object->status = -1;
         $object->save();

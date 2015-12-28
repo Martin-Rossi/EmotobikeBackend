@@ -139,5 +139,23 @@ class UserController extends Controller {
 
         return $response->result( $user->feedbacks );
     }
+
+    public function messages_sent( $id, ApiResponse $response ) {
+        $user = User::find( $id );
+
+        if ( is_null( $user ) )
+            abort( 404 );
+
+        return $response->result( $user->outbox );
+    }
     
+    public function messages_received( $id, ApiResponse $response ) {
+        $user = User::find( $id );
+
+        if ( is_null( $user ) )
+            abort( 404 );
+
+        return $response->result( $user->inbox );
+    }
+
 }

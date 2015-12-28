@@ -59,4 +59,12 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
         return $this->hasMany( 'App\Feedback', 'author', 'id' );
     }
 
+    public function inbox() {
+        return $this->hasMany( 'App\Message', 'recipient', 'id' );
+    }
+
+    public function outbox() {
+        return $this->hasMany( 'App\Message', 'sender', 'id' );
+    }
+
 }

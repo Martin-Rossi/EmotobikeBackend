@@ -141,4 +141,22 @@ class UserTest extends TestCase {
              ->see( $feedback->foreign_id );
     }
 
+    public function testIndexUserSentMessages() {
+        $message = factory( App\Message::class, 1 )->create();
+
+        $sender = \App\User::find( $message->sender );
+
+        $this->visit( '/users/' . $sender->id . '/messages/sent' )
+             ->see( $message->message );
+    }
+
+    public function testIndexUserReceivedMessages() {
+        $message = factory( App\Message::class, 1 )->create();
+        
+        $recipient = \App\User::find( $message->recipient );
+
+        $this->visit( '/users/' . $recipient->id . '/messages/received' )
+             ->see( $message->message );
+    }
+
 }

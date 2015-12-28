@@ -89,7 +89,7 @@ class CatalogController extends Controller {
                           ->first();
 
         if ( is_null( $catalog ) )
-            return $response->error( 'Catalog not found' );
+            abort( 404 );
 
         $catalog->status = -1;
         $catalog->save();

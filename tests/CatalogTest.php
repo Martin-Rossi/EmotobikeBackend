@@ -12,7 +12,7 @@ class CatalogTest extends TestCase {
         $catalog = factory( App\Catalog::class, 1 )->create();
 
         $this->visit( '/catalogs' )
-             ->see( $catalog->name );
+             ->seeJson( ['type' => 'result'] );
     }
 
     public function testShowCatalog() {
@@ -76,7 +76,7 @@ class CatalogTest extends TestCase {
         $catalog->save();
 
         $this->actingAs( $user )->visit( '/deleted/catalogs' )
-             ->see( $catalog->name );
+             ->seeJson( ['type' => 'result'] );
     }
 
     public function testSearchCatalogs() {
@@ -88,7 +88,7 @@ class CatalogTest extends TestCase {
 
         $response = $this->call( 'POST', '/search/catalogs', $data );
             
-        $this->see( $catalog->name );
+        $this->seeJson( ['type' => 'result'] );
     }
 
     public function testFilterCatalogs() {
@@ -106,7 +106,7 @@ class CatalogTest extends TestCase {
 
         $response = $this->call( 'POST', '/filter/catalogs', $data );
             
-        $this->see( $catalog->name );
+        $this->seeJson( ['type' => 'result'] );
     }
 
     public function testIndexCatalogObjects() {

@@ -70,7 +70,7 @@ class CollectionController extends Controller {
                                 ->get();
 
         if ( ! sizeof( $collection ) > 0 )
-            return $response->error( 'Collection not found' );
+            abort( 404 );
 
         foreach ( $collection as $c ) {
             $c->status = -1;

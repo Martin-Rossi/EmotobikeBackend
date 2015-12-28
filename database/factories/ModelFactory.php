@@ -174,3 +174,19 @@ $factory->define( App\PersonalPrice::class, function( Faker\Generator $faker ) {
         'personal_price'        => $faker->randomFloat( 2, 100, 10000 )
     ];
 } );
+
+$factory->define( App\Message::class, function( Faker\Generator $faker ) {
+    $type = factory( App\Type::class, 1 )->create();
+    $sender = factory( App\User::class, 1 )->create();
+    $recipient = factory( App\User::class, 1 )->create();
+
+    return [
+        'type_id'               => $type->id,
+        'message_thread'        => 0,
+        'sender'                => $sender->id,
+        'recipient'             => $recipient->id,
+        'message'               => $faker->paragraph( 5 ),
+        'image'                 => $faker->url,
+        'actstem'               => null
+    ];
+} );

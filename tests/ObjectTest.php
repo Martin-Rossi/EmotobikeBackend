@@ -12,7 +12,7 @@ class ObjectTest extends TestCase {
         $object = factory( App\Object::class, 1 )->create();
 
         $this->visit( '/objects' )
-             ->see( $object->name );
+             ->seeJson( ['type' => 'result'] );
     }
 
     public function testShowObject() {
@@ -76,7 +76,7 @@ class ObjectTest extends TestCase {
         $object->save();
 
         $this->actingAs( $user )->visit( '/deleted/objects' )
-             ->see( $object->name );
+             ->seeJson( ['type' => 'result'] );
     }
 
     public function testSearchObjects() {
@@ -88,7 +88,7 @@ class ObjectTest extends TestCase {
 
         $response = $this->call( 'POST', '/search/objects', $data );
             
-        $this->see( $object->name );
+        $this->seeJson( ['type' => 'result'] );
     }
 
     public function testFilterObjects() {
@@ -106,7 +106,7 @@ class ObjectTest extends TestCase {
 
         $response = $this->call( 'POST', '/filter/objects', $data );
             
-        $this->see( $object->name );
+        $this->seeJson( ['type' => 'result'] );
     }
 
     public function testIndexObjectsCatalog() {

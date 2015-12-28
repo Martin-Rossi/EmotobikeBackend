@@ -36,6 +36,8 @@ Route::group( ['middleware' => ['cors']], function () {
 	Route::get( 'users/{id}/likes', 'UserController@likes' );
 	Route::get( 'users/{id}/follows', 'UserController@follows' );
 	Route::get( 'users/{id}/feedbacks', 'UserController@feedbacks' );
+	Route::get( 'users/{id}/messages/sent', 'UserController@messages_sent' );
+	Route::get( 'users/{id}/messages/received', 'UserController@messages_received' );
 
 	Route::post( 'search/users', 'UserController@search' );
 	Route::post( 'filter/users', 'UserController@filter' );
@@ -184,4 +186,15 @@ Route::group( ['middleware' => ['auth', 'cors']], function() {
 	Route::resource( 'pprices', 'PersonalPriceController', [
 		'only' => ['update', 'store', 'destroy']
 	] );
+} );
+
+/*
+| Message routes
+*/
+Route::group( ['middleware' => ['auth', 'cors']], function() {
+	Route::resource( 'messages', 'MessageController', [
+		'only' => ['show', 'store']
+	] );
+
+	Route::post( 'messages/{id}/reply', 'MessageController@reply' );
 } );
