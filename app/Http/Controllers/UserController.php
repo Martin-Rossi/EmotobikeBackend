@@ -42,6 +42,7 @@ class UserController extends Controller {
     public function search( Request $request, ApiResponse $response ) {
         $users = User::where( 'tags', 'LIKE', '%' . $request->get( 'term' ) . '%' )
                      ->orWhere( 'name', 'LIKE', '%' . $request->get( 'term' ) . '%' )
+                     ->orWhere( 'email', 'LIKE', '%' . $request->get( 'term' ) . '%' )
                      ->get();
 
         return $response->result( $users );
