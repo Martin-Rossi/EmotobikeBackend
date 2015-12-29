@@ -7,7 +7,7 @@ class CreateRoutesTable extends Migration {
 
     public function up() {
         Schema::create( 'routes', function( Blueprint $table ) {
-            $table->bigIncrements( 'id' );
+            $table->increments( 'id' );
             $table->string( 'name', 255 );
             $table->text( 'description' )->nullable()->default( null );
             $table->binary( 'data' )->nullable()->default( null );
