@@ -122,6 +122,18 @@ Route::group( ['middleware' => ['auth', 'cors']], function () {
 } );
 
 /*
+| Route routes
+*/
+Route::group( ['middleware' => ['auth', 'cors']], function () {
+	Route::resource( 'routes', 'RouteController', [
+		'only' => ['index', 'show', 'update', 'store', 'destroy']
+	] );
+
+	Route::get( 'routes/{id}/objects', 'RouteController@objects' );
+	Route::get( 'deleted/routes', 'CollectionController@deleted' );
+} );
+
+/*
 | Category routes
 */
 Route::group( ['middleware' => ['auth', 'cors']], function () {

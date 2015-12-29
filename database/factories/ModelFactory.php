@@ -95,6 +95,19 @@ $factory->define( App\Collection::class, function( Faker\Generator $faker ) {
     ];
 } );
 
+$factory->define( App\Route::class, function( Faker\Generator $faker ) {
+    $object = factory( App\Object::class, 1 )->create();
+    $user = App\User::find( $object->author );
+
+    return [
+        'name'                  => implode( ' ', $faker->words( 3 ) ),
+        'description'           => $faker->paragraph( 5 ),
+        'data'                  => null,
+        'object_ids'            => $object->id,
+        'author'                => $user->id
+    ];
+} );
+
 $factory->define( App\Category::class, function( Faker\Generator $faker ) {
     return [
         'name'                  => implode( ' ', $faker->words( 1 ) )
