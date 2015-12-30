@@ -162,6 +162,18 @@
 		created_at (TIMESTAMP)
 		updated_at (TIMESTAMP) 
 		
+**Friends**
+
+	route: /friends
+	Properties:
+		id (INT 10 - primary key, autoincrement)
+		from_id (INT 10, references id on 'users' - unique with 'to_id')
+		from_accepted (ENUM [0, 1])
+		to_id (INT 10, references id on 'users' - unique with 'from_id')
+		to_accepted (ENUM [0, 1])
+		created_at (TIMESTAMP)
+		updated_at (TIMESTAMP) 
+		
 **Feedbacks**  
 
 	route: /feedbacks
@@ -407,6 +419,45 @@ List everyone who follows this user.
 	Parameters: id
 	Returns:  
 		- response with type: result ([FollowObjects])
+		- response with type: error (user not found)  
+
+## /users/{id}/friend
+
+Add user as a friend.
+
+> Note: the friend request is sent from the current, authenticated user
+
+> Note: the friend request is sent to the user referenced by the {id}
+
+	URL: /users/{id}/friend
+	Type: POST
+	Parameters: id
+	Returns:
+		- response with type: success
+		- response with type: error  
+
+## /users/{id}/unfriend
+
+Unfriend user.
+
+> Note: with this enpoint the current, authenticated user will unfriend the user referenced by the {id}.
+
+	URL: /users/{id}/unfriend
+	Type: POST
+	Parameters: id
+	Returns:
+		- response with type: success
+		- response with type: error  
+
+## /users/{id}/friends
+
+List each one who is a friend of the user referenced by the {id}.
+
+	URL: /users/{id}/friends  
+	Type: GET
+	Parameters: id
+	Returns:  
+		- response with type: result ([UserObjects])
 		- response with type: error (user not found)  
 
 ## /users/{id}/messages/sent
@@ -1267,6 +1318,32 @@ Delete a follow (unfollow).
 
 	URL: /follows/{id} 
 	Type: DELETE  
+	Parameters (URL): id
+	Parameters (POST): _token  
+	Returns:  
+		- response with type: success
+		- response with type: error  
+
+# Endpoints "friendship"  
+
+## /friends/requests
+
+List pending friend request for the current, authenticated user. 
+
+	URL: /friends/requests
+	Type: GET
+	Parameters: -
+	Returns:
+		- response with type: result (CommentObject)
+
+## /friends/{id}/accept
+
+Accept a friend request.
+
+> Note: in this case, the {id} is refering to the friend request ID, not the user ID. The friend request ID can be obtained by using the previous endpoint (/friends/requests)
+
+	URL: /friends/{id}/accept
+	Type: POST  
 	Parameters (URL): id
 	Parameters (POST): _token  
 	Returns:  
