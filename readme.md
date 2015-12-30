@@ -292,7 +292,17 @@ Logout user.
 		- response with type: success  
 		- response with type: error  
 
-# Endpoints "user"    
+# Endpoints "user"  
+
+## /users
+
+List user accounts.
+
+	URL: /users
+	Type: GET
+	Parameters: -
+	Returns:
+		- response with type: result ([UserObjects])
 
 ## /users/{id}
 
