@@ -4,12 +4,26 @@ namespace App\Http\Controllers;
 
 use App\User;
 use App\Follow;
+use App\Friend;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Extensions\APIResponse;
 
 class UserController extends Controller {
+
+    protected $pp = 10;
+
+    public function __construct( Request $request ) {
+        if ( $request->get( 'pp' ) )
+            $this->pp = intval( $request->get( 'pp' ) );
+    }
+
+    public function index( ApiResponse $response ) {
+        $users = User::paginate( $this->pp );
+
+        return $response->result( $users->toArray() );
+    }
 
     public function show( $id, ApiResponse $response ) {
         $user = User::find( $id );
@@ -170,6 +184,90 @@ class UserController extends Controller {
             abort( 404 );
 
         return $response->result( $user->follows() );
+    }
+
+    public function friend( $id, ApiResponse $response ) {
+        $user = User::find( $id );
+
+        if ( is_null( $user ) )
+            abort( 404 );
+
+        if ( auth()->user()->id == $user->id )
+            return $response->error( 'A user cannot befriend himself' );
+
+        $inputs = [
+            'from_id'       => auth()->user()->id,
+            'from_accepted' => 1,
+            'to_id'         => $user->id,
+            'to_accepted'   => 0
+        ];
+
+        try {
+            Friend::create( $inputs );
+        } catch ( Exception $e ) {
+            return $response->error( $e->getMessage() );
+        }
+
+        return $response->success( 'User successfully added as a friend' );
+    }
+
+    public function unfriend( $id, ApiResponse $response ) {
+        $user = User::find( $id );
+
+        if ( is_null( $user ) )
+            abort( 404 );
+
+        if ( auth()->user()->id == $user->id )
+            return $response->error( 'A user cannot unfriend himself' );
+
+        $friendship = Friend::where( 'from_id', '=', auth()->user()->id )
+                            ->where( 'to_id', '=', $user->id )
+                            ->first();
+
+        if ( is_null( $friendship ) )
+            $friendship = Friend::where( 'to_id', '=', auth()->user()->id )
+                                ->where( 'from_id', '=', $user->id )
+                                ->first();
+
+        if ( is_null( $friendship ) )
+            return $response->error( 'Friendship does not exists, nothing to do here' );
+
+        $friendship->delete();
+
+        return $response->success( 'User successfully unfriended' );
+    }
+
+    public function friends( $id, ApiResponse $response ) {
+        $user = User::find( $id );
+
+        if ( is_null( $user ) )
+            abort( 404 );
+
+        $friend_ids = [];
+
+        $frs = \App\Friend::where( 'from_id', '=', $user->id )
+                          ->orWhere( 'to_id', '=', $user->id )
+                          ->get();
+
+        if ( ! sizeof( $frs ) > 0 )
+            return $response->result( $friend_ids );
+
+        foreach ( $frs as $fr ) {
+            if ( ! $fr->from_accepted )
+                continue;
+
+            if ( ! $fr->to_accepted )
+                continue;
+
+            if ( $fr->from_id == $user->id )
+                $friend_ids[] = $fr->to_id;
+            else
+                $friend_ids[] = $fr->from_id;
+        }
+
+        $friends = User::whereIn( 'id', $friend_ids )->paginate( $this->pp );
+
+        return $response->result( $friends->toArray() );
     }
 
     public function feedbacks( $id, ApiResponse $response ) {

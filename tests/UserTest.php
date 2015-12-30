@@ -165,6 +165,46 @@ class UserTest extends TestCase {
              ->see( $followed->email );
     }
 
+    public function testFriendUser() {
+        $from = factory( App\User::class, 1 )->create();
+        $to = factory( App\User::class, 1 )->create();
+
+        $response = $this->actingAs( $from )->call( 'POST', '/users/' . $to->id . '/friend' );
+
+        $this->seeInDatabase( 'friends', ['from_id' => $from->id, 'to_id' => $to->id] )
+             ->assertEquals( 200, $response->status() );
+    }
+
+    public function testUnfriendUser() {
+        $friends = factory( App\Friend::class, 1 )->create();
+
+        $friends->from_accepted = 1;
+        $friends->to_accepted = 1;
+        $friends->save();
+
+        $from = \App\User::find( $friends->from_id );
+        $to = \App\User::find( $friends->to_id );
+
+        $response = $this->actingAs( $from )->call( 'POST', '/users/' . $to->id . '/unfriend' );
+
+        $this->dontSeeInDatabase( 'friends', ['from_id' => $from->id, 'to_id' => $to->id] )
+             ->assertEquals( 200, $response->status() );
+    }
+
+    public function testIndexUserFriends() {
+        $friends = factory( App\Friend::class, 1 )->create();
+
+        $friends->from_accepted = 1;
+        $friends->to_accepted = 1;
+        $friends->save();
+
+        $from = \App\User::find( $friends->from_id );
+        $to = \App\User::find( $friends->to_id );
+
+        $this->visit( '/users/' . $from->id . '/friends' )
+             ->see( $to->email );
+    }
+
     public function testIndexUserSentMessages() {
         $message = factory( App\Message::class, 1 )->create();
 

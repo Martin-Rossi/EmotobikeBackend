@@ -26,7 +26,7 @@ Route::get( 'auth/logout', ['middleware' => 'cors', 'uses' => 'Auth\AuthControll
 */
 Route::group( ['middleware' => ['cors']], function () {
 	Route::resource( 'users', 'UserController', [
-		'only' => ['show', 'update']
+		'only' => ['index', 'show', 'update']
 	] );
 
 	Route::get( 'users/{id}/objects', 'UserController@objects' );
@@ -37,10 +37,13 @@ Route::group( ['middleware' => ['cors']], function () {
 	Route::get( 'users/{id}/following', 'UserController@following' );
 	Route::get( 'users/{id}/feedbacks', 'UserController@feedbacks' );
 	Route::get( 'users/{id}/follows', 'UserController@follows' );
+	Route::get( 'users/{id}/friends', 'UserController@friends' );
 	Route::get( 'users/{id}/messages/sent', 'UserController@messages_sent' );
 	Route::get( 'users/{id}/messages/received', 'UserController@messages_received' );
 
 	Route::post( 'users/{id}/follow', 'UserController@follow' );
+	Route::post( 'users/{id}/friend', 'UserController@friend' );
+	Route::post( 'users/{id}/unfriend', 'UserController@unfriend' );
 
 	Route::post( 'search/users', 'UserController@search' );
 	Route::post( 'field/users', 'UserController@getByField' );
@@ -182,6 +185,14 @@ Route::group( ['middleware' => ['auth', 'cors']], function () {
 	Route::resource( 'follows', 'FollowController', [
 		'only' => ['destroy']
 	] );
+} );
+
+/*
+| Friend routes
+*/
+Route::group( ['middleware' => ['auth', 'cors']], function() {
+	Route::get( 'friends/requests', 'FriendController@requests' );
+	Route::post( 'friends/{id}/accept', 'FriendController@accept' );
 } );
 
 /*

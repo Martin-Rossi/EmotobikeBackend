@@ -204,3 +204,15 @@ $factory->define( App\Message::class, function( Faker\Generator $faker ) {
         'actstem'               => null
     ];
 } );
+
+$factory->define( App\Friend::class, function( Faker\Generator $faker ) {
+    $from = factory( App\User::class, 1 )->create();
+    $to = factory( App\User::class, 1 )->create();
+
+    return [
+        'from_id'               => $from->id,
+        'from_accepted'         => $faker->randomElement( [0, 1] ),
+        'to_id'                 => $to->id,
+        'to_accepted'           => $faker->randomElement( [0, 1] )
+    ];
+} );
