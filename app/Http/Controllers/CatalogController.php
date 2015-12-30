@@ -209,6 +209,14 @@ class CatalogController extends Controller {
         if ( is_null( $catalog ) )
             abort( 404 );
 
+        $exists = Like::where( 'foreign_id', '=', $id )
+                      ->where( 'foreign_type', '=', 'catalog' )
+                      ->where( 'author', '=', auth()->user()->id )
+                      ->first();
+
+        if ( $exists )
+            return $response->error( 'This user already liked this catalog' );
+
         $like = [
             'foreign_id'    => $id,
             'foreign_type'  => 'catalog',
@@ -241,6 +249,14 @@ class CatalogController extends Controller {
 
         if ( is_null( $catalog ) )
             abort( 404 );
+
+        $exists = Follow::where( 'foreign_id', '=', $id )
+                        ->where( 'foreign_type', '=', 'catalog' )
+                        ->where( 'author', '=', auth()->user()->id )
+                        ->first();
+
+        if ( $exists )
+            return $response->error( 'This user already followed this catalog' );
 
         $follow = [
             'foreign_id'    => $id,

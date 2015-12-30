@@ -159,6 +159,14 @@ class UserController extends Controller {
         if ( is_null( $user ) )
             abort( 404 );
 
+        $exists = Follow::where( 'foreign_id', '=', $id )
+                        ->where( 'foreign_type', '=', 'user' )
+                        ->where( 'author', '=', auth()->user()->id )
+                        ->first();
+
+        if ( $exists )
+            return $response->error( 'This user is already followed by the authenticated user' );
+
         $follow = [
             'foreign_id'    => $id,
             'foreign_type'  => 'user',

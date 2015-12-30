@@ -211,6 +211,14 @@ class ObjectController extends Controller {
         if ( is_null( $object ) )
             abort( 404 );
 
+        $exists = Like::where( 'foreign_id', '=', $id )
+                      ->where( 'foreign_type', '=', 'object' )
+                      ->where( 'author', '=', auth()->user()->id )
+                      ->first();
+
+        if ( $exists )
+            return $response->error( 'This user already liked this object' );
+
         $like = [
             'foreign_id'    => $id,
             'foreign_type'  => 'object',
@@ -243,6 +251,14 @@ class ObjectController extends Controller {
 
         if ( is_null( $object ) )
             abort( 404 );
+
+        $exists = Follow::where( 'foreign_id', '=', $id )
+                        ->where( 'foreign_type', '=', 'object' )
+                        ->where( 'author', '=', auth()->user()->id )
+                        ->first();
+
+        if ( $exists )
+            return $response->error( 'This user already followed this object' );
 
         $follow = [
             'foreign_id'    => $id,
