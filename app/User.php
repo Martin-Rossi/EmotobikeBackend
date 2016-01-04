@@ -34,11 +34,11 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
     ];
 
     public function objects() {
-        return $this->hasMany( 'App\Object', 'author', 'id' )->with( 'catalog' );
+        return $this->hasMany( 'App\Object', 'author', 'id' )->with( 'catalog' )->with( 'author' );
     }
 
     public function catalogs() {
-        return $this->hasMany( 'App\Catalog', 'author', 'id' )->with( 'objects' );
+        return $this->hasMany( 'App\Catalog', 'author', 'id' )->with( 'objects' )->with( 'author' );
     }
 
     public function collections() {
