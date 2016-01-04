@@ -22,6 +22,8 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
         'email',
         'password',
         'image',
+        'profile_name',
+        'profile_description',
         'commissions_earned',
         'commission_rate',
         'personal_price_earned',
@@ -32,6 +34,10 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
         'password',
         'remember_token'
     ];
+
+    public function group() {
+        return $this->belongsTo( 'App\UserGroup', 'group_id' );
+    }
 
     public function objects() {
         return $this->hasMany( 'App\Object', 'author', 'id' )->with( 'catalog' )->with( 'author' );
