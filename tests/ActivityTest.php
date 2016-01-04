@@ -48,15 +48,11 @@ class ActivityTest extends TestCase {
 
     public function testFilterActivities() {
         $activity = factory( App\Activity::class, 1 )->create();
-        $type = factory( App\Type::class, 1 )->create();
-
-        $activity->type_id = $type->id;
-        $activity->save();
 
         $data = [
             'filter'   => 'type_id',
             'operator' => '=',
-            'value'    => $type->id
+            'value'    => $activity->type_id
         ];
 
         $response = $this->call( 'POST', '/filter/activities', $data );

@@ -23,24 +23,16 @@ class CategoryTest extends TestCase {
     }
 
     public function testIndexCategoryObjects() {
-        $category = factory( App\Category::class, 1 )->create();
         $object = factory( App\Object::class, 1 )->create();
 
-        $object->category_id = $category->id;
-        $object->save();
-
-        $this->visit( '/categories/' . $category->id . '/objects' )
+        $this->visit( '/categories/' . $object->category_id . '/objects' )
              ->see( $object->name );
     }
 
     public function testIndexCategoryCatalogs() {
-        $category = factory( App\Category::class, 1 )->create();
         $catalog = factory( App\Catalog::class, 1 )->create();
 
-        $catalog->category_id = $category->id;
-        $catalog->save();
-
-        $this->visit( '/categories/' . $category->id . '/catalogs' )
+        $this->visit( '/categories/' . $catalog->category_id . '/catalogs' )
              ->see( $catalog->name );
     }
 

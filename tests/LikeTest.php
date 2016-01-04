@@ -10,10 +10,8 @@ class LikeTest extends TestCase {
 
     public function testDestroyLike() {
         $like = factory( App\Like::class, 1 )->create();
-        $user = factory( App\User::class )->create();
-
-        $like->author = $user->id;
-        $like->save();
+      
+        $user = \App\User::find( $like->author );
 
         $response = $this->actingAs( $user )->call( 'DELETE', '/likes/' . $like->id );
 

@@ -43,10 +43,7 @@ class ObjectTest extends TestCase {
         $data['category'] = 'test';
         $data['type'] = 'test';
 
-        $user = factory( App\User::class )->create();
-
-        $object->author = $user->id;
-        $object->save();
+        $user = \App\User::find( $object->author );
 
         $response = $this->actingAs( $user )->call( 'PUT', '/objects/' . $object->id, $data );
 
@@ -56,10 +53,8 @@ class ObjectTest extends TestCase {
 
     public function testDeleteObject() {
         $object = factory( App\Object::class, 1 )->create();
-        $user = factory( App\User::class, 1 )->create();
-
-        $object->author = $user->id;
-        $object->save();
+        
+        $user = \App\User::find( $object->author );
 
         $this->actingAs( $user )->call( 'DELETE', '/objects/' . $object->id );
 
@@ -69,10 +64,10 @@ class ObjectTest extends TestCase {
 
     public function testIndexDeletedObjects() {
         $object = factory( App\Object::class, 1 )->create();
-        $user = factory( App\User::class, 1 )->create();
+        
+        $user = \App\User::find( $object->author );
 
         $object->status = -1;
-        $object->author = $user->id;
         $object->save();
 
         $this->actingAs( $user )->visit( '/deleted/objects' )
@@ -93,10 +88,8 @@ class ObjectTest extends TestCase {
 
     public function testFilterObjects() {
         $object = factory( App\Object::class, 1 )->create();
-        $catalog = factory( App\Catalog::class, 1 )->create();
 
-        $object->catalog_id = $catalog->id;
-        $object->save();
+        $catalog = \App\Catalog::find( $object->catalog_id );
 
         $data = [
             'filter'   => 'catalog_id',
@@ -110,11 +103,9 @@ class ObjectTest extends TestCase {
     }
 
     public function testIndexObjectsCatalog() {
-        $catalog = factory( App\Catalog::class, 1 )->create();
         $object = factory( App\Object::class, 1 )->create();
 
-        $object->catalog_id = $catalog->id;
-        $object->save();
+        $catalog = \App\Catalog::find( $object->catalog_id );
 
         $this->visit( '/objects/' . $object->id . '/catalog' )
              ->see( $catalog->name );

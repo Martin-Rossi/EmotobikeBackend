@@ -43,10 +43,7 @@ class CatalogTest extends TestCase {
         $data['category'] = 'test';
         $data['type'] = 'test';
 
-        $user = factory( App\User::class )->create();
-
-        $catalog->author = $user->id;
-        $catalog->save();
+        $user = \App\User::find( $catalog->author );
 
         $response = $this->actingAs( $user )->call( 'PUT', '/catalogs/' . $catalog->id, $data );
 
@@ -56,10 +53,8 @@ class CatalogTest extends TestCase {
 
     public function testDeleteCatalog() {
         $catalog = factory( App\Catalog::class, 1 )->create();
-        $user = factory( App\User::class, 1 )->create();
-
-        $catalog->author = $user->id;
-        $catalog->save();
+        
+        $user = \App\User::find( $catalog->author );
 
         $this->actingAs( $user )->call( 'DELETE', '/catalogs/' . $catalog->id );
 
@@ -69,10 +64,10 @@ class CatalogTest extends TestCase {
 
     public function testIndexDeletedCatalogs() {
         $catalog = factory( App\Catalog::class, 1 )->create();
-        $user = factory( App\User::class, 1 )->create();
+        
+        $user = \App\User::find( $catalog->author );
 
         $catalog->status = -1;
-        $catalog->author = $user->id;
         $catalog->save();
 
         $this->actingAs( $user )->visit( '/deleted/catalogs' )
@@ -93,15 +88,11 @@ class CatalogTest extends TestCase {
 
     public function testFilterCatalogs() {
         $catalog = factory( App\Catalog::class, 1 )->create();
-        $category = factory( App\Category::class, 1 )->create();
-
-        $catalog->category_id = $category->id;
-        $catalog->save();
-
+        
         $data = [
             'filter'   => 'category_id',
             'operator' => '=',
-            'value'    => $category->id
+            'value'    => $catalog->category_id
         ];
 
         $response = $this->call( 'POST', '/filter/catalogs', $data );
@@ -110,24 +101,18 @@ class CatalogTest extends TestCase {
     }
 
     public function testIndexCatalogObjects() {
-        $catalog = factory( App\Catalog::class, 1 )->create();
         $object = factory( App\Object::class, 1 )->create();
 
-        $object->catalog_id = $catalog->id;
-        $object->save();
-
-        $this->visit( '/catalogs/' . $catalog->id . '/objects' )
+        $this->visit( '/catalogs/' . $object->catalog_id . '/objects' )
              ->see( $object->name );
     }
 
     public function testIndexCatalogContent() {
-        $catalog = factory( App\Catalog::class, 1 )->create();
         $object = factory( App\Object::class, 1 )->create();
 
-        $object->catalog_id = $catalog->id;
-        $object->save();
+        $catalog = \App\Catalog::find( $object->catalog_id );
 
-        $this->visit( '/catalogs/' . $catalog->id . '/content' )
+        $this->visit( '/catalogs/' . $object->catalog_id . '/content' )
              ->see( $catalog->name )
              ->see( $object->name );
     }

@@ -10,10 +10,8 @@ class FollowTest extends TestCase {
 
     public function testDestroyFollow() {
         $follow = factory( App\Follow::class, 1 )->create();
-        $user = factory( App\User::class )->create();
-
-        $follow->author = $user->id;
-        $follow->save();
+        
+        $user = \App\User::find( $follow->author );
 
         $response = $this->actingAs( $user )->call( 'DELETE', '/follows/' . $follow->id );
 

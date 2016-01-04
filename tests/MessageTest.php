@@ -44,11 +44,10 @@ class MessageTest extends TestCase {
         $follow = factory( App\Follow::class, 1 )->create();
         $tofollow = factory( App\User::class, 1 )->create();
 
-        $user = factory( App\User::class, 1 )->create();
+        $user = \App\User::find( $follow->author );
 
         $follow->foreign_id = $tofollow->id;
         $follow->foreign_type = 'user';
-        $follow->author = $user->id;
         $follow->save();
 
         $message = factory( App\Message::class, 1 )->create();

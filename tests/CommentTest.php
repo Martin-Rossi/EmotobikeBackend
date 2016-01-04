@@ -19,10 +19,7 @@ class CommentTest extends TestCase {
         $comment = factory( App\Comment::class, 1 )->create();
         $data = factory( App\Comment::class, 1 )->make()->toArray();
 
-        $user = factory( App\User::class )->create();
-
-        $comment->author = $user->id;
-        $comment->save();
+        $user = \App\User::find( $comment->author );
 
         $response = $this->actingAs( $user )->call( 'PUT', '/comments/' . $comment->id, $data );
 

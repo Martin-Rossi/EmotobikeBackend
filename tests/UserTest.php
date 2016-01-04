@@ -53,23 +53,15 @@ class UserTest extends TestCase {
 
     public function testIndexUserObjects() {
         $object = factory( App\Object::class, 1 )->create();
-        $user = factory( App\User::class, 1 )->create();
-
-        $object->author = $user->id;
-        $object->save();
-
-        $this->visit( '/users/' . $user->id . '/objects' )
+        
+        $this->visit( '/users/' . $object->author . '/objects' )
              ->see( $object->name );
     }
 
     public function testIndexUserCatalogs() {
         $catalog = factory( App\Catalog::class, 1 )->create();
-        $user = factory( App\User::class, 1 )->create();
 
-        $catalog->author = $user->id;
-        $catalog->save();
-
-        $this->visit( '/users/' . $user->id . '/catalogs' )
+        $this->visit( '/users/' . $catalog->author . '/catalogs' )
              ->see( $catalog->name );
     }
 
@@ -221,6 +213,47 @@ class UserTest extends TestCase {
 
         $this->visit( '/users/' . $recipient->id . '/messages/received' )
              ->see( $message->message );
+    }
+
+    public function testGetUserPreference() {
+        $user  = factory( App\User::class, 1 )->create();
+
+        $preference = new \App\UserPreference();
+
+        $preference->user_id = $user->id;
+        $preference->key = 'EmailYrCat';
+        $preference->value = 1;
+
+        $preference->save();
+
+        $this->actingAs( $user )->visit( '/users/preferences/EmailYrCat/get' )
+             ->see( $preference->key )
+             ->see( $preference->value );
+    }
+
+    public function testIndexUserPreference() {
+        $user  = factory( App\User::class, 1 )->create();
+
+        $preference = new \App\UserPreference();
+
+        $preference->user_id = $user->id;
+        $preference->key = 'EmailYrCat';
+        $preference->value = 1;
+
+        $preference->save();
+
+        $this->actingAs( $user )->visit( '/users/preferences/all' )
+             ->see( $preference->key )
+             ->see( $preference->value );
+    }
+
+    public function testSetUserPreference() {
+        $user = factory( App\User::class, 1 )->create();
+
+        $response = $this->actingAs( $user )->call( 'POST', '/users/preferences/EmailYrCat/set', ['value' => 1] );
+
+        $this->seeInDatabase( 'user_preferences', ['user_id' => $user->id, 'key' => 'EmailYrCat', 'value' => 1] )
+             ->assertEquals( 200, $response->status() );
     }
 
 }

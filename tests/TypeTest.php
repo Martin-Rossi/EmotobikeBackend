@@ -23,24 +23,16 @@ class TypeTest extends TestCase {
     }
 
     public function testIndexTypeObjects() {
-        $type = factory( App\Type::class, 1 )->create();
         $object = factory( App\Object::class, 1 )->create();
 
-        $object->type_id = $type->id;
-        $object->save();
-
-        $this->visit( '/types/' . $type->id . '/objects' )
+        $this->visit( '/types/' . $object->type_id . '/objects' )
              ->see( $object->name );
     }
 
     public function testIndexTypeCatalogs() {
-        $type = factory( App\Type::class, 1 )->create();
         $catalog = factory( App\Catalog::class, 1 )->create();
 
-        $catalog->type_id = $type->id;
-        $catalog->save();
-
-        $this->visit( '/types/' . $type->id . '/catalogs' )
+        $this->visit( '/types/' . $catalog->type_id . '/catalogs' )
              ->see( $catalog->name );
     }
 

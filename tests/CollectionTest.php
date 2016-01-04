@@ -10,10 +10,8 @@ class CollectionTest extends TestCase {
 
     public function testIndexCollections() {
         $collection = factory( App\Collection::class, 1 )->create();
-        $user = factory( App\User::class, 1 )->create();
-
-        $collection->author = $user->id;
-        $collection->save();
+        
+        $user = \App\User::find( $collection->author );
 
         $this->actingAs( $user )->visit( '/collections' )
              ->see( $collection->collection_id )
@@ -24,10 +22,8 @@ class CollectionTest extends TestCase {
 
     public function testShowCollection() {
         $collection = factory( App\Collection::class, 1 )->create();
-        $user = factory( App\User::class, 1 )->create();
-
-        $collection->author = $user->id;
-        $collection->save();
+        
+        $user = \App\User::find( $collection->author );
 
         $this->actingAs( $user )->visit( '/collections/' . $collection->collection_id )
              ->see( $collection->collection_id )
@@ -48,10 +44,8 @@ class CollectionTest extends TestCase {
 
     public function testDeleteCollection() {
         $collection = factory( App\Collection::class, 1 )->create();
-        $user = factory( App\User::class, 1 )->create();
-
-        $collection->author = $user->id;
-        $collection->save();
+        
+        $user = \App\User::find( $collection->author );
 
         $this->actingAs( $user )->call( 'DELETE', '/collections/' . $collection->collection_id );
 
@@ -61,10 +55,10 @@ class CollectionTest extends TestCase {
 
     public function testIndexDeletedCollections() {
         $collection = factory( App\Collection::class, 1 )->create();
-        $user = factory( App\User::class, 1 )->create();
+        
+        $user = \App\User::find( $collection->author );
 
         $collection->status = -1;
-        $collection->author = $user->id;
         $collection->save();
 
         $this->actingAs( $user )->visit( '/deleted/collections' )
@@ -74,11 +68,11 @@ class CollectionTest extends TestCase {
     public function testIndexCollectionObjects() {
         $collection = factory( App\Collection::class, 1 )->create();
         $object = factory( App\Object::class, 1 )->create();
-        $user = factory( App\User::class, 1 )->create();
+        
+        $user = \App\User::find( $collection->author );
 
         $collection->foreign_id = $object->id;
         $collection->foreign_type = 'object';
-        $collection->author = $user->id;
         $collection->save();
 
         $this->actingAs( $user )->visit( '/collections/' . $collection->collection_id . '/objects' )
@@ -88,11 +82,11 @@ class CollectionTest extends TestCase {
     public function testIndexCollectionCatalogs() {
         $collection = factory( App\Collection::class, 1 )->create();
         $catalog = factory( App\Catalog::class, 1 )->create();
-        $user = factory( App\User::class, 1 )->create();
+        
+        $user = \App\User::find( $collection->author );
 
         $collection->foreign_id = $catalog->id;
         $collection->foreign_type = 'catalog';
-        $collection->author = $user->id;
         $collection->save();
 
         $this->actingAs( $user )->visit( '/collections/' . $collection->collection_id . '/catalogs' )
@@ -128,11 +122,11 @@ class CollectionTest extends TestCase {
     public function testRemoveObjectFromCollection() {
         $collection = factory( App\Collection::class, 1 )->create();
         $object = factory( App\Object::class, 1 )->create();
-        $user = factory( App\User::class )->create();
+        
+        $user = \App\User::find( $collection->author );
 
         $collection->foreign_id = $object->id;
         $collection->foreign_type = 'object';
-        $collection->author = $user->id;
         $collection->save();
 
         $data['object_id'] = $object->id;
@@ -146,11 +140,11 @@ class CollectionTest extends TestCase {
     public function testRemoveCatalogFromCollection() {
         $collection = factory( App\Collection::class, 1 )->create();
         $catalog = factory( App\Catalog::class, 1 )->create();
-        $user = factory( App\User::class )->create();
+        
+        $user = \App\User::find( $collection->author );
 
         $collection->foreign_id = $catalog->id;
         $collection->foreign_type = 'catalog';
-        $collection->author = $user->id;
         $collection->save();
 
         $data['catalog_id'] = $catalog->id;
