@@ -9,7 +9,7 @@ class CreateUsersTable extends Migration {
         Schema::create( 'users', function( Blueprint $table ) {
             $table->increments( 'id' );
             $table->integer( 'parent' )->default( 0 );
-            $table->integer( 'group_id' )->references( 'id' )->on( 'user_groups' );
+            $table->integer( 'group_id' )->references( 'id' )->on( 'user_groups' )->default( 200 );
             $table->string( 'tags', 255 )->nullable()->default( null );
             $table->string( 'name' );
             $table->string( 'email')->unique();

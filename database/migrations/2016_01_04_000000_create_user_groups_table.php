@@ -33,6 +33,13 @@ class CreateUserGroupsTable extends Migration {
                 'name'          => 'generic'
             ]
         );
+
+        DB::table( 'user_groups' )->insert(
+            [
+                'id'            => 200,
+                'name'          => 'user'
+            ]
+        );
     }
 
     public function down() {
