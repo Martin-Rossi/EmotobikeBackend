@@ -7,12 +7,16 @@
 	route: /users  
 	Properties:
 		id (INT 10 - primary key, autoincrement)
+		parent (INT 10)
+		group_id (INT 10 - references id on 'user_groups')
 		tags (VARCHAR 255, nullable, default: null)
 		name (VARCHAR 255)
 		email (VARCHAR 255, unique)
 		password (VARCHAR 60 - bcrypted)
 		remember_token (VARCHAR 100)
 		image (VARCHAR 255, nullable, default: null)
+		profile_name (VARCHAR 255, nullable, default: null)
+		profile_description (TEXT, nullable, default: null)
 		commissions_earned (INT 10, default: 0)
 		comission_rate (INT 10, default: 0)
 		personal_price_earned (INT 10, default: 0)
@@ -20,6 +24,16 @@
 		count_follows (INT 10, default: 0)
 		created_at (TIMESTAMP)
 		updated_at (TIMESTAMP)  
+		
+**UserGroups**
+
+	route: -
+	Properties:
+		id (INT 10 - primary key)
+		name (VARCHAR 55)
+		caps (TEXT, nullable, default: null)
+		created_at (TIMESTAMP)
+		updated_at (TIMESTAMP) 
 		
 **UserPreferences**
 
@@ -261,6 +275,19 @@ Each API endpoint (except: /auth/login) is protected with authentication. The cl
 With the authentication a "remember=1" parameter can be sent which will result an extended session.
 
 * Note: every response from the API will return the current, authenticated "_ user _ id". If the user is not authenticated, the "_ user _ id" is null.
+
+# UserGroups
+
+* id: 1 - root (root@localhost)  
+ > root authentication for no-limit access
+* id: 2 - admin (admin@localhost)  
+ > admin access for admin interface purposes
+* id: 100 - generic (generic@localhost)  
+ > generic access (for use with theme based catalogs)
+* id: 200 - user  
+ > normal users
+ 
+### TODO HERE: retails and curators
 		
 # Endpoints  
 
