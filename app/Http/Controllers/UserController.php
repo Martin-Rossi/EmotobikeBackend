@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\User;
 use App\Follow;
 use App\Friend;
+use App\UserPreference;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
@@ -303,6 +304,60 @@ class UserController extends Controller {
             abort( 404 );
 
         return $response->result( $user->inbox );
+    }
+
+    public function getPreference( $key, ApiResponse $response ) {
+        $preferences = config( 'user_preferences' );
+
+        if ( ! in_array( $key, $preferences ) )
+            return $response->error( 'Preference does not exists' );
+
+        $user_pref = UserPreference::firstOrNew( ['user_id' => auth()->user()->id, 'key' => $key] );
+        $user_pref->key = $key;
+
+        return $response->result( $user_pref );
+    }
+
+    public function getAllPreferences( ApiResponse $response ) {
+        $preferences = config( 'user_preferences' );
+
+        $user_prefs = [];
+
+        foreach ( $preferences as $key ) {
+            $user_pref = UserPreference::where( 'key', '=', $key )
+                                       ->where( 'user_id', '=', auth()->user()->id )
+                                       ->first();
+
+            if ( is_null( $user_pref ) )
+                $user_prefs[$key] = 0;
+            else
+                $user_prefs[$key] = $user_pref->value;
+        }
+
+        return $response->result( $user_prefs );
+    }
+
+    public function setPreference( $key, Request $request, ApiResponse $response ) {
+        $preferences = config( 'user_preferences' );
+
+        if ( ! in_array( $key, $preferences ) )
+            return $response->error( 'Preference does not exists' );
+
+        $preference = UserPreference::firstOrNew( [
+            'user_id'   => auth()->user()->id,
+            'key'       => $key
+        ] );
+
+        $preference->key = $key;
+        $preference->value = $request->get( 'value' );
+
+        try {
+            $preference->save();
+        } catch ( Exception $e ) {
+            return $response->error( $e->getMessage() );
+        }
+
+        return $response->success( 'Preference successfully updated' );
     }
 
 }

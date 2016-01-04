@@ -48,6 +48,10 @@ Route::group( ['middleware' => ['cors']], function () {
 	Route::post( 'search/users', 'UserController@search' );
 	Route::post( 'field/users', 'UserController@getByField' );
 	Route::post( 'filter/users', 'UserController@filter' );
+
+	Route::get( 'users/preferences/all', 'UserController@getAllPreferences' );
+	Route::get( 'users/preferences/{key}/get', 'UserController@getPreference' );
+	Route::post( 'users/preferences/{key}/set', 'UserController@setPreference' );
 } );
 
 /*
