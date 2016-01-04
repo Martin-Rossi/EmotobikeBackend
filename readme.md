@@ -19,7 +19,18 @@
 		price_earner (INT 10, default: 0)
 		count_follows (INT 10, default: 0)
 		created_at (TIMESTAMP)
-		updated_at (TIMESTAMP)
+		updated_at (TIMESTAMP)  
+		
+**UserPreferences**
+
+	route:: /users/preferences
+	Properties:
+		id (INT 10 - primary key, autoincrement)
+		user_id (INT 10 - references id on 'users')
+		key (VARCHAR 55)
+		value (ENUM [0,1])
+		created_at (TIMESTAMP)
+		updated_at (TIMESTAMP) 
 		
 **Object**  
 
@@ -514,7 +525,46 @@ Filter users.
 
 * supported filters: [created _ at, updated _ at]
 
-* supported operators: [=, <, >]
+* supported operators: [=, <, >]  
+
+## /users/preferences/{key}/get
+
+Get value for a user preference.
+
+	URL: /users/preferences/{key}/get
+	Type: GET
+	Parameters (URL): key  
+	Returns:
+		- response with type: result (UserPreferenceObject)  
+
+* supported keys: [EmailYrCat, EmailFrCat, EmailComments, EmailLikes, EmailPrivateMessages, EmailMilestones, EmailYrReq, EmailFrReq, EmailReqComments, PushCom, PushLikes, PushFollows, PushPriMessages, PushFrCatalog, PushMilestones, PushReqCom, PushRequest, PushFillsAReq]  
+
+## /users/preferences/all
+
+Get all user's preferences.
+
+	URL: /users/preferences/all
+	Type: GET
+	Parameters: -
+	Returns:
+		 - response with type: result ([UserPreferenceObjects])  
+
+## /users/preferences/{key}/set  
+
+Set a user preference.
+
+	URL: /users/preferences/{key}/set
+	Type: POST
+	Parameters (URL): key
+	Parameters (POST): value
+	Returns:
+		- response with type: success
+		- response with type: error   
+
+* supported keys: [EmailYrCat, EmailFrCat, EmailComments, EmailLikes, EmailPrivateMessages, EmailMilestones, EmailYrReq, EmailFrReq, EmailReqComments, PushCom, PushLikes, PushFollows, PushPriMessages, PushFrCatalog, PushMilestones, PushReqCom, PushRequest, PushFillsAReq]
+
+* supported values: [0, 1]  
+	
 
 # Endpoints "object"  
 
