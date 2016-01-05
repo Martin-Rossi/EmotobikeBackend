@@ -919,6 +919,17 @@ Display all objects residing in the catalog (empty if none).
 	Parameters: id  
 	Returns:  
 		- response with type: result ([ObjectObjects])
+		- response with type: error (catalog not found)  
+
+## /catalogs/{id}/products
+
+Display all products residing in the catalog (empty if none).
+
+	URL: /catalogs/{id}/products
+	Type: GET
+	Parameters: id
+	Returns:
+		- response with type: result ([ObjectObjects])
 		- response with type: error (catalog not found)
 
 ## /catalogs/{id}/content  
