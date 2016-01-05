@@ -22,6 +22,7 @@
 		personal_price_earned (INT 10, default: 0)
 		price_earner (INT 10, default: 0)
 		count_follows (INT 10, default: 0)
+		chat (ENUM [0,1])
 		created_at (TIMESTAMP)
 		updated_at (TIMESTAMP)  
 		
@@ -393,7 +394,7 @@ Update user properties (users can only updated their own properties).
 	URL: /users/{id} 
 	Type: PUT  
 	Parameters (URL): id
-	Parameters (POST): tags, name, image, commissions_earned, commission_rate, personal_price_earned, price_earner, _token  
+	Parameters (POST): tags, name, image, commissions_earned, commission_rate, personal_price_earned, price_earner, chat, _token  
 	Returns:  
 		- response with type: success
 		- response with type: error  
