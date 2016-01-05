@@ -57,6 +57,9 @@ class CatalogController extends Controller {
             return $response->error( $e->getMessage() );
         }
 
+        auth()->user()->count_authored++;
+        auth()->user()->save();
+
         return $response->success( 'Catalog created successfully' );
     }
 
@@ -239,6 +242,9 @@ class CatalogController extends Controller {
             return $response->error( $e->getMessage() );
         }
 
+        auth()->user()->count_likes++;
+        auth()->user()->save();
+
         $catalog->count_likes++;
         $catalog->save();
 
@@ -279,6 +285,9 @@ class CatalogController extends Controller {
         } catch ( Exception $e ) {
             return $response->error( $e->getMessage() );
         }
+
+        auth()->user()->count_following++;
+        auth()->user()->save();
 
         $catalog->count_follows++;
         $catalog->save();

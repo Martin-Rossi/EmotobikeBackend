@@ -21,6 +21,10 @@ class CreateUsersTable extends Migration {
             $table->integer( 'commission_rate' )->default( 0 );
             $table->integer( 'personal_price_earned' )->default( 0 );
             $table->integer( 'price_earner' )->default( 0 );
+            $table->integer( 'count_likes' )->default( 0 );
+            $table->integer( 'count_following' )->default( 0 );
+            $table->integer( 'count_authored' )->default( 0 );
+            $table->integer( 'count_drafts' )->default( 0 );
             $table->integer( 'count_follows' )->default( 0 );
             $table->enum( 'chat', [0, 1] )->default( 0 );
             $table->rememberToken();

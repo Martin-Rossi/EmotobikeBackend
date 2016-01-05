@@ -35,6 +35,9 @@ $factory->define( App\Object::class, function( Faker\Generator $faker ) {
     $type = factory( App\Type::class, 1 )->create();
     $user = factory( App\User::class, 1 )->create();
 
+    $user->count_authored++;
+    $user->save();
+
     return [
         'catalog_id' 		    => $catalog->id,
         'category_id'           => $category->id,
@@ -65,6 +68,9 @@ $factory->define( App\Catalog::class, function( Faker\Generator $faker ) {
     $category = factory( App\Category::class, 1 )->create();
     $type = factory( App\Type::class, 1 )->create();
     $user = factory( App\User::class, 1 )->create();
+
+    $user->count_authored++;
+    $user->save();
 
     return [
         'category_id'           => $category->id,

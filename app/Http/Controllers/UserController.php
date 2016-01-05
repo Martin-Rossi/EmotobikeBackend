@@ -180,6 +180,9 @@ class UserController extends Controller {
             return $response->error( $e->getMessage() );
         }
 
+        auth()->user()->count_following++;
+        auth()->user()->save();
+
         $user->count_follows++;
         $user->save();
 

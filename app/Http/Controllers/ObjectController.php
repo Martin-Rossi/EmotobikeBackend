@@ -61,6 +61,9 @@ class ObjectController extends Controller {
             return $response->error( $e->getMessage() );
         }
 
+        auth()->user()->count_authored++;
+        auth()->user()->save();
+
         return $response->success( 'Object created successfully' );
     }
 
@@ -232,6 +235,9 @@ class ObjectController extends Controller {
             return $response->error( $e->getMessage() );
         }
 
+        auth()->user()->count_likes++;
+        auth()->user()->save();
+
         $object->count_likes++;
         $object->save();
 
@@ -272,6 +278,9 @@ class ObjectController extends Controller {
         } catch ( Exception $e ) {
             return $response->error( $e->getMessage() );
         }
+
+        auth()->user()->count_following++;
+        auth()->user()->save();
 
         $object->count_follows++;
         $object->save();
