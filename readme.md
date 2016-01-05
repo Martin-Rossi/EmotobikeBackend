@@ -218,6 +218,23 @@
 		id (INT 10 - primary key, autoincrement)
 		foreign_id (INT 10)
 		foreign_type (ENUM['object','catalog'])
+		product_id (INT 10, default: 0)  
+		offer_id (INT 10, default: 0)  
+		shopper_id (INT 10, default: 0)
+		activity_id (INT 10, default: 0)  
+		interface_id (INT 10, default: 0)
+		event (TEXT, nullable, default: null)
+		channel (TEXT, nullable, default: null)
+		channel_id (INT 10, default: 0)  
+		date (DATE, default: null)  
+		time (DATE, default: null)  
+		taxonomy (TEXT, default: null) 
+		behavior (TEXT, default: null)  
+		behavior_frequency (DOUBLE (15,8), default: 0)  
+		artifact_id (INT 10, default: 0)  
+		artifact_frequency (DOUBLE (15, 8), default: 0)  
+		interaction_id (INT 10, default: 0)  
+		interaction_frequency (DOUBLE (15,8), default: 0)
 		value (BIGINT 20)
 		author (INT 10, references id on 'users')
 		created_at (TIMESTAMP)
@@ -774,7 +791,7 @@ Feedback on an object.
 	URL: /objects/{id}/feedback  
 	Type: POST
 	Parameters (URL): id
-	Parameters (POST): value, _token
+	Parameters (POST): product_id, offer_id, shopper_id, activity_id, interface_id, event, channel, channel_id, date, time, taxonomy, behavior, behavior_frequency, artifact_id, artifact_frequency, interaction_id, interaction_frequency, value, _token
 	Returns:  
 		- response with type: success
 		- response with type: error  
@@ -991,7 +1008,7 @@ Feedback on a catalogs.
 	URL: /catalogs/{id}/feedback  
 	Type: POST
 	Parameters (URL): id
-	Parameters (POST): value, _token
+	Parameters (POST): product_id, offer_id, shopper_id, activity_id, interface_id, event, channel, channel_id, date, time, taxonomy, behavior, behavior_frequency, artifact_id, artifact_frequency, interaction_id, interaction_frequency, value, _token
 	Returns:  
 		- response with type: success
 		- response with type: error  
