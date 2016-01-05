@@ -74,8 +74,8 @@
 		count_likes (INT 10, default: 0)
 		count_comments (INT 10, default: 0)
 		count_follows (INT 10, default: 0)
+		count_recommended (INT 10, default: 0)
 		competitor_flag (ENUM[0,1], default: 0)
-		recomended (ENUM[0,1], default: 0)
 		curated (ENUM[0,1], default: 0)
 		author (INT 10, references id on 'users')
 		status (ENUM[-1,0,1], default: 1)
@@ -99,10 +99,10 @@
 		publish (ENUM[0,1], default: 0)
 		trending (ENUM[0,1], default: 0)
 		popular (ENUM[0,1], default: 0)
-		recomended (ENUM[0,1], default 0)
 		count_likes (INT 10, default: 0)
 		count_comments (INT 10, default: 0)
 		count_follows (INT 10, default: 0)
+		count_recommended (INT 10, defualt: 0)
 		total_transaction (DOUBLE(12,2), default: 0)
 		author (INT 10, references id on 'users')
 		status (ENUM[-1,0,1], default: 1)
@@ -192,6 +192,17 @@
 **Follows**  
 
 	route: /follows
+	Properties:
+		id (INT 10 - primary key, autoincrement)
+		foreign_id (INT 10)
+		foreign_type (ENUM['object','catalog'])
+		author (INT 10, references id on 'users')
+		created_at (TIMESTAMP)
+		updated_at (TIMESTAMP) 
+		
+**Recommendations**  
+
+	route: -
 	Properties:
 		id (INT 10 - primary key, autoincrement)
 		foreign_id (INT 10)
@@ -783,6 +794,29 @@ List all follows for an object.
 	Parameters: id
 	Returns:  
 		- response with type: result ([FollowObjects])
+		- response with type: error (object not found) 
+
+## /objects/{id}/recommend
+
+Recommend an object.
+
+	URL: /objects/{id}/recommend  
+	Type: POST
+	Parameters (URL): id
+	Parameters (POST): _token
+	Returns:  
+		- response with type: success
+		- response with type: error  
+
+## /objects/{id}/recommendations
+
+List all recommendations for an object.
+
+	URL: /objects/{id}/recommendations  
+	Type: GET
+	Parameters: id
+	Returns:  
+		- response with type: result ([RecommendationObjects])
 		- response with type: error (object not found)  
 
 ## /objects/{id}/feedback
@@ -1012,6 +1046,29 @@ List all follows for a catalog.
 	Returns:  
 		- response with type: result ([FollowObjects])
 		- response with type: error (object not found)  
+
+## /catalogs/{id}/recommend
+
+Recommend a catalog.
+
+	URL: /catalogs/{id}/recommend  
+	Type: POST
+	Parameters (URL): id
+	Parameters (POST): _token
+	Returns:  
+		- response with type: success
+		- response with type: error  
+
+## /catalogs/{id}/recommendations
+
+List all recommendations for a catalog.
+
+	URL: /catalogs/{id}/recommendations  
+	Type: GET
+	Parameters: id
+	Returns:  
+		- response with type: result ([RecommendationObjects])
+		- response with type: error (catalog not found)  
 
 ## /catalogs/{id}/feedback
 
