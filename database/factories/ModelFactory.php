@@ -24,7 +24,8 @@ $factory->define( App\User::class, function( Faker\Generator $faker ) {
         'commissions_earned'    => $faker->numberBetween( 1, 200 ),
         'commission_rate'       => $faker->numberBetween( 1, 20 ),
         'personal_price_earned' => $faker->numberBetween( 1, 2000 ),
-        'price_earner'          => $faker->numberBetween( 1, 20 )
+        'price_earner'          => $faker->numberBetween( 1, 20 ),
+        'chat'                  => $faker->randomElement( [0, 1] )
     ];
 } );
 
