@@ -97,6 +97,16 @@ $factory->define( App\Collection::class, function( Faker\Generator $faker ) {
     ];
 } );
 
+$factory->define( App\GenericCollection::class, function( Faker\Generator $faker ) {
+    $catalog = factory( App\Catalog::class, 1 )->create();
+
+    return [
+        'collection_id'         => $faker->numberBetween( 1, 20 ),
+        'foreign_id'            => $catalog->id,
+        'foreign_type'          => 'catalog'
+    ];
+} );
+
 $factory->define( App\Route::class, function( Faker\Generator $faker ) {
     $object = factory( App\Object::class, 1 )->create();
     $user = App\User::find( $object->author );

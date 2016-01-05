@@ -3,21 +3,20 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateCollectionsTable extends Migration {
+class CreateGenericCollectionsTable extends Migration {
 
     public function up() {
-        Schema::create( 'collections', function( Blueprint $table ) {
-            $table->bigIncrements( 'id' );
+        Schema::create( 'generic_collections', function( Blueprint $table ) {
+            $table->increments( 'id' );
             $table->integer( 'collection_id' );
             $table->integer( 'foreign_id' );
             $table->enum( 'foreign_type', ['object', 'catalog'] );
-            $table->integer( 'author' )->references( 'id' )->on( 'users' );
             $table->enum( 'status', [-1, 0, 1] )->default( 1 );
             $table->timestamps();
         } );
     }
 
     public function down() {
-        Schema::drop( 'collections' );
+        Schema::drop( 'generic_collections' );
     }
 }
