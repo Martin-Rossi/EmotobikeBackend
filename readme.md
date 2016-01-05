@@ -121,6 +121,18 @@
 		created_at (TIMESTAMP)
 		updated_at (TIMESTAMP)  
 		
+**GenericCollection**  
+
+	route: /generic-collections
+	Properties:
+		id (BIGINT 20 - primary key, autoincrement)
+		collection_id (INT 10)
+		foreign_id (INT 10)
+		foreign_type (ENUM['object','catalog'])
+		status (ENUM[-1,0,1], default: 1)
+		created_at (TIMESTAMP)
+		updated_at (TIMESTAMP)  
+		
 **Route**  
 
 	route: /routes
@@ -1103,17 +1115,6 @@ Add a new collection.
 
 * supported foreign types: ['object', 'catalog']  
 
-## /collections/{id}
-
-Delete a collection (a user can only delete his collections)
-
-	URL: /collections/{id}
-	Type: DELETE
-	Parameters: id
-	Returns:
-		- response with type: success
-		- response with type: error (collection not found)
-
 ## /collections/{collection_id}/add/object
 
 Add an object to a specified collection.
@@ -1168,15 +1169,14 @@ Remove a catalog from a specified collection.
 
 ## /collections/{id}
 
-Delete a collection.
+Delete a collection (a user can only delete his collections)
 
-	URL: /collections/{id} 
-	Type: DELETE  
-	Parameters (URL): collection_id
-	Parameters (POST): _token  
-	Returns:  
+	URL: /collections/{id}
+	Type: DELETE
+	Parameters: id
+	Returns:
 		- response with type: success
-		- response with type: error  
+		- response with type: error (collection not found)
 
 ## /deleted/collections
 
@@ -1186,6 +1186,165 @@ View collections deleted by the user
 	Type: GET
 	Returns:
 		- response with type: result ([CollectionObjects])  
+
+# Endpoints "generic-collection"  
+
+## /generic-collections
+
+List all generic collections.
+
+	URL: /generic-collections  
+	Type: GET  
+	Parameters: -  
+	Returns:  
+		- response with type: result ([[GenericCollectionObjects]])  
+
+## /generic-collections/{collection_id}
+
+Show one particular generic collection.
+
+	URL: /generic-collections/{collection_id} 
+	Type: GET  
+	Parameters: collection_id  
+	Returns:  
+		- response with type: result ([GenericCollectionObject])
+		- response with type: error (generic collection not found)  
+
+## /generic-collections/{collection_id}/objects
+
+List all objects belonging to this generic collection.  
+
+	URL: /generic-collections/{collection_id}/objects 
+	Type: GET  
+	Parameters: collection_id  
+	Returns:  
+		- response with type: result ([ObjectObjects])
+		- response with type: error (generic collection not found)
+
+## /generic-collections/{collection_id}/catalogs
+
+List all catalogs belonging to this generic collection.  
+
+	URL: /generic-collections/{collection_id}/catalogs 
+	Type: GET  
+	Parameters: collection_id  
+	Returns:  
+		- response with type: result ([CatalogObjects])
+		- response with type: error (generic collection not found)  
+
+## /generic-collections
+
+Add a new generic collection.
+
+> Note: only admin users can add new generic collection.
+
+> Note: when adding a new generic collection the first catalog's or object's id (foreign_id) must be sent with the POST parameters. Additional catalogs, objects to this collection can be added via the /generic-collection/{id}/add/... endpoints.
+
+	URL: /generic-collections 
+	Type: POST  
+	Parameters: foreign_id, foreign_type, _token  
+	Returns:  
+		- response with type: success
+		- response with type: error  
+
+* supported foreign types: ['object', 'catalog']  
+
+## /generic-collections/{id}
+
+Delete a generic collection.
+
+> Note: only admin users can delete a generic collection.
+
+	URL: /generic-collections/{id}
+	Type: DELETE
+	Parameters: id
+	Returns:
+		- response with type: success
+		- response with type: error (generic collection not found)
+
+## /generic-collections/{collection_id}/add/object
+
+Add an object to a specified generic collection.
+
+> Note: only admin users can add objects to generic collections.
+
+	URL: /generic-collections/{collection_id}/add/object  
+	Type: POST  
+	Parameters (URL): collection_id
+	Parameters (POST): object_id, _token  
+	Returns:  
+		- response with type: success
+		- response with type: error
+		- response with type: error (generic collection not found)
+
+## /generic-collections/{collection_id}/add/catalog
+
+Add a catalog to a specified generic collection.
+
+> Note: only admin users can add catalogs to generic collections.
+
+	URL: /generic-collections/{collection_id}/add/catalog  
+	Type: POST  
+	Parameters (URL): collection_id
+	Parameters (POST): catalog_id, _token  
+	Returns:  
+		- response with type: success
+		- response with type: error
+		- response with type: error (generic collection not found)  
+
+## /generic-collections/{collection_id}/remove/object
+
+Remove an object from a specified generic collection.
+
+> Note: only admin users can remove objects from generic collections.
+
+	URL: /generic-collections/{collection_id}/remove/object 
+	Type: POST  
+	Parameters (URL): collection_id
+	Parameters (POST): object_id, _token  
+	Returns:  
+		- response with type: success
+		- response with type: error
+		- response with type: error (collection not found) 
+
+## /generic-collections/{collection_id}/remove/catalog
+
+Remove a catalog from a specified generic collection.
+
+> Note: only admin users can remove catalogs from generic collections.
+
+	URL: /collections/{collection_id}/remove/catalog 
+	Type: POST  
+	Parameters (URL): collection_id
+	Parameters (POST): catalog_id, _token  
+	Returns:  
+		- response with type: success
+		- response with type: error
+		- response with type: error (collection not found)  
+
+## /generic-collections/{id}
+
+Delete a generic collection.
+
+> Note: only admin users can delete a generic collection.
+
+	URL: /generic-collections/{id}
+	Type: DELETE
+	Parameters: id
+	Returns:
+		- response with type: success
+		- response with type: error (generic collection not found) 
+
+## /deleted/generic-collections
+
+View deleted generic collections.  
+
+> Note: only admin users can view deleted generic collections.
+
+	URL: /deleted/generic-collections
+	Type: GET
+	Returns:
+		- response with type: result ([GenericCollectionObjects])
 
 # Endpoints "route"  
 
