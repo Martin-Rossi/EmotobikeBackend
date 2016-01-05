@@ -201,6 +201,30 @@ class CatalogTest extends TestCase {
              ->see( $user->email );
     }
 
+    public function testRecommendCatalog() {
+        $catalog = factory( App\Catalog::class, 1 )->create();
+        $user = factory( App\User::class )->create();
+
+        $response = $this->actingAs( $user )->call( 'POST', '/catalogs/' . $catalog->id . '/recommend' );
+
+        $this->seeInDatabase( 'recommendations', ['foreign_id' => $catalog->id, 'foreign_type' => 'catalog', 'author' => $user->id] )
+             ->assertEquals( 200, $response->status() );
+    }
+
+    public function testIndexCatalogRecommendations() {
+        $recommendation = factory( App\Recommendation::class, 1 )->create();
+        $catalog = factory( App\Catalog::class, 1 )->create();
+
+        $recommendation->foreign_id = $catalog->id;
+        $recommendation->foreign_type = 'catalog';
+        $recommendation->save();
+
+        $user = \App\User::find( $recommendation->author );
+
+        $this->visit( '/catalogs/' . $catalog->id . '/recommendations' )
+             ->see( $user->email );
+    }
+
     public function testFeedbackCatalog() {
         $catalog = factory( App\Catalog::class, 1 )->create();
         $user = factory( App\User::class )->create();

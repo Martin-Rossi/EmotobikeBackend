@@ -183,6 +183,30 @@ class ObjectTest extends TestCase {
              ->see( $user->email );
     }
 
+    public function testRecommendObject() {
+        $object = factory( App\Object::class, 1 )->create();
+        $user = factory( App\User::class )->create();
+
+        $response = $this->actingAs( $user )->call( 'POST', '/objects/' . $object->id . '/recommend' );
+
+        $this->seeInDatabase( 'recommendations', ['foreign_id' => $object->id, 'foreign_type' => 'object', 'author' => $user->id] )
+             ->assertEquals( 200, $response->status() );
+    }
+
+    public function testIndexObjectRecommendations() {
+        $recommendation = factory( App\Recommendation::class, 1 )->create();
+        $object = factory( App\Object::class, 1 )->create();
+
+        $recommendation->foreign_id = $object->id;
+        $recommendation->foreign_type = 'object';
+        $recommendation->save();
+
+        $user = \App\User::find( $recommendation->author );
+
+        $this->visit( '/objects/' . $object->id . '/recommendations' )
+             ->see( $user->email );
+    }
+
     public function testFeedbackObject() {
         $object = factory( App\Object::class, 1 )->create();
         $user = factory( App\User::class )->create();

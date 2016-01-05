@@ -66,11 +66,13 @@ Route::group( ['middleware' => ['auth', 'cors']], function () {
 	Route::get( 'objects/{id}/comments', 'ObjectController@comments' );
 	Route::get( 'objects/{id}/likes', 'ObjectController@likes' );
 	Route::get( 'objects/{id}/follows', 'ObjectController@follows' );
+	Route::get( 'objects/{id}/recommendations', 'ObjectController@recommendations' );
 	Route::get( 'objects/{id}/feedbacks', 'ObjectController@feedbacks' );
 
 	Route::post( 'objects/{id}/comment', 'ObjectController@comment' );
 	Route::post( 'objects/{id}/like', 'ObjectController@like' );
 	Route::post( 'objects/{id}/follow', 'ObjectController@follow' );
+	Route::post( 'objects/{id}/recommend', 'ObjectController@recommend' );
 	Route::post( 'objects/{id}/feedback', 'ObjectController@feedback' );
 
 	Route::get( 'deleted/objects', 'ObjectController@deleted' );
@@ -95,12 +97,14 @@ Route::group( ['middleware' => ['auth', 'cors']], function () {
 	Route::get( 'catalogs/{id}/comments', 'CatalogController@comments' );
 	Route::get( 'catalogs/{id}/likes', 'CatalogController@likes' );
 	Route::get( 'catalogs/{id}/follows', 'CatalogController@follows' );
+	Route::get( 'catalogs/{id}/recommendations', 'CatalogController@recommendations' );
 	Route::get( 'catalogs/{id}/feedbacks', 'CatalogController@feedbacks' );
 	Route::get( 'catalogs/{id}/activities', 'CatalogController@activities' );
 
 	Route::post( 'catalogs/{id}/comment', 'CatalogController@comment' );
 	Route::post( 'catalogs/{id}/like', 'CatalogController@like' );
 	Route::post( 'catalogs/{id}/follow', 'CatalogController@follow' );
+	Route::post( 'catalogs/{id}/recommend', 'CatalogController@recommend' );
 	Route::post( 'catalogs/{id}/feedback', 'CatalogController@feedback' );
 
 	Route::get( 'deleted/catalogs', 'CatalogController@deleted' );

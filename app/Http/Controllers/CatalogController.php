@@ -8,6 +8,7 @@ use App\Type;
 use App\Comment;
 use App\Like;
 use App\Follow;
+use App\Recommendation;
 use App\Feedback;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
@@ -292,6 +293,47 @@ class CatalogController extends Controller {
             abort( 404 );
 
         return $response->result( $catalog->follows() );
+    }
+
+    public function recommend( $id, ApiResponse $response ) {
+        $catalog = Catalog::find( $id );
+
+        if ( is_null( $catalog ) )
+            abort( 404 );
+
+        $exists = Recommendation::where( 'foreign_id', '=', $id )
+                                ->where( 'foreign_type', '=', 'catalog' )
+                                ->where( 'author', '=', auth()->user()->id )
+                                ->first();
+
+        if ( $exists )
+            return $response->error( 'This user already recommended this catalog' );
+
+        $recommendation = [
+            'foreign_id'    => $id,
+            'foreign_type'  => 'catalog',
+            'author'        => auth()->user()->id
+        ];
+
+        try {
+            Recommendation::create( $recommendation );
+        } catch ( Exception $e ) {
+            return $response->error( $e->getMessage() );
+        }
+
+        $catalog->count_recommended++;
+        $catalog->save();
+
+        return $response->success( 'Recommendation created successfully' );
+    }
+
+    public function recommendations( $id, ApiResponse $response ) {
+        $catalog = Catalog::find( $id );
+
+        if ( is_null( $catalog ) )
+            abort( 404 );
+
+        return $response->result( $catalog->recommendations() );
     }
 
     public function feedback( $id, Request $request, ApiResponse $response ) {

@@ -29,7 +29,6 @@ class Object extends Model {
         'layout',
         'position',
         'competitor_flag',
-        'recomended',
         'curated',
         'author'
     ];
@@ -75,6 +74,15 @@ class Object extends Model {
                               ->get();
 
         return $follows;
+    }
+
+    public function recommendations() {
+        $recommendations = \App\Recommendation::where( 'foreign_id', '=', $this->id )
+                                              ->where( 'foreign_type', '=', 'object' )
+                                              ->with( 'author' )
+                                              ->get();
+
+        return $recommendations;
     }
 
     public function feedbacks() {

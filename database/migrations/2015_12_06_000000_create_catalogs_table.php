@@ -20,11 +20,11 @@ class CreateCatalogsTable extends Migration {
             $table->enum( 'publish', [0, 1] )->default( 0 );
             $table->enum( 'trending', [0, 1] )->default( 0 );
             $table->enum( 'popular', [0, 1] )->default( 0 );
-            $table->enum( 'recomended', [0, 1] )->default( 0 );
             $table->double( 'total_transaction', 12, 2 )->default( 0 );
             $table->integer( 'count_likes' )->default( 0 );
             $table->integer( 'count_comments' )->default( 0 );
             $table->integer( 'count_follows' )->default( 0 );
+            $table->integer( 'count_recommended' )->default( 0 );
             $table->integer( 'author' )->references( 'id' )->on( 'users' );
             $table->enum( 'status', [-1, 0, 1] )->default( 1 );
             $table->timestamps();

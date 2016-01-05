@@ -22,7 +22,6 @@ class Catalog extends Model {
         'publish',
         'trending',
         'popular',
-        'recomended',
         'author'
     ];
 
@@ -80,6 +79,15 @@ class Catalog extends Model {
                               ->get();
 
         return $follows;
+    }
+
+    public function recommendations() {
+        $recommendations = \App\Recommendation::where( 'foreign_id', '=', $this->id )
+                                              ->where( 'foreign_type', '=', 'catalog' )
+                                              ->with( 'author' )
+                                              ->get();
+
+        return $recommendations;
     }
 
     public function feedbacks() {

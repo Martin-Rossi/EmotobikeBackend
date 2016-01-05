@@ -56,7 +56,6 @@ $factory->define( App\Object::class, function( Faker\Generator $faker ) {
         'layout'                => $faker->randomElement( [2,3,9] ),
         'position'              => $faker->numberBetween( 1, 19 ),
         'competitor_flag'	    => $faker->randomElement( [0, 1] ),
-        'recomended'		    => $faker->randomElement( [0, 1] ),
         'curated'			    => $faker->randomElement( [0, 1] ),
         'author'                => $user->id
     ];
@@ -80,7 +79,6 @@ $factory->define( App\Catalog::class, function( Faker\Generator $faker ) {
         'publish'               => $faker->randomElement( [0, 1] ),
         'trending'              => $faker->randomElement( [0, 1] ),
         'popular'               => $faker->randomElement( [0, 1] ),
-        'recomended'            => $faker->randomElement( [0, 1] ),
         'total_transaction'     => $faker->randomFloat( 2, 100, 10000 ),
         'author'                => $user->id
     ];
@@ -175,6 +173,17 @@ $factory->define( App\Feedback::class, function( Faker\Generator $faker ) {
         'foreign_id'            => $object->id,
         'foreign_type'          => 'object',
         'value'                 => $faker->numberBetween( 100, 100000 ),
+        'author'                => $user->id
+    ];
+} );
+
+$factory->define( App\Recommendation::class, function( Faker\Generator $faker ) {
+    $object = factory( App\Object::class, 1 )->create();
+    $user = factory( App\User::class, 1 )->create();
+
+    return [
+        'foreign_id'            => $object->id,
+        'foreign_type'          => 'object',
         'author'                => $user->id
     ];
 } );

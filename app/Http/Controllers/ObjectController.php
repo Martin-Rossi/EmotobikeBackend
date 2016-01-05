@@ -8,6 +8,7 @@ use App\Type;
 use App\Comment;
 use App\Like;
 use App\Follow;
+use App\Recommendation;
 use App\Feedback;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
@@ -285,6 +286,47 @@ class ObjectController extends Controller {
             abort( 404 );
 
         return $response->result( $object->follows() );
+    }
+
+    public function recommend( $id, ApiResponse $response ) {
+        $object = Object::find( $id );
+
+        if ( is_null( $object ) )
+            abort( 404 );
+
+        $exists = Recommendation::where( 'foreign_id', '=', $id )
+                                ->where( 'foreign_type', '=', 'object' )
+                                ->where( 'author', '=', auth()->user()->id )
+                                ->first();
+
+        if ( $exists )
+            return $response->error( 'This user already recommended this object' );
+
+        $recommendation = [
+            'foreign_id'    => $id,
+            'foreign_type'  => 'object',
+            'author'        => auth()->user()->id
+        ];
+
+        try {
+            Recommendation::create( $recommendation );
+        } catch ( Exception $e ) {
+            return $response->error( $e->getMessage() );
+        }
+
+        $object->count_recommended++;
+        $object->save();
+
+        return $response->success( 'Recommendation created successfully' );
+    }
+
+    public function recommendations( $id, ApiResponse $response ) {
+        $object = Object::find( $id );
+
+        if ( is_null( $object ) )
+            abort( 404 );
+
+        return $response->result( $object->recommendations() );
     }
 
     public function feedback( $id, Request $request, ApiResponse $response ) {

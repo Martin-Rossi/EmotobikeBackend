@@ -30,8 +30,8 @@ class CreateObjectsTable extends Migration {
             $table->integer( 'count_likes' )->default( 0 );
             $table->integer( 'count_comments' )->default( 0 );
             $table->integer( 'count_follows' )->default( 0 );
+            $table->integer( 'count_recommended' )->default( 0 );
             $table->enum( 'competitor_flag', [0, 1] )->default( 0 );
-            $table->enum( 'recomended', [0, 1] )->default( 0 );
             $table->enum( 'curated', [0, 1] )->default( 0 );
             $table->integer( 'author' )->references( 'id' )->on( 'users' );
             $table->enum( 'status', [-1, 0, 1] )->default( 1 );
