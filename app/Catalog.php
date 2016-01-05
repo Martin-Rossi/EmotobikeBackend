@@ -46,6 +46,15 @@ class Catalog extends Model {
         return $this->hasMany( 'App\Activity', 'catalog_id', 'id' );
     }
 
+    public function products() {
+        $products = \App\Object::where( 'catalog_id', '=', $this->id )
+                               ->where( 'type_id', '=', 2 )
+                               ->with( 'category', 'type', 'author' )
+                               ->get();
+
+        return $products;
+    }
+
     public function comments() {
         $comments = \App\Comment::where( 'foreign_id', '=', $this->id )
                                 ->where( 'foreign_type', '=', 'catalog' )

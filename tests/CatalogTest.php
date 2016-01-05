@@ -107,6 +107,16 @@ class CatalogTest extends TestCase {
              ->see( $object->name );
     }
 
+    public function testIndexCatalogProducts() {
+        $object = factory( App\Object::class, 1 )->create();
+
+        $object->type_id = 2;
+        $object->save();
+
+        $this->visit( '/catalogs/' . $object->catalog_id . '/products' )
+             ->see( $object->name );
+    }
+
     public function testIndexCatalogContent() {
         $object = factory( App\Object::class, 1 )->create();
 

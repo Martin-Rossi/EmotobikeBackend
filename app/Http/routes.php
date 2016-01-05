@@ -90,6 +90,7 @@ Route::group( ['middleware' => ['auth', 'cors']], function () {
 	] );
 	
 	Route::get( 'catalogs/{id}/objects', 'CatalogController@objects' );
+	Route::get( 'catalogs/{id}/products', 'CatalogController@products' );
 	Route::get( 'catalogs/{id}/content', 'CatalogController@contents' );
 	Route::get( 'catalogs/{id}/comments', 'CatalogController@comments' );
 	Route::get( 'catalogs/{id}/likes', 'CatalogController@likes' );

@@ -160,6 +160,15 @@ class CatalogController extends Controller {
         return $response->result( $catalog->objects );
     }
 
+    public function products( $id, ApiResponse $response ) {
+        $catalog = Catalog::find( $id );
+
+        if ( is_null( $catalog ) )
+            abort( 404 );
+
+        return $response->result( $catalog->products() );
+    }
+
     public function contents( $id, ApiResponse $response ) {
         $catalog = Catalog::find( $id );
 
