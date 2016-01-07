@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\User;
+use App\Invite;
 use Validator;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
@@ -86,6 +87,20 @@ class AuthController extends Controller {
 
         if(!($user instanceof User))
             return $response->error( 'Register failed' );
+
+        // invitation accepted
+        if ( $user && $user->email ) {
+            $invites = Invite::where( 'email', '=', $user->email )
+                             ->get();
+
+            if ( sizeof( $invites ) > 0 )
+                foreach ( $invites as $invite ) {
+                    $invite->accepted = 1;
+                    $invite->accepted_on = date_format( new DateTime( 'now' ), 'Y-m-d H:i:s' );
+
+                    $invite->save();
+                }
+        }
 
         return $response->success( 'Register successfull' );
     }
