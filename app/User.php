@@ -76,6 +76,10 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
         return $this->hasMany( 'App\Message', 'sender', 'id' );
     }
 
+    public function invites() {
+        return $this->hasMany( 'App\Invite', 'author', 'id' );
+    }
+
     public function follows() {
         $follows = \App\Follow::where( 'foreign_id', '=', $this->id )
                               ->where( 'foreign_type', '=', 'user' )

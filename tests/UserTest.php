@@ -215,6 +215,15 @@ class UserTest extends TestCase {
              ->see( $message->message );
     }
 
+    public function testIndexUserSentInvites() {
+        $invite = factory( App\Invite::class, 1 )->create();
+
+        $user = \App\User::find( $invite->author );
+
+        $this->visit( '/users/' . $user->id . '/invites/sent' )
+             ->see( $invite->email );
+    }
+
     public function testGetUserPreference() {
         $user  = factory( App\User::class, 1 )->create();
 

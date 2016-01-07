@@ -309,6 +309,15 @@ class UserController extends Controller {
         return $response->result( $user->inbox );
     }
 
+    public function invites_sent( $id, ApiResponse $response ) {
+        $user = User::find( $id );
+
+        if ( is_null( $user ) )
+            abort( 404 );
+
+        return $response->result( $user->invites );
+    }
+
     public function getPreference( $key, ApiResponse $response ) {
         $preferences = config( 'user_preferences' );
 

@@ -233,6 +233,15 @@ $factory->define( App\Message::class, function( Faker\Generator $faker ) {
     ];
 } );
 
+$factory->define( App\Invite::class, function( Faker\Generator $faker ) {
+    $user = factory( App\User::class, 1 )->create();
+
+    return [
+        'email'                 => $faker->email,
+        'author'                => $user->id
+    ];
+} );
+
 $factory->define( App\Friend::class, function( Faker\Generator $faker ) {
     $from = factory( App\User::class, 1 )->create();
     $to = factory( App\User::class, 1 )->create();

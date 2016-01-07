@@ -24,7 +24,7 @@ Route::get( 'auth/logout', ['middleware' => 'cors', 'uses' => 'Auth\AuthControll
 /*
 | User routes
 */
-Route::group( ['middleware' => ['cors']], function () {
+Route::group( ['middleware' => ['auth', 'cors']], function () {
 	Route::resource( 'users', 'UserController', [
 		'only' => ['index', 'show', 'update']
 	] );
@@ -40,6 +40,7 @@ Route::group( ['middleware' => ['cors']], function () {
 	Route::get( 'users/{id}/friends', 'UserController@friends' );
 	Route::get( 'users/{id}/messages/sent', 'UserController@messages_sent' );
 	Route::get( 'users/{id}/messages/received', 'UserController@messages_received' );
+	Route::get( 'users/{id}/invites/sent', 'UserController@invites_sent' );
 
 	Route::post( 'users/{id}/follow', 'UserController@follow' );
 	Route::post( 'users/{id}/friend', 'UserController@friend' );
@@ -255,4 +256,13 @@ Route::group( ['middleware' => ['auth', 'cors']], function() {
 	Route::post( 'messages/{id}/reply', 'MessageController@reply' );
 
 	Route::get( 'messages/from/follows', 'MessageController@messages_from_follows' );
+} );
+
+/*
+| Invite routes
+*/
+Route::group( ['middleware' => ['auth', 'cors']], function() {
+	Route::resource( 'invites', 'InviteController', [
+		'only' => ['store']
+	] );
 } );

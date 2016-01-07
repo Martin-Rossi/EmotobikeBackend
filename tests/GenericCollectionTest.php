@@ -12,9 +12,7 @@ class GenericCollectionTest extends TestCase {
         $generic_collection = factory( App\GenericCollection::class, 1 )->create();
 
         $this->visit( '/generic-collections' )
-             ->see( $generic_collection->collection_id )
-             ->see( $generic_collection->foreign_id )
-             ->see( $generic_collection->foreign_type );
+             ->seeJson( ['type' => 'result'] );
     }
 
     public function testShowGenericCollection() {
