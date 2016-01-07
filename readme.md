@@ -107,7 +107,12 @@
 		count_comments (INT 10, default: 0)
 		count_follows (INT 10, default: 0)
 		count_recommended (INT 10, defualt: 0)
-		total_transaction (DOUBLE(12,2), default: 0)
+		total_transaction (DOUBLE(12,2), default: 0)  
+		earning_trend (INT 10, default: 0)  
+		earning_total (DOUBLE(12,2), default: 0)  
+		earning_place (INT 10, default: 0)  
+		earning_cat_place (INT 10, default: 0)  
+		earning_potential (INT 10, default: 0)
 		author (INT 10, references id on 'users')
 		status (ENUM[-1,0,1], default: 1)
 		created_at (TIMESTAMP)
@@ -695,7 +700,7 @@ Add a new object.
 
 	URL: /objects 
 	Type: POST  
-	Parameters: catalog_id, category, type, tags, name, description, url, image, weight, retail_price, sale_price, offer_value, offer_url, offer_description, offer_start, offer_stop, prod_detail_url, layout, position, competitor_flag, recomended, curated, _token  
+	Parameters: catalog_id, category, type, tags, name, description, url, image, weight, retail_price, sale_price, offer_value, offer_url, offer_description, offer_start, offer_stop, prod_detail_url, layout, position, competitor_flag, curated, _token  
 	Returns:  
 		- response with type: success
 		- response with type: error
@@ -715,7 +720,7 @@ Update object properties (users can only updated objects owned by them).
 	URL: /objects/{id} 
 	Type: PUT  
 	Parameters (URL): id
-	Parameters (POST): catalog_id, category, type, tags, name, description, url, image, weight, retail_price, sale_price, offer_value, offer_url, offer_description, offer_start, offer_stop, prod_detail_url, layout, position, competitor_flag, recomended, curated, _token  
+	Parameters (POST): catalog_id, category, type, tags, name, description, url, image, weight, retail_price, sale_price, offer_value, offer_url, offer_description, offer_start, offer_stop, prod_detail_url, layout, position, competitor_flag, curated, _token  
 	Returns:  
 		- response with type: success
 		- response with type: error  
@@ -937,7 +942,7 @@ Add a new catalog.
 
 	URL: /catalogs 
 	Type: POST  
-	Parameters: category, type, tags, name, title, description, image, layout, position, publish, trending, popular, recomended, _token  
+	Parameters: category, type, tags, name, title, description, image, layout, position, publish, trending, popular, earning_trend, earning_total, earning_place, earning_cat_place, earning_potential, _token  
 	Returns:  
 		- response with type: success
 		- response with type: error
@@ -955,7 +960,7 @@ Update catalog properties (users can only update catalogs owned by them).
 	URL: /catalogs/{id} 
 	Type: PUT  
 	Parameters (URL): id
-	Parameters (POST): category, type, tags, name, title, description, image, layout, position, publish, trending, popular, recomended, _token 
+	Parameters (POST): category, type, tags, name, title, description, image, layout, position, publish, trending, popular, earning_trend, earning_total, earning_place, earning_cat_place, earning_potential, _token 
 	Returns:  
 		- response with type: success
 		- response with type: error  
