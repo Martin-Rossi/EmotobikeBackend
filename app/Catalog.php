@@ -22,6 +22,11 @@ class Catalog extends Model {
         'publish',
         'trending',
         'popular',
+        'earning_trend',
+        'earning_total',
+        'earning_place',
+        'earning_cat_place',
+        'earning_potential',
         'author'
     ];
 
