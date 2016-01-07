@@ -300,6 +300,18 @@
 		created_at (TIMESTAMP)
 		updated_at (TIMESTAMP) 
 		
+**Invites**
+
+	route: /invites
+	Properties:
+		id (INT 10 - primary key, autoincrement)
+		email (VARCHAR 255)
+		accepted (ENUM [0, 1], default: 0)
+		accepted_on (DATETIME, default: 0000-00-00 00:00:00)
+		auhtor (INT 10, references id on 'users')
+		created_at (TIMESTAMP)
+		updated_at (TIMESTAMP) 
+		
 # Request Types
 
 GET, POST, PUT, DELETE
@@ -562,7 +574,7 @@ List messages sent by this user.
 	Parameters: id
 	Returns:
 		- response with type: result ([MessageObjects])
-		- reposnse with type: erro (user not found)  
+		- reposnse with type: error (user not found)  
 
 ## /users/{id}/messages/received
 
@@ -573,7 +585,17 @@ List messages received by this user.
 	Parameters: id
 	Returns:
 		- response with type: result ([MessageObjects])
-		- reposnse with type: erro (user not found)
+		- reposnse with type: error (user not found)
+
+## /users/{id}/invites/sent
+
+List of invites this user have sent.
+
+	URL: /users/{id}/invites/sent
+	Type: GET
+	Parameters: id
+	Returns:
+		- response with type: result ([InviteObjects])
 
 ## /search/users
 
@@ -1833,7 +1855,20 @@ This endpoint will return all the messages sent by the users who the current, au
 	Type: GET   
 	Parameters: -
 	Returns:  
-		- response with type: result (MessageObject) 
+		- response with type: result (MessageObject)  
+
+# Endpoints "invites"  
+
+## /invites
+
+Send a new invite. The sender is always the current, authenticated user - while the recepient ID is specified in the request (email parameter).  
+
+	URL: /invites 
+	Type: POST  
+	Parameters: email, _token 
+	Returns:  
+		- response with type: success
+		- response with type: error
 
 
 # Responses
