@@ -6,19 +6,19 @@
 
 	route: /users  
 	Properties:
-		id (INT 10 - primary key, autoincrement)
+		id (INT 10, primary key, autoincrement)
 		parent (INT 10)
-		group_id (INT 10 - references id on 'user_groups')
+		group_id (INT 10, references id on 'user_groups')
 		tags (VARCHAR 255, nullable, default: null)
 		name (VARCHAR 255)
 		email (VARCHAR 255, unique)
-		password (VARCHAR 60 - bcrypted)
+		password (VARCHAR 60, bcrypted)
 		remember_token (VARCHAR 100)
 		image (VARCHAR 255, nullable, default: null)
 		profile_name (VARCHAR 255, nullable, default: null)
 		profile_description (TEXT, nullable, default: null)
-		commissions_earned (INT 10, default: 0)
-		comission_rate (INT 10, default: 0)
+		commissions (DOUBLE (15,8), default: 0)
+		comission_rate (DOUBLE (12,2), default: 0)
 		personal_price_earned (INT 10, default: 0)
 		price_earner (INT 10, default: 0)
 		count_likes (INT 10, default: 0)  
@@ -34,7 +34,7 @@
 
 	route: -
 	Properties:
-		id (INT 10 - primary key)
+		id (INT 10, primary key)
 		name (VARCHAR 55)
 		caps (TEXT, nullable, default: null)
 		created_at (TIMESTAMP)
@@ -44,8 +44,8 @@
 
 	route:: /users/preferences
 	Properties:
-		id (INT 10 - primary key, autoincrement)
-		user_id (INT 10 - references id on 'users')
+		id (INT 10, primary key, autoincrement)
+		user_id (INT 10, references id on 'users')
 		key (VARCHAR 55)
 		value (ENUM [0,1])
 		created_at (TIMESTAMP)
@@ -55,19 +55,19 @@
 
 	route: /objects
 	Properties:
-		id (INT 10 - primary key, autoincrement)
-		catalog_id (INT 10 - references id on 'catalogs', default: 0)
-		category_id (INT 10 - references id on 'categories', default: 0)
-		type_id (INT 10 - references id on 'types', default: 0)
+		id (INT 10, primary key, autoincrement)
+		catalog_id (INT 10, references id on 'catalogs', default: 0)
+		category_id (INT 10, references id on 'categories', default: 0)
+		type_id (INT 10, references id on 'types', default: 0)
 		tags (VARCHAR 255, nullable, default: null)
 		name (VARCHAR 255)
 		description (TEXT, nullable, default: null)
 		url (VARCHAR 255, nullable, default: null)
 		image (VARCHAR 255, nullable, default: null)
 		weight (DOUBLE(12,4), nullable, default: null)
-		retail_price (DOUBLE(12,2), nullable, default: null)
-		sale_price (DOUBLE(12,2), nullable, default: null)
-		offer_value (DOUBLE(12,2), nullable, default: null)
+		retail_price (DOUBLE (12,2), nullable, default: null)
+		sale_price (DOUBLE (12,2), nullable, default: null)
+		offer_value (DOUBLE (12,2), nullable, default: null)
 		offer_url (VARCHAR 255, nullable, default: null)
 		offer_description (TEXT, nullable, default: null)
 		offer_start (DATETIME YYYY-MM-DD HH:II:SS)
@@ -90,9 +90,9 @@
 
 	route: /catalogs
 	Properties:
-		id (INT 10 - primary key, autoincrement)
-		category_id (INT 10 - references id on 'categories', default: 0)
-		type_id (INT 10 - references id on 'types', default: 0)
+		id (INT 10, primary key, autoincrement)
+		category_id (INT 10, references id on 'categories', default: 0)
+		type_id (INT 10, references id on 'types', default: 0)
 		tags (VARCHAR 255, nullable, default: null)
 		name (VARCHAR 255)
 		title (VARCHAR 255)
@@ -107,7 +107,7 @@
 		count_comments (INT 10, default: 0)
 		count_follows (INT 10, default: 0)
 		count_recommended (INT 10, defualt: 0)
-		total_transaction (DOUBLE(12,2), default: 0)  
+		total_transaction (DOUBLE(15,8), default: 0)  
 		earning_trend (INT 10, default: 0)  
 		earning_total (DOUBLE(12,2), default: 0)  
 		earning_place (INT 10, default: 0)  
@@ -122,7 +122,7 @@
 
 	route: /collections
 	Properties:
-		id (BIGINT 20 - primary key, autoincrement)
+		id (BIGINT 20, primary key, autoincrement)
 		collection_id (INT 10)
 		foreign_id (INT 10)
 		foreign_type (ENUM['object','catalog'])
@@ -135,7 +135,7 @@
 
 	route: /generic-collections
 	Properties:
-		id (BIGINT 20 - primary key, autoincrement)
+		id (BIGINT 20, primary key, autoincrement)
 		collection_id (INT 10)
 		foreign_id (INT 10)
 		foreign_type (ENUM['object','catalog'])
@@ -147,7 +147,7 @@
 
 	route: /routes
 	Properties:
-		id (INT 10 - primary key, autoincrement)
+		id (INT 10, primary key, autoincrement)
 		name (VARCHAR 255)
 		description (TEXT, nullable, default: null)
 		data (BLOB, nullable, default: null)
@@ -161,7 +161,7 @@
 
 	route: /categories
 	Properties:
-		id (INT 10 - primary key, autoincrement)
+		id (INT 10, primary key, autoincrement)
 		name (VARCHAR 55)
 		created_at (TIMESTAMP)
 		updated_at (TIMESTAMP)  
@@ -170,7 +170,7 @@
 
 	route: /types
 	Properties:
-		id (INT 10 - primary key, autoincrement)
+		id (INT 10, primary key, autoincrement)
 		name (VARCHAR 55)
 		created_at (TIMESTAMP)
 		updated_at (TIMESTAMP)  
@@ -179,7 +179,7 @@
 
 	route: /comments
 	Properties:
-		id (INT 10 - primary key, autoincrement)
+		id (INT 10, primary key, autoincrement)
 		foreign_id (INT 10)
 		foreign_type (ENUM['object','catalog'])
 		text (TEXT)
@@ -191,7 +191,7 @@
 
 	route: /likes
 	Properties:
-		id (INT 10 - primary key, autoincrement)
+		id (INT 10, primary key, autoincrement)
 		foreign_id (INT 10)
 		foreign_type (ENUM['object','catalog'])
 		author (INT 10, references id on 'users')
@@ -202,7 +202,7 @@
 
 	route: /follows
 	Properties:
-		id (INT 10 - primary key, autoincrement)
+		id (INT 10, primary key, autoincrement)
 		foreign_id (INT 10)
 		foreign_type (ENUM['object','catalog'])
 		author (INT 10, references id on 'users')
@@ -213,7 +213,7 @@
 
 	route: -
 	Properties:
-		id (INT 10 - primary key, autoincrement)
+		id (INT 10, primary key, autoincrement)
 		foreign_id (INT 10)
 		foreign_type (ENUM['object','catalog'])
 		author (INT 10, references id on 'users')
@@ -224,7 +224,7 @@
 
 	route: /friends
 	Properties:
-		id (INT 10 - primary key, autoincrement)
+		id (INT 10, primary key, autoincrement)
 		from_id (INT 10, references id on 'users' - unique with 'to_id')
 		from_accepted (ENUM [0, 1])
 		to_id (INT 10, references id on 'users' - unique with 'from_id')
@@ -236,7 +236,7 @@
 
 	route: /feedbacks
 	Properties:
-		id (INT 10 - primary key, autoincrement)
+		id (INT 10, primary key, autoincrement)
 		foreign_id (INT 10)
 		foreign_type (ENUM['object','catalog'])
 		product_id (INT 10, default: 0)  
@@ -265,7 +265,7 @@
 
 	route: /activities
 	Properties:
-		id (INT 10 - primary key, autoincrement)
+		id (INT 10, primary key, autoincrement)
 		catalog_id (INT 10, references id on 'catalogs')
 		type_id (INT 10, references id on 'types')
 		name (VARCHAR 255)
@@ -279,7 +279,7 @@
 
 	route: /pprices
 	Properties:
-		id (INT 10 - primary key, autoincrement)
+		id (INT 10, primary key, autoincrement)
 		user_id (INT 10, references id on 'users')
 		object_id (INT 10, references id on 'objects')
 		personal_price (DOUBLE(12,2), nullable, default: null)
@@ -290,7 +290,7 @@
 
 	route: /messages
 	Properties:
-		id (INT 10 - primary key, autoincrement)
+		id (INT 10, primary key, autoincrement)
 		type_id (INT 10, references id on 'types')
 		message_thread (INT 10, default: 0)
 		message_thread_id (INT 10, references id on 'messages', default: 0)
@@ -309,11 +309,25 @@
 
 	route: /invites
 	Properties:
-		id (INT 10 - primary key, autoincrement)
+		id (INT 10, primary key, autoincrement)
 		email (VARCHAR 255)
 		accepted (ENUM [0, 1], default: 0)
 		accepted_on (DATETIME, default: 0000-00-00 00:00:00)
 		auhtor (INT 10, references id on 'users')
+		created_at (TIMESTAMP)
+		updated_at (TIMESTAMP) 
+		
+**Commissions**
+
+	route: /commissions
+	Properties:
+		id (INT 10, primary key, autoincrement)
+		user_id (INT 10, references id on 'users')
+		catalog_id (INT 10, references id on 'catalogs')
+		commission (DOUBLE (15,8))
+		commission_accrued (DOUBLE (15,8))
+		commission_rate (DOUBLE (15,8))
+		product_sales (DOUBEL (15,8))
 		created_at (TIMESTAMP)
 		updated_at (TIMESTAMP) 
 		
@@ -426,7 +440,7 @@ Update user properties (users can only updated their own properties).
 	URL: /users/{id} 
 	Type: PUT  
 	Parameters (URL): id
-	Parameters (POST): tags, name, image, commissions_earned, commission_rate, personal_price_earned, price_earner, chat, _token  
+	Parameters (POST): tags, name, image, personal_price_earned, price_earner, chat, _token  
 	Returns:  
 		- response with type: success
 		- response with type: error  
@@ -1874,6 +1888,59 @@ Send a new invite. The sender is always the current, authenticated user - while 
 	Returns:  
 		- response with type: success
 		- response with type: error
+
+
+# Endpoints "commission"  
+
+> Note: these routes are only accessible to 'admin' users.
+
+## /commissions
+
+List all commissions.
+
+	URL: /commissions  
+	Type: GET  
+	Parameters: -  
+	Returns:  
+		- response with type: result ([CommissionObjects])  
+
+## /commissions/{id}
+
+Show one particular commission.
+
+	URL: /commissions/{id} 
+	Type: GET  
+	Parameters: id  
+	Returns:  
+		- response with type: result (CommissionObject)
+		- response with type: error (commission not found)  
+
+## /comissions
+
+Add a new commission.
+
+> Note: must contain a valid user and catalog ID. Commission will be automaticaly added to the specified user. Commission rate is defined in the user attributes.
+
+	URL: /commissions
+	Type: POST
+	Parameters: user_id, catalog_id, product_sales, _token
+		- response with type: success
+		- response with type: error
+
+## /filter/commissions
+
+Filter commissions  
+
+	URL: /filter/commissions
+	Type: POST
+	Parameters: filter, operator, value, _token
+	Returns:
+		- response with type: result ([CommissionObjects])
+
+* supported filters: [user _ id, catalog _ id, created _ at]
+
+* supported operators: [=, <, >]
+
 
 
 # Responses
