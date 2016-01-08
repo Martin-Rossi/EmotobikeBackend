@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Mail;
 use App\User;
 use App\Follow;
 use App\Friend;
@@ -370,6 +371,25 @@ class UserController extends Controller {
         }
 
         return $response->success( 'Preference successfully updated' );
+    }
+
+    public function setCommissionRate( $id, Request $request, ApiResponse $response ) {
+        if ( auth()->user()->group_id > 2 )
+            abort( 403 );
+
+        $user = User::find( $id );
+
+        if ( is_null( $user ) )
+            abort( 404 );
+
+        $rate = doubleval( $request->get( 'rate' ) );
+
+        $user->commission_rate = $rate;
+        $user->commission_rate_flag = 1;
+
+        $user->save();
+
+        return $response->success( 'Commission rate was set successfully' );
     }
 
 }

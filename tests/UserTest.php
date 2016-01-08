@@ -265,4 +265,15 @@ class UserTest extends TestCase {
              ->assertEquals( 200, $response->status() );
     }
 
+    public function testSetCommissionRate() {
+        $user = factory( App\User::class, 1 )->create();
+
+        $admin = \App\User::find( 1 );
+
+        $response = $this->actingAs( $admin )->call( 'POST', '/users/' . $user->id . '/commissions/rate', ['rate' => 0.5] );
+
+        $this->seeInDatabase( 'users', ['id' => $user->id, 'commission_rate' => 0.5] )
+             ->assertEquals( 200, $response->status() );
+    }
+
 }

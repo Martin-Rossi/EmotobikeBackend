@@ -21,6 +21,7 @@ $factory->define( App\User::class, function( Faker\Generator $faker ) {
         'image'                 => $faker->imageUrl(),
         'profile_name'          => implode( ' ', $faker->words( 3 ) ),
         'profile_description'   => $faker->paragraph( 3 ),
+        'paypal'                => $faker->email,
         'commissions'           => $faker->numberBetween( 1, 200 ),
         'commission_rate'       => $faker->numberBetween( 1, 20 ),
         'personal_price_earned' => $faker->numberBetween( 1, 2000 ),

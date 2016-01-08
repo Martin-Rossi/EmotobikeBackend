@@ -53,6 +53,9 @@ Route::group( ['middleware' => ['auth', 'cors']], function () {
 	Route::get( 'users/preferences/all', 'UserController@getAllPreferences' );
 	Route::get( 'users/preferences/{key}/get', 'UserController@getPreference' );
 	Route::post( 'users/preferences/{key}/set', 'UserController@setPreference' );
+
+	Route::post( 'users/{id}/commissions/rate', 'UserController@setCommissionRate' );
+	Route::post( 'users/{id}/commissions/pay', 'UserController@payCommission' );
 } );
 
 /*

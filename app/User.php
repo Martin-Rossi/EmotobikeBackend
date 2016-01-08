@@ -23,6 +23,8 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
         'password',
         'image',
         'profile_name',
+        'paypal',
+        'commission_rate_flag',
         'profile_description',
         'personal_price_earned',
         'price_earner',
