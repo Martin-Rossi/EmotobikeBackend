@@ -678,6 +678,20 @@ Set a user preference.
 
 * supported values: [0, 1]  
 	
+##	/users/{id}/commissions/rate
+
+Set commission rate for a specified user.
+
+> Note: this endpoint is only reacable for 'admin' users.
+
+	URL: /users/{id}/commissions/rate
+	Type: POST
+	Parameters (URL): id
+	Parameters (POST): rate, _token
+	Returns:
+		- response with type: success
+		- response with type: error
+
 
 # Endpoints "object"  
 
