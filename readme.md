@@ -17,6 +17,9 @@
 		image (VARCHAR 255, nullable, default: null)
 		profile_name (VARCHAR 255, nullable, default: null)
 		profile_description (TEXT, nullable, default: null)
+		api_paypal (VARCHAR 255, nullable, default: 0)
+		api_loyalty (VARCHAR 255, nullable, default: 0)
+		api_gift (VARCHAR 255, nullable, default: 0)
 		commissions (DOUBLE (15,8), default: 0)
 		comission_rate (DOUBLE (12,2), default: 0)
 		commission_exchange (DOUBLE (12,2), default: 0)
@@ -441,7 +444,7 @@ Update user properties (users can only updated their own properties).
 	URL: /users/{id} 
 	Type: PUT  
 	Parameters (URL): id
-	Parameters (POST): tags, name, image, personal_price_earned, price_earner, chat, _token  
+	Parameters (POST): tags, name, email, password, image, profile_name, api_paypal, api_loyalty, api_gift, commission_rate_flag, profile_description, chat, _token  
 	Returns:  
 		- response with type: success
 		- response with type: error  
