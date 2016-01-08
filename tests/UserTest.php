@@ -276,4 +276,29 @@ class UserTest extends TestCase {
              ->assertEquals( 200, $response->status() );
     }
 
+    public function testSetCommissionExchange() {
+        $user = factory( App\User::class, 1 )->create();
+
+        $admin = \App\User::find( 1 );
+
+        $response = $this->actingAs( $admin )->call( 'POST', '/users/' . $user->id . '/commissions/exchange', ['exchange' => 2] );
+
+        $this->seeInDatabase( 'users', ['id' => $user->id, 'commission_exchange' => 2] )
+             ->assertEquals( 200, $response->status() );
+    }
+
+    public function testPayForCommissions() {
+        $user = factory( App\User::class, 1 )->create();
+
+        $user->commissions = 50;
+        $user->save();
+
+        $admin = \App\User::find( 1 );
+
+        $response = $this->actingAs( $admin )->call( 'POST', '/users/' . $user->id . '/commissions/pay', ['amount' => 20] );
+
+        $this->seeInDatabase( 'users', ['id' => $user->id, 'commissions' => 30] )
+             ->assertEquals( 200, $response->status() );
+    }
+
 }

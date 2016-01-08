@@ -87,6 +87,7 @@ $factory->define( App\Catalog::class, function( Faker\Generator $faker ) {
         'trending'              => $faker->randomElement( [0, 1] ),
         'popular'               => $faker->randomElement( [0, 1] ),
         'total_transaction'     => $faker->randomFloat( 2, 100, 10000 ),
+        'total_commission'      => $faker->randomFloat( 2, 100, 1000 ),
         'author'                => $user->id
     ];
 } );

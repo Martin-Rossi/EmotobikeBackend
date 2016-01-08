@@ -21,6 +21,7 @@ class CreateCatalogsTable extends Migration {
             $table->enum( 'trending', [0, 1] )->default( 0 );
             $table->enum( 'popular', [0, 1] )->default( 0 );
             $table->double( 'total_transaction', 15, 8 )->default( 0 );
+            $table->double( 'total_commission', 15, 8 )->default( 0 );
             $table->integer( 'earning_trend' )->default( 0 );
             $table->double( 'earning_total', 12, 2 )->default( 0 );
             $table->integer( 'earning_place' )->default( 0 );

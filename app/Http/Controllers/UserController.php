@@ -392,4 +392,44 @@ class UserController extends Controller {
         return $response->success( 'Commission rate was set successfully' );
     }
 
+    public function setCommissionExchange( $id, Request $request, ApiResponse $response ) {
+        if ( auth()->user()->group_id > 2 )
+            abort( 403 );
+
+        $user = User::find( $id );
+
+        if ( is_null( $user ) )
+            abort( 404 );
+
+        $exchange = doubleval( $request->get( 'exchange' ) );
+
+        $user->commission_exchange = $exchange;
+
+        $user->save();
+
+        return $response->success( 'Commission exchange was set successfully' );
+    }
+
+    public function payCommission( $id, Request $request, ApiResponse $response ) {
+        if ( auth()->user()->group_id > 2 )
+            abort( 403 );
+
+        $user = User::find( $id );
+
+        if ( is_null( $user ) )
+            abort( 404 );
+
+        $amount = doubleval( $request->get( 'amount' ) );
+
+        if ( $amount > $user->commissions )
+            return $response->error( 'Amount is too big' );
+
+        $user->commissions = $user->commissions - $amount;
+        $user->save();
+
+        $payed = doubleval( $user->commission_exchange ) * $amount;
+
+        return $response->result( $payed );
+    }
+
 }

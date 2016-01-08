@@ -55,6 +55,7 @@ Route::group( ['middleware' => ['auth', 'cors']], function () {
 	Route::post( 'users/preferences/{key}/set', 'UserController@setPreference' );
 
 	Route::post( 'users/{id}/commissions/rate', 'UserController@setCommissionRate' );
+	Route::post( 'users/{id}/commissions/exchange', 'UserController@setCommissionExchange' );
 	Route::post( 'users/{id}/commissions/pay', 'UserController@payCommission' );
 } );
 

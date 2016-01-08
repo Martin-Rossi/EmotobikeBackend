@@ -74,6 +74,7 @@ class CommissionController extends Controller {
         $user->save();
 
         $catalog->total_transaction = $catalog->total_transaction + doubleval( $request->get( 'product_sales' ) );
+        $catalog->total_commission = $catalog->total_commission + $uc;
         $catalog->save();
 
         return $response->success( 'Commission added successfully' );
