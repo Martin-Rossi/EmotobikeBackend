@@ -35,7 +35,7 @@ class GenericCollectionController extends Controller {
 
     public function store( Request $request, ApiResponse $response ) {
         if ( auth()->user()->group_id > 2 )
-            return $response->error( 'Access denied' );
+            abort( 403 );
 
         $inputs = $request->all();
 
@@ -64,7 +64,7 @@ class GenericCollectionController extends Controller {
 
     public function destroy( $id, ApiResponse $response ) {
         if ( auth()->user()->group_id > 2 )
-            return $response->error( 'Access denied' );
+            abort( 403 );
 
         $generic_collection = GenericCollection::where( 'collection_id', '=', $id )
                                                ->get();
@@ -82,7 +82,7 @@ class GenericCollectionController extends Controller {
 
     public function deleted( ApiResponse $response ) {
         if ( auth()->user()->group_id > 2 )
-            return $response->error( 'Access denied' );
+            abort( 403 );
 
         $generic_collections = GenericCollection::where( 'status', '<', 0 )
                                                 ->paginate( $this->pp );
@@ -128,7 +128,7 @@ class GenericCollectionController extends Controller {
 
     public function addObject( $id, Request $request, ApiResponse $response ) {
         if ( auth()->user()->group_id > 2 )
-            return $response->error( 'Access denied' );
+            abort( 403 );
 
         $inputs = $request->all();
 
@@ -161,7 +161,7 @@ class GenericCollectionController extends Controller {
 
     public function addCatalog( $id, Request $request, ApiResponse $response ) {
         if ( auth()->user()->group_id > 2 )
-            return $response->error( 'Access denied' );
+            abort( 403 );
 
         $inputs = $request->all();
 
@@ -194,7 +194,7 @@ class GenericCollectionController extends Controller {
 
     public function removeObject( $id, Request $request, ApiResponse $response ) {
         if ( auth()->user()->group_id > 2 )
-            return $response->error( 'Access denied' );
+            abort( 403 );
 
         $inputs = $request->all();
 
@@ -222,7 +222,7 @@ class GenericCollectionController extends Controller {
 
     public function removeCatalog( $id, Request $request, ApiResponse $response ) {
         if ( auth()->user()->group_id > 2 )
-            return $response->error( 'Access denied' );
+            abort( 403 );
 
         $inputs = $request->all();
 
