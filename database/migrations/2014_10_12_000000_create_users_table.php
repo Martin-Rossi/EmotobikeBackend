@@ -17,7 +17,9 @@ class CreateUsersTable extends Migration {
             $table->string( 'image', 255 )->nullable()->default( null );
             $table->string( 'profile_name' )->nullable()->default( null );
             $table->text( 'profile_description' )->nullable()->default( null );
-            $table->string( 'paypal' )->nullable()->default( null );
+            $table->string( 'api_paypal', 255 )->nullable()->default( null );
+            $table->string( 'api_loyalty', 255 )->nullable()->default( null );
+            $table->string( 'api_gift', 255 )->nullable()->default( null );
             $table->double( 'commissions', 15, 8 )->default( 0 );
             $table->double( 'commission_rate', 12, 2 )->default( 0 );
             $table->enum( 'commission_rate_flag', [0, 1] )->default( 0 );
