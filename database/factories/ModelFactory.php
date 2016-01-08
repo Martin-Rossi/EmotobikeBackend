@@ -21,7 +21,7 @@ $factory->define( App\User::class, function( Faker\Generator $faker ) {
         'image'                 => $faker->imageUrl(),
         'profile_name'          => implode( ' ', $faker->words( 3 ) ),
         'profile_description'   => $faker->paragraph( 3 ),
-        'commissions_earned'    => $faker->numberBetween( 1, 200 ),
+        'commissions'           => $faker->numberBetween( 1, 200 ),
         'commission_rate'       => $faker->numberBetween( 1, 20 ),
         'personal_price_earned' => $faker->numberBetween( 1, 2000 ),
         'price_earner'          => $faker->numberBetween( 1, 20 ),
@@ -251,5 +251,20 @@ $factory->define( App\Friend::class, function( Faker\Generator $faker ) {
         'from_accepted'         => $faker->randomElement( [0, 1] ),
         'to_id'                 => $to->id,
         'to_accepted'           => $faker->randomElement( [0, 1] )
+    ];
+} );
+
+$factory->define( App\Commission::class, function( Faker\Generator $faker ) {
+    $catalog = factory( App\Catalog::class, 1 )->create();
+
+    $user = \App\User::find( $catalog->author );
+
+    return [
+        'user_id'               => $user->id,
+        'catalog_id'            => $catalog->id,
+        'commission'            => $faker->randomFloat( 2, 10, 100 ),
+        'commission_accrued'    => $faker->randomFloat( 2, 100, 200 ),
+        'commission_rate'       => $faker->randomFloat( 2, 0, 1 ),
+        'product_sales'         => $faker->randomFloat( 2, 100, 1000 )
     ];
 } );

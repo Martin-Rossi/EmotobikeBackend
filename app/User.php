@@ -24,8 +24,6 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
         'image',
         'profile_name',
         'profile_description',
-        'commissions_earned',
-        'commission_rate',
         'personal_price_earned',
         'price_earner',
         'chat'

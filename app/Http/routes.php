@@ -266,3 +266,14 @@ Route::group( ['middleware' => ['auth', 'cors']], function() {
 		'only' => ['store']
 	] );
 } );
+
+/*
+| Commission routes
+*/
+Route::group( ['middleware' => ['auth', 'cors']], function() {
+	Route::resource( 'commissions', 'CommissionController', [
+		'only' => ['index', 'show', 'store']
+	] );
+
+	Route::post( 'filter/commissions', 'CommissionController@filter' );
+} );
