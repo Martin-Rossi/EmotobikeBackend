@@ -19,6 +19,7 @@
 		profile_description (TEXT, nullable, default: null)
 		commissions (DOUBLE (15,8), default: 0)
 		comission_rate (DOUBLE (12,2), default: 0)
+		commission_exchange (DOUBLE (12,2), default: 0)
 		personal_price_earned (INT 10, default: 0)
 		price_earner (INT 10, default: 0)
 		count_likes (INT 10, default: 0)  
@@ -690,6 +691,34 @@ Set commission rate for a specified user.
 	Parameters (POST): rate, _token
 	Returns:
 		- response with type: success
+		- response with type: error
+
+## /users/{id}/commissions/exchange
+
+Set exchange rate for user.
+
+> Note: this endpoint is only reachable for 'admin' users.
+
+	URL: /users/{id}/commissions/exchange
+	Type: POST
+	Parameters (URL): id
+	Parameters (POST): exchange, _token
+	Returns:
+		- response with type: success
+		- response with type: error
+
+## /users/{id}/commissions/pay
+
+Pay the user. This will substract the given amount from user's commissions. The return value will depend on the current commission_exchage attribute.
+
+> Note: this endpoint is only reachable for 'admin' users.
+
+	URL: /users/{id}/commissions/pay
+	Type: POST
+	Parameters (URL): id
+	Parameters (POST): amount, _token
+	Returns:
+		- response with type: result (Amount, DoubleVal)
 		- response with type: error
 
 
