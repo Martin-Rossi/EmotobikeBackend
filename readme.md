@@ -7,7 +7,7 @@
 	route: /users  
 	Properties:
 		id (INT 10, primary key, autoincrement)
-		parent (INT 10)
+		parent_id (INT 10)
 		group_id (INT 10, references id on 'user_groups')
 		tags (VARCHAR 255, nullable, default: null)
 		name (VARCHAR 255)
