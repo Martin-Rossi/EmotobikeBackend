@@ -433,6 +433,26 @@ Show one particular user.
 		- response with type: result (UserObject)
 		- response with type: error (user not found)  
 
+## /users
+
+Add a new user.
+
+> Note: if a normal user does the addition, the new user will become it's curator. Every object, catalog, collection of the parent account will be editable to this curator account.  
+
+> Note: adding new users with the admin account makes the newly added user a normal user.
+
+> Note: the name, email and password are required fields. Passwords are required to be at least 5 characters long, and emails must be unique against the current userbase.  
+
+> Note: tags are divided by ";" (tag1;tag2;tag3;...;tagn)
+
+	URL: /users
+	Type: POST
+	Parameters: tags, name, email, password, image, profile_name, profile_description, api_paypal, api_loyalty, api_gift, chat, _token
+	Returns:
+		- response with type: success
+		- response with type: error
+
+
 ## /users/{id}
 
 Update user properties (users can only updated their own properties).  
@@ -444,7 +464,7 @@ Update user properties (users can only updated their own properties).
 	URL: /users/{id} 
 	Type: PUT  
 	Parameters (URL): id
-	Parameters (POST): tags, name, email, password, image, profile_name, api_paypal, api_loyalty, api_gift, commission_rate_flag, profile_description, chat, _token  
+	Parameters (POST): tags, name, email, password, image, profile_name, profile_description, api_paypal, api_loyalty, api_gift, commission_rate_flag, chat, _token  
 	Returns:  
 		- response with type: success
 		- response with type: error  
