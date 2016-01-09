@@ -58,7 +58,7 @@ class UserController extends Controller {
         }
 
         if ( auth()->user()->group_id > 2 ) {
-            $user->parent = auth()->user()->id;
+            $user->parent_id = auth()->user()->id;
             $user->save();
         }
 

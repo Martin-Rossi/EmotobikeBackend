@@ -8,7 +8,7 @@ class CreateUsersTable extends Migration {
     public function up() {
         Schema::create( 'users', function( Blueprint $table ) {
             $table->increments( 'id' );
-            $table->integer( 'parent' )->default( 0 );
+            $table->integer( 'parent_id' )->default( 0 );
             $table->integer( 'group_id' )->references( 'id' )->on( 'user_groups' )->default( 200 );
             $table->string( 'tags', 255 )->nullable()->default( null );
             $table->string( 'name' );

@@ -69,15 +69,17 @@ class ObjectController extends Controller {
 
     public function update( $id, Request $request, ApiResponse $response ) {
         $object = Object::where( 'id', '=', $id )
-                        ->where( 'author', '=', auth()->user()->id )
                         ->first();
 
         if ( is_null( $object ) )
             abort( 404 );
 
+        if ( ! $this->canTouch( $object ) )
+            abort( 403 );
+
         $inputs = $request->all();
 
-        $inputs['author'] = auth()->user()->id;
+        unset( $inputs['author'] );
 
         $inputs = $this->assignCategory( $inputs );
         $inputs = $this->assignType( $inputs );
@@ -93,11 +95,13 @@ class ObjectController extends Controller {
 
     public function destroy( $id, ApiResponse $response ) {
         $object = Object::where( 'id', '=', $id )
-                        ->where( 'author', '=', auth()->user()->id )
                         ->first();
 
         if ( is_null( $object ) )
             abort( 404 );
+
+        if ( ! $this->canTouch( $object ) )
+            abort( 403 );
 
         $object->status = -1;
         $object->save();
@@ -106,8 +110,23 @@ class ObjectController extends Controller {
     }
 
     public function deleted( ApiResponse $response ) {
+        $user = auth()->user();
+
+        $user_ids = [$user->id];
+
+        $parent = $user->parent();
+
+        if ( $parent )
+            $user_ids[] = $parent->id;
+
+        $children = $user->children();
+
+        if ( sizeof( $children ) > 0 )
+            foreach ( $children as $child )
+                $user_ids[] = $child->id;
+
         $objects = Object::where( 'status', '<', 0 )
-                         ->where( 'author', '=', auth()->user()->id )
+                         ->whereIn( 'author', $user_ids )
                          ->paginate( $this->pp );
 
         return $response->result( $objects->toArray() );
@@ -426,6 +445,24 @@ class ObjectController extends Controller {
         }
 
         return $inputs;
+    }
+
+    private function canTouch( $object ) {
+        if ( $object->author == auth()->user()->id )
+            return true;
+
+        if ( $object->author == auth()->user()->parent_id )
+            return true;
+
+        $children = auth()->user()->children();
+
+        if ( sizeof( $children ) > 0 ) {
+            foreach ( $children as $child )
+                if ( $object->author == $child->id )
+                    return true;
+        }
+
+        return false;
     }
     
 }

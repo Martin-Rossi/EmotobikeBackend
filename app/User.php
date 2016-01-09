@@ -91,4 +91,12 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
         return $follows;
     }
 
+    public function parent() {
+        return $this->where( 'id', '=', $this->parent_id )->first();
+    }
+
+    public function children() {
+        return $this->where( 'parent_id', '=', $this->id )->get();
+    }
+
 }

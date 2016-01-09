@@ -65,15 +65,17 @@ class CatalogController extends Controller {
 
     public function update( $id, Request $request, ApiResponse $response ) {
         $catalog = Catalog::where( 'id', '=', $id )
-                          ->where( 'author', '=', auth()->user()->id )
                           ->first();
 
         if ( is_null( $catalog ) )
             abort( 404 );
 
+        if ( ! $this->canTouch( $catalog ) )
+            abort( 403 );
+
         $inputs = $request->all();
 
-        $inputs['author'] = auth()->user()->id;
+        unset( $inputs['author'] );
 
         $inputs = $this->assignCategory( $inputs );
         $inputs = $this->assignType( $inputs );
@@ -89,11 +91,13 @@ class CatalogController extends Controller {
 
     public function destroy( $id, ApiResponse $response ) {
         $catalog = Catalog::where( 'id', '=', $id )
-                          ->where( 'author', '=', auth()->user()->id )
                           ->first();
 
         if ( is_null( $catalog ) )
             abort( 404 );
+
+        if ( ! $this->canTouch( $catalog ) )
+            abort( 403 );
 
         $catalog->status = -1;
         $catalog->save();
@@ -102,8 +106,23 @@ class CatalogController extends Controller {
     }
 
     public function deleted( ApiResponse $response ) {
+        $user = auth()->user();
+
+        $user_ids = [$user->id];
+
+        $parent = $user->parent();
+
+        if ( $parent )
+            $user_ids[] = $parent->id;
+
+        $children = $user->children();
+
+        if ( sizeof( $children ) > 0 )
+            foreach ( $children as $child )
+                $user_ids[] = $child->id;
+
         $catalogs = Catalog::where( 'status', '<', 0 )
-                           ->where( 'author', '=', auth()->user()->id )
+                           ->whereIn( 'author', $user_ids )
                            ->paginate( $this->pp );
 
         return $response->result( $catalogs->toArray() );
@@ -429,6 +448,24 @@ class CatalogController extends Controller {
         }
 
         return $inputs;
+    }
+
+    private function canTouch( $catalog ) {
+        if ( $catalog->author == auth()->user()->id )
+            return true;
+
+        if ( $catalog->author == auth()->user()->parent_id )
+            return true;
+
+        $children = auth()->user()->children();
+
+        if ( sizeof( $children ) > 0 ) {
+            foreach ( $children as $child )
+                if ( $catalog->author == $child->id )
+                    return true;
+        }
+
+        return false;
     }
     
 }

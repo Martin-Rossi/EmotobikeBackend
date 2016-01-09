@@ -23,7 +23,7 @@ class UserTest extends TestCase {
 
         $response = $this->actingAs( $parent )->call( 'POST', '/users', $user );
 
-        $this->seeInDatabase( 'users', ['email' => $user['email'], 'parent' => $parent->id] )
+        $this->seeInDatabase( 'users', ['email' => $user['email'], 'parent_id' => $parent->id] )
              ->assertEquals( 200, $response->status() );
     }
 

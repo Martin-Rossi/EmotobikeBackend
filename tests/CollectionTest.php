@@ -9,15 +9,8 @@ class CollectionTest extends TestCase {
     use WithoutMiddleware;
 
     public function testIndexCollections() {
-        $collection = factory( App\Collection::class, 1 )->create();
-        
-        $user = \App\User::find( $collection->author );
-
-        $this->actingAs( $user )->visit( '/collections' )
-             ->see( $collection->collection_id )
-             ->see( $collection->foreign_id )
-             ->see( $collection->foreign_type )
-             ->see( $collection->author );
+        $this->visit( '/collections' )
+             ->seeJson( ['type' => 'result'] );
     }
 
     public function testShowCollection() {

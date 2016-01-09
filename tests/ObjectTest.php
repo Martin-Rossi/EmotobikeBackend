@@ -9,8 +9,6 @@ class ObjectTest extends TestCase {
     use WithoutMiddleware;
 
     public function testIndexObjects() {
-        $object = factory( App\Object::class, 1 )->create();
-
         $this->visit( '/objects' )
              ->seeJson( ['type' => 'result'] );
     }
@@ -51,6 +49,46 @@ class ObjectTest extends TestCase {
              ->assertEquals( 200, $response->status() );
     }
 
+    public function testUpdateObjectByCurator() {
+        $object = factory( App\Object::class, 1 )->create();
+        $data = factory( App\Object::class, 1 )->make()->toArray();
+
+        $data['category'] = 'test';
+        $data['type'] = 'test';
+
+        $user = \App\User::find( $object->author );
+
+        $curator = factory( App\User::class, 1 )->create();
+
+        $curator->parent_id= $user->id;
+        $curator->save();
+
+        $response = $this->actingAs( $curator )->call( 'PUT', '/objects/' . $object->id, $data );
+
+        $this->seeInDatabase( 'objects', ['name' => $data['name']] )
+             ->assertEquals( 200, $response->status() );
+    }
+
+    public function testUpdateObjectByParent() {
+        $object = factory( App\Object::class, 1 )->create();
+        $data = factory( App\Object::class, 1 )->make()->toArray();
+
+        $data['category'] = 'test';
+        $data['type'] = 'test';
+
+        $curator = \App\User::find( $object->author );
+
+        $parent = factory( App\User::class, 1 )->create();
+
+        $curator->parent_id = $parent->id;
+        $curator->save();
+
+        $response = $this->actingAs( $parent )->call( 'PUT', '/objects/' . $object->id, $data );
+
+        $this->seeInDatabase( 'objects', ['name' => $data['name']] )
+             ->assertEquals( 200, $response->status() );
+    }
+
     public function testDeleteObject() {
         $object = factory( App\Object::class, 1 )->create();
         
@@ -62,6 +100,38 @@ class ObjectTest extends TestCase {
              ->dontSeeJson( ['id' => $object->id] );
     }
 
+    public function testDeleteObjectByCurator() {
+        $object = factory( App\Object::class, 1 )->create();
+        
+        $user = \App\User::find( $object->author );
+
+        $curator = factory( App\User::class, 1 )->create();
+
+        $curator->parent_id = $user->id;
+        $curator->save(); 
+
+        $response = $this->actingAs( $curator )->call( 'DELETE', '/objects/' . $object->id );
+
+        $this->seeInDatabase( 'objects', ['id' => $object->id, 'status' => -1] )
+             ->assertEquals( 200, $response->status() );
+    }
+
+    public function testDeleteObjectByParent() {
+        $object = factory( App\Object::class, 1 )->create();
+        
+        $curator = \App\User::find( $object->author );
+
+        $parent = factory( App\User::class, 1 )->create();
+
+        $curator->parent_id = $parent->id;
+        $curator->save(); 
+
+        $response = $this->actingAs( $parent )->call( 'DELETE', '/objects/' . $object->id );
+
+        $this->seeInDatabase( 'objects', ['id' => $object->id, 'status' => -1] )
+             ->assertEquals( 200, $response->status() );
+    }
+
     public function testIndexDeletedObjects() {
         $object = factory( App\Object::class, 1 )->create();
         
@@ -71,6 +141,40 @@ class ObjectTest extends TestCase {
         $object->save();
 
         $this->actingAs( $user )->visit( '/deleted/objects' )
+             ->seeJson( ['type' => 'result'] );
+    }
+
+    public function testIndexDeletedObjectsByCurator() {
+        $object = factory( App\Object::class, 1 )->create();
+        
+        $user = \App\User::find( $object->author );
+
+        $object->status = -1;
+        $object->save();
+
+        $curator = factory( App\User::class, 1 )->create();
+
+        $curator->parent_id = $user->id;
+        $curator->save(); 
+
+        $this->actingAs( $curator )->visit( '/deleted/objects' )
+             ->seeJson( ['type' => 'result'] );
+    }
+
+    public function testIndexDeletedObjectsByParent() {
+        $object = factory( App\Object::class, 1 )->create();
+        
+        $curator = \App\User::find( $object->author );
+
+        $object->status = -1;
+        $object->save();
+
+        $parent = factory( App\User::class, 1 )->create();
+
+        $curator->parent_id = $parent->id;
+        $curator->save(); 
+
+        $this->actingAs( $parent )->visit( '/deleted/objects' )
              ->seeJson( ['type' => 'result'] );
     }
 

@@ -9,8 +9,6 @@ class CatalogTest extends TestCase {
     use WithoutMiddleware;
 
     public function testIndexCatalogs() {
-        $catalog = factory( App\Catalog::class, 1 )->create();
-
         $this->visit( '/catalogs' )
              ->seeJson( ['type' => 'result'] );
     }
@@ -51,15 +49,87 @@ class CatalogTest extends TestCase {
              ->assertEquals( 200, $response->status() );
     }
 
+    public function testUpdateCatalogByCurator() {
+        $catalog = factory( App\Catalog::class, 1 )->create();
+        $data = factory( App\Catalog::class, 1 )->make()->toArray();
+
+        $data['category'] = 'test';
+        $data['type'] = 'test';
+
+        $user = \App\User::find( $catalog->author );
+
+        $curator = factory( App\User::class, 1 )->create();
+
+        $curator->parent_id= $user->id;
+        $curator->save();
+
+        $response = $this->actingAs( $curator )->call( 'PUT', '/catalogs/' . $catalog->id, $data );
+
+        $this->seeInDatabase( 'catalogs', ['name' => $data['name']] )
+             ->assertEquals( 200, $response->status() );
+    }
+
+    public function testUpdateCatalogByParent() {
+        $catalog = factory( App\Catalog::class, 1 )->create();
+        $data = factory( App\Catalog::class, 1 )->make()->toArray();
+
+        $data['category'] = 'test';
+        $data['type'] = 'test';
+
+        $curator = \App\User::find( $catalog->author );
+
+        $parent = factory( App\User::class, 1 )->create();
+
+        $curator->parent_id = $parent->id;
+        $curator->save();
+
+        $response = $this->actingAs( $parent )->call( 'PUT', '/catalogs/' . $catalog->id, $data );
+
+        $this->seeInDatabase( 'catalogs', ['name' => $data['name']] )
+             ->assertEquals( 200, $response->status() );
+    }
+
     public function testDeleteCatalog() {
         $catalog = factory( App\Catalog::class, 1 )->create();
         
         $user = \App\User::find( $catalog->author );
 
-        $this->actingAs( $user )->call( 'DELETE', '/catalogs/' . $catalog->id );
+        $response = $this->actingAs( $user )->call( 'DELETE', '/catalogs/' . $catalog->id );
 
-        $this->actingAs( $user )->visit( '/catalogs' )
-             ->dontSeeJson( ['id' => $catalog->id] );
+        $this->seeInDatabase( 'catalogs', ['id' => $catalog->id, 'status' => -1] )
+             ->assertEquals( 200, $response->status() );
+    }
+
+    public function testDeleteCatalogByCurator() {
+        $catalog = factory( App\Catalog::class, 1 )->create();
+        
+        $user = \App\User::find( $catalog->author );
+
+        $curator = factory( App\User::class, 1 )->create();
+
+        $curator->parent_id = $user->id;
+        $curator->save(); 
+
+        $response = $this->actingAs( $curator )->call( 'DELETE', '/catalogs/' . $catalog->id );
+
+        $this->seeInDatabase( 'catalogs', ['id' => $catalog->id, 'status' => -1] )
+             ->assertEquals( 200, $response->status() );
+    }
+
+    public function testDeleteCatalogByParent() {
+        $catalog = factory( App\Catalog::class, 1 )->create();
+        
+        $curator = \App\User::find( $catalog->author );
+
+        $parent = factory( App\User::class, 1 )->create();
+
+        $curator->parent_id = $parent->id;
+        $curator->save(); 
+
+        $response = $this->actingAs( $parent )->call( 'DELETE', '/catalogs/' . $catalog->id );
+
+        $this->seeInDatabase( 'catalogs', ['id' => $catalog->id, 'status' => -1] )
+             ->assertEquals( 200, $response->status() );
     }
 
     public function testIndexDeletedCatalogs() {
@@ -71,6 +141,40 @@ class CatalogTest extends TestCase {
         $catalog->save();
 
         $this->actingAs( $user )->visit( '/deleted/catalogs' )
+             ->seeJson( ['type' => 'result'] );
+    }
+
+    public function testIndexDeletedCatalogsByCurator() {
+        $catalog = factory( App\Catalog::class, 1 )->create();
+        
+        $user = \App\User::find( $catalog->author );
+
+        $catalog->status = -1;
+        $catalog->save();
+
+        $curator = factory( App\User::class, 1 )->create();
+
+        $curator->parent_id = $user->id;
+        $curator->save(); 
+
+        $this->actingAs( $curator )->visit( '/deleted/catalogs' )
+             ->seeJson( ['type' => 'result'] );
+    }
+
+    public function testIndexDeletedCatalogsByParent() {
+        $catalog = factory( App\Catalog::class, 1 )->create();
+        
+        $curator = \App\User::find( $catalog->author );
+
+        $catalog->status = -1;
+        $catalog->save();
+
+        $parent = factory( App\User::class, 1 )->create();
+
+        $curator->parent_id = $parent->id;
+        $curator->save(); 
+
+        $this->actingAs( $parent )->visit( '/deleted/catalogs' )
              ->seeJson( ['type' => 'result'] );
     }
 
