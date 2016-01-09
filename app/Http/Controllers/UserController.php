@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Mail;
+use Validator;
 use App\User;
 use App\Follow;
 use App\Friend;
@@ -34,6 +35,34 @@ class UserController extends Controller {
             abort( 404 );
 
         return $response->result( $user );
+    }
+
+    public function store( Request $request, ApiResponse $response ) {
+        $inputs = $request->all();
+
+        $validator = Validator::make( $inputs, [
+            'email'         => 'required|email|unique:users|max:255',
+            'password'      => 'required|min:5|max:60',
+            'name'          => 'required|max:255'
+        ] );
+
+        if ( $validator->fails() )
+            return $response->error( $validator->errors()->first() );
+
+        $inputs['password'] = bcrypt( $inputs['password'] );
+
+        try {
+            $user  = User::create( $inputs );
+        } catch ( Exception $e ) {
+            return $response->error( $e->getMessage() );
+        }
+
+        if ( auth()->user()->group_id > 2 ) {
+            $user->parent = auth()->user()->id;
+            $user->save();
+        }
+
+        return $response->success( 'User created successfully' );
     }
 
     public function update( $id, Request $request, ApiResponse $response ) {

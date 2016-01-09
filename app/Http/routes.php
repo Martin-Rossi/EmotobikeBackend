@@ -26,7 +26,7 @@ Route::get( 'auth/logout', ['middleware' => 'cors', 'uses' => 'Auth\AuthControll
 */
 Route::group( ['middleware' => ['auth', 'cors']], function () {
 	Route::resource( 'users', 'UserController', [
-		'only' => ['index', 'show', 'update']
+		'only' => ['index', 'show', 'update', 'store']
 	] );
 
 	Route::get( 'users/{id}/objects', 'UserController@objects' );

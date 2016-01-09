@@ -15,6 +15,18 @@ class UserTest extends TestCase {
              ->see( $user->name );
     }
 
+    public function testAddUser() {
+        $parent = factory( App\User::class, 1 )->create();
+        $user = factory( App\User::class, 1 )->make()->toArray();
+
+        $user['password'] = 'testing123';
+
+        $response = $this->actingAs( $parent )->call( 'POST', '/users', $user );
+
+        $this->seeInDatabase( 'users', ['email' => $user['email'], 'parent' => $parent->id] )
+             ->assertEquals( 200, $response->status() );
+    }
+
     public function testUpdateUser() {
         $user = factory( App\User::class, 1 )->create();
         $data = factory( App\User::class, 1 )->make()->toArray();
