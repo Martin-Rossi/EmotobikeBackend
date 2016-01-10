@@ -27,4 +27,27 @@ class CommentTest extends TestCase {
              ->assertEquals( 200, $response->status() );
     }
 
+    public function testUpdateCommentByAdmin() {
+        $comment = factory( App\Comment::class, 1 )->create();
+        $data = factory( App\Comment::class, 1 )->make()->toArray();
+
+        $admin = \App\User::find( 1 );
+
+        $response = $this->actingAs( $admin )->call( 'PUT', '/comments/' . $comment->id, $data );
+
+        $this->seeInDatabase( 'comments', ['text' => $data['text']] )
+             ->assertEquals( 200, $response->status() );
+    }
+
+    public function testDeleteCommentByAdmin() {
+        $comment = factory( App\Comment::class, 1 )->create();
+
+        $admin = \App\User::find( 1 );
+
+        $response = $this->actingAs( $admin )->call( 'DELETE', '/comments/' . $comment->id );
+
+        $this->dontSeeInDatabase( 'comments', ['id' => $comment->id] )
+             ->assertEquals( 200, $response->status() );
+    }
+
 }

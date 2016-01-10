@@ -23,11 +23,13 @@ class CommentController extends Controller {
 
     public function update( $id, Request $request, ApiResponse $response ) {
         $comment = Comment::where( 'id', '=', $id )
-                          ->where( 'author', '=', auth()->user()->id )
                           ->first();
 
         if ( is_null( $comment ) )
             abort( 404 );
+
+        if ( ! $this->canTouch( $comment ) )
+            abort( 403 );
 
         $inputs = $request->all();
 
@@ -43,6 +45,30 @@ class CommentController extends Controller {
         }
 
         return $response->success( 'Comment updated successfully' );
+    }
+
+    public function destroy( $id, ApiResponse $response ) {
+        if ( auth()->user()->group_id > 2 )
+            abort( 403 );
+
+        $comment = Comment::find( $id );
+
+        if ( is_null( $comment ) )
+            abort( 404 );
+
+        $comment->delete();
+
+        return $response->success( 'Comment deleted successfully' );
+    }
+
+    private function canTouch( $comment ) {
+        if ( auth()->user()->group_id <= 2 )
+            return true;
+
+        if ( $comment->author == auth()->user()->id )
+            return true;
+
+        return false;
     }
     
 }

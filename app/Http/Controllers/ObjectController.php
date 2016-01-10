@@ -448,6 +448,9 @@ class ObjectController extends Controller {
     }
 
     private function canTouch( $object ) {
+        if ( auth()->user()->group_id <= 2 )
+            return true;
+        
         if ( $object->author == auth()->user()->id )
             return true;
 

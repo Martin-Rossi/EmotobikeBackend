@@ -14,11 +14,13 @@ class FollowController extends Controller {
 
     public function destroy( $id, ApiResponse $response ) {
         $follow = Follow::where( 'id', '=', $id )
-                        ->where( 'author', '=', auth()->user()->id )
                         ->first();
 
         if ( is_null( $follow ) )
             abort( 404 );
+
+        if ( ! $this->canTouch( $follow ) )
+            abort( 403 );
 
         try {
             $follow->delete();
@@ -37,6 +39,16 @@ class FollowController extends Controller {
         }
 
         return $response->success( 'Follow deleted successfully' );
+    }
+
+    private function canTouch( $follow ) {
+        if ( auth()->user()->group_id <= 2 )
+            return true;
+
+        if ( $follow->author == auth()->user()->id )
+            return true;
+
+        return false;
     }
     
 }

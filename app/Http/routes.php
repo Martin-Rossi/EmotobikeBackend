@@ -198,7 +198,7 @@ Route::group( ['middleware' => ['auth', 'cors']], function () {
 */
 Route::group( ['middleware' => ['auth', 'cors']], function () {
 	Route::resource( 'comments', 'CommentController', [
-		'only' => ['show', 'update']
+		'only' => ['show', 'update', 'destroy']
 	] );
 } );
 
@@ -254,7 +254,7 @@ Route::group( ['middleware' => ['auth', 'cors']], function() {
 */
 Route::group( ['middleware' => ['auth', 'cors']], function() {
 	Route::resource( 'messages', 'MessageController', [
-		'only' => ['show', 'store']
+		'only' => ['show', 'store', 'destroy']
 	] );
 
 	Route::post( 'messages/{id}/reply', 'MessageController@reply' );

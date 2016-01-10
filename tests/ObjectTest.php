@@ -89,6 +89,21 @@ class ObjectTest extends TestCase {
              ->assertEquals( 200, $response->status() );
     }
 
+    public function testUpdateObjectByAdmin() {
+        $object = factory( App\Object::class, 1 )->create();
+        $data = factory( App\Object::class, 1 )->make()->toArray();
+
+        $data['category'] = 'test';
+        $data['type'] = 'test';
+
+        $admin = \App\User::find( 1 );
+
+        $response = $this->actingAs( $admin )->call( 'PUT', '/objects/' . $object->id, $data );
+
+        $this->seeInDatabase( 'objects', ['name' => $data['name']] )
+             ->assertEquals( 200, $response->status() );
+    }
+
     public function testDeleteObject() {
         $object = factory( App\Object::class, 1 )->create();
         
@@ -127,6 +142,17 @@ class ObjectTest extends TestCase {
         $curator->save(); 
 
         $response = $this->actingAs( $parent )->call( 'DELETE', '/objects/' . $object->id );
+
+        $this->seeInDatabase( 'objects', ['id' => $object->id, 'status' => -1] )
+             ->assertEquals( 200, $response->status() );
+    }
+
+    public function testDeleteObjectByAdmin() {
+        $object = factory( App\Object::class, 1 )->create();
+        
+        $admin = \App\User::find( 1 );
+
+        $response = $this->actingAs( $admin )->call( 'DELETE', '/objects/' . $object->id );
 
         $this->seeInDatabase( 'objects', ['id' => $object->id, 'status' => -1] )
              ->assertEquals( 200, $response->status() );

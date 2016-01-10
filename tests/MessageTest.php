@@ -40,6 +40,28 @@ class MessageTest extends TestCase {
              ->assertEquals( 200, $response->status() );
     }
 
+    public function testDeleteMessage() {
+        $message = factory( App\Message::class, 1 )->create();
+
+        $user = \App\User::find( $message->recipient );
+
+        $response = $this->actingAs( $user )->call( 'DELETE', '/messages/' . $message->id );
+
+        $this->dontSeeInDatabase( 'messages', ['id' => $message->id] )
+             ->assertEquals( 200, $response->status() );
+    }
+
+    public function testDeleteMessageByAdmin() {
+        $message = factory( App\Message::class, 1 )->create();
+
+        $admin = \App\User::find( 1 );
+
+        $response = $this->actingAs( $admin )->call( 'DELETE', '/messages/' . $message->id );
+
+        $this->dontSeeInDatabase( 'messages', ['id' => $message->id] )
+             ->assertEquals( 200, $response->status() );
+    }
+
     public function testIndexFromFollows() {
         $follow = factory( App\Follow::class, 1 )->create();
         $tofollow = factory( App\User::class, 1 )->create();
@@ -57,7 +79,6 @@ class MessageTest extends TestCase {
 
         $this->actingAs( $user )->visit( '/messages/from/follows' )
              ->see( $message->message );
-
     }
 
 }

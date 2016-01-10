@@ -451,6 +451,9 @@ class CatalogController extends Controller {
     }
 
     private function canTouch( $catalog ) {
+        if ( auth()->user()->group_id <= 2 )
+            return true;
+
         if ( $catalog->author == auth()->user()->id )
             return true;
 

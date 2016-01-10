@@ -67,6 +67,20 @@ class MessageController extends Controller {
         return $response->success( 'New message added successfully' );
     }
 
+    public function destroy( $id, ApiResponse $response ) {
+        $message = Message::find( $id );
+
+        if ( is_null( $message ) )
+            abort( 404 );
+
+        if ( ! $this->canTouch( $message ) )
+            abort( 403 );
+
+        $message->delete();
+
+        return $response->success( 'Message deleted successfully' );
+    }
+
     public function messages_from_follows( ApiResponse $response ) {
         $messages = [];
         $users = [];
@@ -112,6 +126,16 @@ class MessageController extends Controller {
         }
 
         return $inputs;
+    }
+
+    private function canTouch( $message ) {
+        if ( auth()->user()->group_id <= 2 )
+            return true;
+
+        if ( $message->recipient == auth()->user()->id )
+            return true;
+
+        return false;
     }
     
 }

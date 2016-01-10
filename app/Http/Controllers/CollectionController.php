@@ -21,6 +21,7 @@ class CollectionController extends Controller {
 
     public function index( ApiResponse $response ) {
         $collections = Collection::where( 'status', '>', 0 )
+                                 ->where( 'author', '=', auth()->user()->id )
                                  ->paginate( $this->pp );
 
         return $response->result( $collections->toArray() );
@@ -28,6 +29,7 @@ class CollectionController extends Controller {
 
     public function show( $id, ApiResponse $response ) {
         $collection = Collection::where( 'collection_id', '=', $id )
+                                ->where( 'author', '=', auth()->user()->id )
                                 ->get();
 
         return $response->result( $collection->toArray() );

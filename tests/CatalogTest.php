@@ -89,6 +89,21 @@ class CatalogTest extends TestCase {
              ->assertEquals( 200, $response->status() );
     }
 
+    public function testUpdateCatalogByAdmin() {
+        $catalog = factory( App\Catalog::class, 1 )->create();
+        $data = factory( App\Catalog::class, 1 )->make()->toArray();
+
+        $data['category'] = 'test';
+        $data['type'] = 'test';
+
+        $admin = \App\User::find( 1 );
+
+        $response = $this->actingAs( $admin )->call( 'PUT', '/catalogs/' . $catalog->id, $data );
+
+        $this->seeInDatabase( 'catalogs', ['name' => $data['name']] )
+             ->assertEquals( 200, $response->status() );
+    }
+
     public function testDeleteCatalog() {
         $catalog = factory( App\Catalog::class, 1 )->create();
         
@@ -127,6 +142,17 @@ class CatalogTest extends TestCase {
         $curator->save(); 
 
         $response = $this->actingAs( $parent )->call( 'DELETE', '/catalogs/' . $catalog->id );
+
+        $this->seeInDatabase( 'catalogs', ['id' => $catalog->id, 'status' => -1] )
+             ->assertEquals( 200, $response->status() );
+    }
+
+    public function testDeleteCatalogByAdmin() {
+        $catalog = factory( App\Catalog::class, 1 )->create();
+        
+        $admin = \App\User::find( 1 );
+
+        $response = $this->actingAs( $admin )->call( 'DELETE', '/catalogs/' . $catalog->id );
 
         $this->seeInDatabase( 'catalogs', ['id' => $catalog->id, 'status' => -1] )
              ->assertEquals( 200, $response->status() );
