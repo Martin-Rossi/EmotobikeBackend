@@ -1739,6 +1739,20 @@ Update comment properties (users can only updated comments owned by them).
 		- response with type: success
 		- response with type: error
 
+## /comments/{id}
+
+Delete a comment.
+
+> Note: only admin can delete comments. 
+
+	URL: /comments/{id}
+	Type: DELETE
+	Parameters (URL): id
+	Parameters (DELETE): _token
+	Returns:
+		- response with type: success
+		- response with type: error
+
 # Endpoints "like"   
 
 ## /likes/{id}
@@ -1931,6 +1945,20 @@ Reply to a message. The sender is always the current, authenticated user - while
 	Returns:  
 		- response with type: success
 		- response with type: error  
+
+## /messages/{id}
+
+Delete a message.
+
+> Note: only the message recipient or the admin can delete a message.
+
+	URL: /messages/{id}
+	Type: DELETE
+	Parameters (URL): id
+	Parameters (DELETE): _token
+	Returns:
+		- response with type: success
+		- response with type: error
 
 ## /messages/from/follows
 
