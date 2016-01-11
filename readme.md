@@ -410,6 +410,26 @@ Logout user.
 		- response with type: success  
 		- response with type: error  
 
+User registration.
+
+	URL: /auth/registration
+	Type: POST
+	Parameters:
+		- email
+		- password
+		- name
+		- tags
+		-'image',
+		- 'commissions_earned',
+ 		- 'commission_rate',
+		- 'personal_price_earned',
+		- 'price_earner'
+		- _token
+	Returns:
+		- response with type: success
+		- response with type: error
+		
+
 # Endpoints "user"  
 
 ## /users
@@ -744,6 +764,16 @@ Pay the user. This will substract the given amount from user's commissions. The 
 		- response with type: result (Amount, DoubleVal)
 		- response with type: error
 
+## /field/users
+
+Search user by field.
+
+	URL: /field/users
+	Type: POST
+	Parameters: field, term, _token
+	Returns:
+		- response with type: result ([UserObjects])
+
 
 # Endpoints "object"  
 
@@ -986,7 +1016,16 @@ Filter objects
 
 * supported operators: [=, <, >]
 
-	
+## /positions/{catalog_id}/objects
+
+Return objects from catalog sorted by positions.
+
+	URL: /positions/{catalog_id}/objects
+	Type: GET
+	Parameters:  catalog_id
+	Returns:
+		- response with type: result ([ObjectObjects])
+		
 # Endpoints "catalog"  
 
 ## /catalogs
