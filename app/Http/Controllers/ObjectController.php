@@ -148,7 +148,8 @@ class ObjectController extends Controller {
         $operators = [
             '=',
             '<',
-            '>'
+            '>',
+            'LIKE'
         ];
 
         $operator = $request->get( 'operator' );
@@ -160,6 +161,7 @@ class ObjectController extends Controller {
             'catalog_id',
             'category_id',
             'type_id',
+            'tags',
             'retail_price',
             'sale_price',
             'layout',

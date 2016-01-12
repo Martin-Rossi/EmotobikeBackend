@@ -145,7 +145,8 @@ class CatalogController extends Controller {
         $operators = [
             '=',
             '<',
-            '>'
+            '>',
+            'LIKE'
         ];
 
         $operator = $request->get( 'operator' );
@@ -156,6 +157,7 @@ class CatalogController extends Controller {
         $filters = [
             'category_id',
             'type_id',
+            'tags',
             'author',
             'created_at',
             'updated_at'
