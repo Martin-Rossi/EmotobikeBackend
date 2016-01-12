@@ -130,6 +130,7 @@
 		collection_id (INT 10)
 		foreign_id (INT 10)
 		foreign_type (ENUM['object','catalog'])
+		name (VARCHAR 255)
 		author (INT 10, references id on 'users')
 		status (ENUM[-1,0,1], default: 1)
 		created_at (TIMESTAMP)
@@ -143,6 +144,7 @@
 		collection_id (INT 10)
 		foreign_id (INT 10)
 		foreign_type (ENUM['object','catalog'])
+		name (VARCHAR 255)
 		status (ENUM[-1,0,1], default: 1)
 		created_at (TIMESTAMP)
 		updated_at (TIMESTAMP)  
@@ -1344,12 +1346,24 @@ Add a new collection.
 
 	URL: /collections 
 	Type: POST  
-	Parameters: foreign_id, foreign_type, _token  
+	Parameters: foreign_id, foreign_type, name, _token  
 	Returns:  
 		- response with type: success
 		- response with type: error  
 
 * supported foreign types: ['object', 'catalog']  
+
+## /collections/{collection_id}
+
+Update a particular collection belonging to the current, authenticated user.
+
+	URL: /collections/{collection_id} 
+	Type: PUT 
+	Parameters (URL): collection_id 
+	Parameters (PUT): name, _token 
+	Returns:  
+		- response with type: success
+		- response with type: error
 
 ## /collections/{collection_id}/add/object
 
@@ -1484,6 +1498,18 @@ Add a new generic collection.
 		- response with type: error  
 
 * supported foreign types: ['object', 'catalog']  
+
+## /generic-collections/{collection_id}
+
+Update a particular generic collection.
+
+	URL: /generic-collections/{collection_id} 
+	Type: PUT 
+	Parameters (URL): collection_id 
+	Parameters (PUT): name, _token 
+	Returns:  
+		- response with type: success
+		- response with type: error  
 
 ## /generic-collections/{id}
 
