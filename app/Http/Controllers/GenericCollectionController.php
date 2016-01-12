@@ -23,6 +23,18 @@ class GenericCollectionController extends Controller {
         $generic_collections = GenericCollection::where( 'status', '>', 0 )
                                                 ->paginate( $this->pp );
 
+        $i = 0;
+        
+        foreach ( $generic_collections as $generic_collection ) {
+            if ( 'object' == $generic_collection->foreign_type )
+                $generic_collections[$i]->object = Object::find( $generic_collection->foreign_id )->toArray();
+            else
+                $generic_collections[$i]->catalog = Catalog::find( $generic_collection->foreign_id )->toArray();
+
+
+            $i++;
+        }
+
         return $response->result( $generic_collections->toArray() );
     }
 
@@ -86,6 +98,18 @@ class GenericCollectionController extends Controller {
 
         $generic_collections = GenericCollection::where( 'status', '<', 0 )
                                                 ->paginate( $this->pp );
+
+        $i = 0;
+        
+        foreach ( $generic_collections as $generic_collection ) {
+            if ( 'object' == $generic_collection->foreign_type )
+                $generic_collections[$i]->object = Object::find( $generic_collection->foreign_id )->toArray();
+            else
+                $generic_collections[$i]->catalog = Catalog::find( $generic_collection->foreign_id )->toArray();
+
+
+            $i++;
+        }
 
         return $response->result( $generic_collections->toArray() );
     }

@@ -24,6 +24,18 @@ class CollectionController extends Controller {
                                  ->where( 'author', '=', auth()->user()->id )
                                  ->paginate( $this->pp );
 
+        $i = 0;
+
+        foreach ( $collections as $collection ) {
+            if ( 'object' == $collection->foreign_type )
+                $collections[$i]->object = Object::find( $collection->foreign_id )->toArray();
+            else
+                $collections[$i]->catalog = Catalog::find( $collection->foreign_id )->toArray();
+
+
+            $i++;
+        }
+
         return $response->result( $collections->toArray() );
     }
 
@@ -84,6 +96,18 @@ class CollectionController extends Controller {
         $collections = Collection::where( 'status', '<', 0 )
                                  ->where( 'author', '=', auth()->user()->id )
                                  ->paginate( $this->pp );
+
+        $i = 0;
+        
+        foreach ( $collections as $collection ) {
+            if ( 'object' == $collection->foreign_type )
+                $collections[$i]->object = Object::find( $collection->foreign_id )->toArray();
+            else
+                $collections[$i]->catalog = Catalog::find( $collection->foreign_id )->toArray();
+
+
+            $i++;
+        }
 
         return $response->result( $collections->toArray() );
     }
