@@ -101,6 +101,7 @@ $factory->define( App\Collection::class, function( Faker\Generator $faker ) {
         'collection_id'         => $faker->numberBetween( 1, 20 ),
         'foreign_id'            => $catalog->id,
         'foreign_type'          => 'catalog',
+        'name'                  => implode( ' ', $faker->words( 1 ) ),
         'author'                => $user->id
     ];
 } );
@@ -111,7 +112,8 @@ $factory->define( App\GenericCollection::class, function( Faker\Generator $faker
     return [
         'collection_id'         => $faker->numberBetween( 1, 20 ),
         'foreign_id'            => $catalog->id,
-        'foreign_type'          => 'catalog'
+        'foreign_type'          => 'catalog',
+        'name'                  => implode( ' ', $faker->words( 1 ) )
     ];
 } );
 

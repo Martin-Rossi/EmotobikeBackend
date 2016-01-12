@@ -35,6 +35,19 @@ class GenericCollectionTest extends TestCase {
              ->assertEquals( 200, $response->status() );
     }
 
+    public function testUpdateGenericCollection() {
+        $generic_collection = factory( App\GenericCollection::class, 1 )->create();
+
+        $user = \App\User::find( 1 );
+
+        $data['name'] = 'test321';
+
+        $response = $this->actingAs( $user )->call( 'PUT', '/generic-collections/' . $generic_collection->collection_id, $data );
+
+        $this->seeInDatabase( 'generic_collections', ['collection_id' => $generic_collection->collection_id, 'name' => $data['name']] )
+             ->assertEquals( 200, $response->status() );
+    }
+
     public function testDeleteGenericCollection() {
         $generic_collection = factory( App\GenericCollection::class, 1 )->create();
         

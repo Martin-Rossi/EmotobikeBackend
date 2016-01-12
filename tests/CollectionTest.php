@@ -39,6 +39,19 @@ class CollectionTest extends TestCase {
              ->assertEquals( 200, $response->status() );
     }
 
+    public function testUpdateCollection() {
+        $collection = factory( App\Collection::class, 1 )->create();
+
+        $user = \App\User::find( $collection->author );
+
+        $data['name'] = 'test123';
+
+        $response = $this->actingAs( $user )->call( 'PUT', '/collections/' . $collection->collection_id, $data );
+
+        $this->seeInDatabase( 'collections', ['collection_id' => $collection->collection_id, 'name' => $data['name']] )
+             ->assertEquals( 200, $response->status() );
+    }
+
     public function testDeleteCollection() {
         $collection = factory( App\Collection::class, 1 )->create();
         

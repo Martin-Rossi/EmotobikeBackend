@@ -124,7 +124,7 @@ Route::group( ['middleware' => ['auth', 'cors']], function () {
 */
 Route::group( ['middleware' => ['auth', 'cors']], function () {
 	Route::resource( 'collections', 'CollectionController', [
-		'only' => ['index', 'show', 'store', 'destroy']
+		'only' => ['index', 'show', 'update', 'store', 'destroy']
 	] );
 
 	Route::get( 'collections/{id}/catalogs', 'CollectionController@catalogs' );
@@ -143,7 +143,7 @@ Route::group( ['middleware' => ['auth', 'cors']], function () {
 */
 Route::group( ['middleware' => ['auth', 'cors']], function () {
 	Route::resource( 'generic-collections', 'GenericCollectionController', [
-		'only' => ['index', 'show', 'store', 'destroy']
+		'only' => ['index', 'show', 'update', 'store', 'destroy']
 	] );
 
 	Route::get( 'generic-collections/{id}/catalogs', 'GenericCollectionController@catalogs' );

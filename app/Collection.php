@@ -12,6 +12,7 @@ class Collection extends Model {
         'collection_id',
         'foreign_id',
         'foreign_type',
+        'name',
         'author'
     ];
 

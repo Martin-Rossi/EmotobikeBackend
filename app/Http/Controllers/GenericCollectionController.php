@@ -74,6 +74,21 @@ class GenericCollectionController extends Controller {
         return $response->success( 'GenericCollection created successfully' );
     }
 
+    public function update( $id, Request $request, ApiResponse $response ) {
+        $generic_collections = GenericCollection::where( 'collection_id', '=', $id )
+                                                ->get();
+
+        if ( ! sizeof( $generic_collections ) > 0 )
+            abort( 404 );
+
+        foreach ( $generic_collections as $generic_collection ) {
+            $generic_collection->name = $request->get( 'name' );
+            $generic_collection->save();
+        }
+
+        return $response->success( 'GenericCollection updated successfully' );
+    }
+
     public function destroy( $id, ApiResponse $response ) {
         if ( auth()->user()->group_id > 2 )
             abort( 403 );
@@ -177,6 +192,12 @@ class GenericCollectionController extends Controller {
         $generic_collection->collection_id = $id;
         $generic_collection->foreign_id = $inputs['object_id'];
         $generic_collection->foreign_type = 'object';
+
+        $cn = GenericCollection::where( 'collection_id', '=', $id )
+                               ->first();
+
+        if ( $cn )
+            $generic_collection->name = $cn->name;
         
         $generic_collection->save();
 
@@ -210,6 +231,12 @@ class GenericCollectionController extends Controller {
         $generic_collection->collection_id = $id;
         $generic_collection->foreign_id = $inputs['catalog_id'];
         $generic_collection->foreign_type = 'catalog';
+
+        $cn = GenericCollection::where( 'collection_id', '=', $id )
+                               ->first();
+
+        if ( $cn )
+            $generic_collection->name = $cn->name;
         
         $generic_collection->save();
 

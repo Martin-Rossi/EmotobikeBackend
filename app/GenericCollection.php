@@ -11,7 +11,8 @@ class GenericCollection extends Model {
     protected $fillable = [
     	'collection_id',
         'foreign_id',
-        'foreign_type'
+        'foreign_type',
+        'name'
     ];
 
 }

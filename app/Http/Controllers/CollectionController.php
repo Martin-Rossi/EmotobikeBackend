@@ -76,6 +76,21 @@ class CollectionController extends Controller {
         return $response->success( 'Collection created successfully' );
     }
 
+    public function update( $id, Request $request, ApiResponse $response ) {
+        $collections = Collection::where( 'collection_id', '=', $id )
+                                 ->get();
+
+        if ( ! sizeof( $collections ) > 0 )
+            abort( 404 );
+
+        foreach ( $collections as $collection ) {
+            $collection->name = $request->get( 'name' );
+            $collection->save();
+        }
+
+        return $response->success( 'Collection updated successfully' );
+    }
+
     public function destroy( $id, ApiResponse $response ) {
         $collection = Collection::where( 'collection_id', '=', $id )
                                 ->where( 'author', '=', auth()->user()->id )
@@ -177,6 +192,13 @@ class CollectionController extends Controller {
         $collection->foreign_type = 'object';
         $collection->author = auth()->user()->id;
 
+        $cn = Collection::where( 'collection_id', '=', $id )
+                        ->where( 'author', '=', auth()->user()->id )
+                        ->first();
+
+        if ( $cn )
+            $collection->name = $cn->name;
+
         $collection->save();
 
         return $response->success( 'Object successfully added to collection' );
@@ -208,6 +230,13 @@ class CollectionController extends Controller {
         $collection->foreign_id = $inputs['catalog_id'];
         $collection->foreign_type = 'catalog';
         $collection->author = auth()->user()->id;
+
+        $cn = Collection::where( 'collection_id', '=', $id )
+                        ->where( 'author', '=', auth()->user()->id )
+                        ->first();
+
+        if ( $cn )
+            $collection->name = $cn->name;
 
         $collection->save();
 
