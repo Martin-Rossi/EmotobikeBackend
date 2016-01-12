@@ -1014,9 +1014,9 @@ Filter objects
 	Returns:
 		- response with type: result ([ObjectObjects])
 
-* supported filters: [catalog _ id, category _ id, type _ id, retail _ price, sale _ price, layout, position, competitor _ flag, recomended, curated, author, created _ at, updated _ at]
+* supported filters: [catalog _ id, category _ id, type _ id, tags, retail _ price, sale _ price, layout, position, competitor _ flag, recomended, curated, author, created _ at, updated _ at]
 
-* supported operators: [=, <, >]
+* supported operators: [=, <, >, LIKE]
 
 ## /positions/{catalog_id}/objects
 
@@ -1285,9 +1285,9 @@ Filter catalogs
 	Returns:
 		- response with type: result ([CatalogObjects])
 
-* supported filters: [category _ id, type _ id, author, created _ at, updated _ at]
+* supported filters: [category _ id, type _ id, tags, author, created _ at, updated _ at]
 
-* supported operators: [=, <, >]
+* supported operators: [=, <, >, LIKE]
 
 # Endpoints "collection"  
 
