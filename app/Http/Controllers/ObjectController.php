@@ -388,17 +388,17 @@ class ObjectController extends Controller {
         return $response->result( $object->feedbacks() );
     }
 
-    public function positions( $id, Request $request, ApiResponse $response ) {
-        
+    public function positions( Request $request, ApiResponse $response){
+        $id = $request->get( 'id' );
         $objects = Object::where( 'status', '>', 0 )
-                         ->where( 'catalog_id', '=', $id )
-                         ->orderBy( 'position', 'asc' )
-                         ->groupBy( 'position' )
-                         ->with( 'catalog', 'category', 'type', 'author' )
-                         ->take( 19 )
-                         ->get();
-                         
-        return $response->result( $objects );
+            ->orderBy('position', 'asc')
+            ->groupBy('position')
+            ->with( 'catalog', 'category', 'type', 'author' )
+            ->take(19);
+        if( !empty( $id ) ){
+            $objects = $objects->where( 'catalog_id', '=', $id );
+        }
+        return $response->result( $objects->get() );
     }
 
     private function assignCategory( $inputs ) {
