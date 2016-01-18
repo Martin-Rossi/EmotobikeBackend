@@ -402,6 +402,34 @@ Login user with email/password inputs.
 		- response with type: success  
 		- response with type: error
 
+## /auth/restore
+
+Send email to ser email with link to password change confirmation
+
+	URL: /auth/restoren
+	Type: POST
+	Parameters:
+		- email
+
+	Returns:
+		- response with type: success
+		- response with type: error
+
+
+## /auth/restore/confirm/{token}
+
+Chenge user password and send new password to user email
+
+	URL: /auth/restore/confirm/{token}
+	Type: GET
+	Parameters:
+
+	Returns:
+		- redirect to main page
+		TODO: change route;
+		- response with type: error
+
+
 ## /auth/logout  
 
 Logout user.
