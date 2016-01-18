@@ -2036,6 +2036,20 @@ This endpoint will return all the messages sent by the users who the current, au
 	Returns:  
 		- response with type: result (MessageObject)  
 
+## /messages/groups/{group_id}
+
+Send a message to a group of users.
+
+>> Note: this function is only available to 'admin' users.
+
+	URL: /messages/groups/{group_id}
+	Type: POST  
+	Parameters (URL): group_id
+	Parameters (POST): type, message, image, actstem, _token 
+	Returns:  
+		- response with type: success
+		- response with type: error  
+
 # Endpoints "invites"  
 
 ## /invites
