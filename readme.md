@@ -65,6 +65,7 @@
 		type_id (INT 10, references id on 'types', default: 0)
 		tags (VARCHAR 255, nullable, default: null)
 		name (VARCHAR 255)
+		sku (VARCHAR, 55, nullable, default: null)
 		description (TEXT, nullable, default: null)
 		url (VARCHAR 255, nullable, default: null)
 		image (VARCHAR 255, nullable, default: null)
@@ -812,7 +813,7 @@ Add a new object.
 
 	URL: /objects 
 	Type: POST  
-	Parameters: catalog_id, category, type, tags, name, description, url, image, weight, retail_price, sale_price, offer_value, offer_url, offer_description, offer_start, offer_stop, prod_detail_url, layout, position, competitor_flag, curated, _token  
+	Parameters: catalog_id, category, type, tags, name, sku, description, url, image, weight, retail_price, sale_price, offer_value, offer_url, offer_description, offer_start, offer_stop, prod_detail_url, layout, position, competitor_flag, curated, _token  
 	Returns:  
 		- response with type: success
 		- response with type: error
@@ -832,7 +833,7 @@ Update object properties (users can only updated objects owned by them).
 	URL: /objects/{id} 
 	Type: PUT  
 	Parameters (URL): id
-	Parameters (POST): catalog_id, category, type, tags, name, description, url, image, weight, retail_price, sale_price, offer_value, offer_url, offer_description, offer_start, offer_stop, prod_detail_url, layout, position, competitor_flag, curated, _token  
+	Parameters (POST): catalog_id, category, type, tags, name, sku, description, url, image, weight, retail_price, sale_price, offer_value, offer_url, offer_description, offer_start, offer_stop, prod_detail_url, layout, position, competitor_flag, curated, _token  
 	Returns:  
 		- response with type: success
 		- response with type: error  
@@ -2034,6 +2035,20 @@ This endpoint will return all the messages sent by the users who the current, au
 	Parameters: -
 	Returns:  
 		- response with type: result (MessageObject)  
+
+## /messages/groups/{group_id}
+
+Send a message to a group of users.
+
+>> Note: this function is only available to 'admin' users.
+
+	URL: /messages/groups/{group_id}
+	Type: POST  
+	Parameters (URL): group_id
+	Parameters (POST): type, message, image, actstem, _token 
+	Returns:  
+		- response with type: success
+		- response with type: error  
 
 # Endpoints "invites"  
 

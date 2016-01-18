@@ -262,6 +262,8 @@ Route::group( ['middleware' => ['auth', 'cors']], function() {
 	Route::post( 'messages/{id}/reply', 'MessageController@reply' );
 
 	Route::get( 'messages/from/follows', 'MessageController@messages_from_follows' );
+
+	Route::post( 'messages/groups/{group_id}', 'MessageController@message_group' );
 } );
 
 /*

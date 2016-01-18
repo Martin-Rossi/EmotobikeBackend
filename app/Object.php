@@ -18,6 +18,7 @@ class Object extends Model {
         'url',
         'image',
         'weight',
+        'sku',
         'retail_price',
         'sale_price',
         'offer_value',
