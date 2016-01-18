@@ -18,7 +18,9 @@ Route::get( '/', function () {
 // Authentication routes
 Route::post( 'auth/login', ['middleware' => 'cors', 'uses' =>'Auth\AuthController@postLogin'] );
 Route::post( 'auth/registration', ['middleware' => 'cors', 'uses' =>'Auth\AuthController@postRegistration'] );
+Route::post( 'auth/restore', ['middleware' => 'cors', 'uses' => 'Auth\AuthController@postRestore'] );
 Route::get( 'auth/login', ['middleware' => 'cors', 'uses' => 'Auth\AuthController@getLogin'] );
+Route::get( 'auth/restore/confirm/{token}/', ['middleware' => 'cors', 'uses' => 'Auth\AuthController@getRestoreConfirm'] );
 Route::get( 'auth/logout', ['middleware' => 'cors', 'uses' => 'Auth\AuthController@getLogout'] );
 
 /*

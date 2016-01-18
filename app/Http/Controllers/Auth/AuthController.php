@@ -4,7 +4,10 @@ namespace App\Http\Controllers\Auth;
 
 use App\User;
 use App\Invite;
+use App\PasswordResets;
 use Validator;
+use Mail;
+use DB;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use App\Extensions\APIResponse;
@@ -76,6 +79,63 @@ class AuthController extends Controller {
 
         return $response->success( 'User is authenticated' );
     }
+    public function postRestore( Request $request, ApiResponse $response ) {
+
+        $inputs = $request->all();
+        $check = Validator::make(
+            $inputs,
+            ['email'     => 'required|email|max:255|exists:users']
+        );
+        if( $check->fails() )
+            return $response->error( 'Something wrong' );
+
+        $user = User::where( 'email', '=', $inputs['email'] )->first();
+
+
+
+        try {
+
+            $token = bcrypt(uniqid());
+            DB::table('password_resets')->insert(["email"=>$inputs['email'],'token'=> $token,'created_at'=>time() ]);
+
+        } catch ( Exception $e ) {
+
+            return $response->error( $e->getMessage() );
+
+        }
+
+        Mail::send( 'emails.restore', ['user' => $user,'token'=> $token], function ( $mail ) use ( $inputs ) {
+            $mail->to( $inputs['email'], '' )->subject( 'Restore password' );
+            $mail->sender('info@gmail.com');
+            $mail->from('info@gmail.com');
+        } );
+
+        return $response->success( 'Email send to user!' );
+    }
+
+    public function getRestoreConfirm($token, Request $request, ApiResponse $response){
+
+
+        $user_request = PasswordResets::where( 'token', '=', $token )->first();
+        if(!$user_request)
+            return $response->error( 'Something wrong' );
+
+        $new_pass = uniqid();
+
+
+        $user = User::where( 'email', '=',  $user_request->email )->first();
+        $user->update(array('password' => bcrypt($new_pass)));
+        Mail::send( 'emails.newPass', ['user' => $user,'password'=> $new_pass], function ( $mail ) use($user){
+            $mail->to( $user->email , '' )->subject( 'New password' );
+            $mail->sender('info@gmail.com');
+            $mail->from('info@gmail.com');
+        } );
+
+        return \Redirect::to('user/login');
+
+
+    }
+
 
     public function postRegistration( Request $request, ApiResponse $response ) {
         $inputs = $request->all();
