@@ -96,7 +96,7 @@ class AuthController extends Controller {
         try {
 
             $token = bcrypt(uniqid());
-            DB::table('password_resets')->insert(["email"=>$inputs['email'],'token'=> $token,'created_at'=>time() ]);
+            DB::table('password_resets')->insert(["email"=>$inputs['email'],'token'=> $token,'created_at'=>date('Y-m-d H:i:s')] );
 
         } catch ( Exception $e ) {
 
