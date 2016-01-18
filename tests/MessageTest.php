@@ -81,4 +81,15 @@ class MessageTest extends TestCase {
              ->see( $message->message );
     }
 
+    public function testGroupMessaging() {
+        $message = factory( App\Message::class, 1 )->make()->toArray();
+
+        $user = \App\User::find( 1 );
+
+        $response = $this->actingAs( $user )->call( 'POST', '/messages/groups/100', $message );
+
+        $this->seeInDatabase( 'messages', ['sender' => 1, 'message' => $message['message']] )
+             ->assertEquals( 200, $response->status() );
+    }
+
 }

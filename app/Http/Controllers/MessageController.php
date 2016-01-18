@@ -105,6 +105,33 @@ class MessageController extends Controller {
         return $response->result( $messages );
     }
 
+    public function message_group( $id, Request $request, APIResponse $response ) {
+        if ( auth()->user()->group_id > 2 )
+            abort( 403 );
+
+        $users = User::where( 'group_id', '=', $id )->get();
+
+        if ( ! sizeof( $users ) > 0 )
+            return $response->error( 'No users where found in this group' );
+
+        foreach ( $users as $user ) {
+            $inputs = $request->all();
+
+            $inputs['sender'] = auth()->user()->id;
+            $inputs['recipient'] = $user->id;
+
+            $inputs = $this->assignType( $inputs );
+
+            try {
+                Message::create( $inputs );
+            } catch ( Exception $e ) {
+                continue;
+            }
+        }
+
+        return $response->success( 'Message sent to group successfully' );
+    }
+
     private function assignType( $inputs ) {
         if ( isset( $inputs['type'] ) && $inputs['type'] ) {
             if ( is_numeric( $inputs['type'] ) )
