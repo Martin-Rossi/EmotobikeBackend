@@ -306,6 +306,7 @@
 		message (TEXT)
 		image (VARCHAR 255, nullable, default: null)
 		actstem (VARCHAR 255, nullable, default: null)
+		about (INT 11, default: 0)
 		count_trendup (INTEGER 10, default: 0)
 		count_trenddown (INTEGER 10, default: 0)
 		count_replies (INTEGER 10, default: 0)
@@ -2035,7 +2036,7 @@ Send a new message. The sender is always the current, authenticated user - while
 
 	URL: /messages 
 	Type: POST  
-	Parameters: type, recipient, message, image, actstem, _token 
+	Parameters: type, recipient, message, image, actstem, about, _token 
 	Returns:  
 		- response with type: success
 		- response with type: error
@@ -2047,7 +2048,7 @@ Reply to a message. The sender is always the current, authenticated user - while
 	URL: /messages/{id}/reply
 	Type: POST  
 	Parameters (URL): id
-	Parameters (POST): type, message, image, actstem, _token 
+	Parameters (POST): type, message, image, actstem, about, _token 
 	Returns:  
 		- response with type: success
 		- response with type: error  
