@@ -273,7 +273,35 @@ class ObjectController extends Controller {
 
         return $response->result( $object->likes() );
     }
+    public function unlike( $id, ApiResponse $response ) {
 
+        $object = Object::find( $id );
+
+        if ( is_null( $object ) )
+            abort( 404 );
+
+        $exists = Like::where( 'foreign_id', '=', $id )
+            ->where( 'foreign_type', '=', 'object' )
+            ->where( 'author', '=', auth()->user()->id )
+            ->first();
+
+        if ( !$exists )
+            return $response->error( 'This object doesn`t have a like.' );
+
+        try {
+            Like::destroy($exists->id);
+        } catch ( Exception $e ) {
+            return $response->error( $e->getMessage() );
+        }
+
+        auth()->user()->count_likes--;
+        auth()->user()->save();
+
+        $object->count_likes--;
+        $object->save();
+
+        return $response->success( 'Like deleted successfully' );
+    }
     public function follow( $id, ApiResponse $response ) {
         $object = Object::find( $id );
 

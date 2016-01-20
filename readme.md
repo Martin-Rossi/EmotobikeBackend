@@ -934,6 +934,18 @@ Like an object.
 		- response with type: success
 		- response with type: error  
 
+## /objects/{id}/unlike
+
+Delete like object.
+
+	URL: /objects/{id}/unlike
+	Type: DELETE
+	Parameters (URL): id
+	Parameters (POST): _token
+	Returns:
+		- response with type: success
+		- response with type: error
+
 ## /objects/{id}/likes
 
 List all likes for an object.

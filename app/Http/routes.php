@@ -20,7 +20,7 @@ Route::post( 'auth/login', ['middleware' => 'cors', 'uses' =>'Auth\AuthControlle
 Route::post( 'auth/registration', ['middleware' => 'cors', 'uses' =>'Auth\AuthController@postRegistration'] );
 Route::post( 'auth/restore', ['middleware' => 'cors', 'uses' => 'Auth\AuthController@postRestore'] );
 Route::get( 'auth/login', ['middleware' => 'cors', 'uses' => 'Auth\AuthController@getLogin'] );
-Route::get( 'auth/restore/confirm/{token}/', ['middleware' => 'cors', 'uses' => 'Auth\AuthController@getRestoreConfirm'] );
+Route::get( 'auth/restore/confirm/{token}', ['middleware' => 'cors', 'uses' => 'Auth\AuthController@getRestoreConfirm'] );
 Route::get( 'auth/logout', ['middleware' => 'cors', 'uses' => 'Auth\AuthController@getLogout'] );
 
 /*
@@ -81,6 +81,7 @@ Route::group( ['middleware' => ['auth', 'cors']], function () {
 	Route::post( 'objects/{id}/follow', 'ObjectController@follow' );
 	Route::post( 'objects/{id}/recommend', 'ObjectController@recommend' );
 	Route::post( 'objects/{id}/feedback', 'ObjectController@feedback' );
+	Route::delete('objects/{id}/unlike','ObjectController@unlike' );
 
 	Route::get( 'deleted/objects', 'ObjectController@deleted' );
 

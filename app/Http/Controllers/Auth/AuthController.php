@@ -95,7 +95,7 @@ class AuthController extends Controller {
 
         try {
 
-            $token = bcrypt(uniqid());
+            $token = uniqid();
             DB::table('password_resets')->insert(["email"=>$inputs['email'],'token'=> $token,'created_at'=>date('Y-m-d H:i:s')] );
 
         } catch ( Exception $e ) {
@@ -107,7 +107,7 @@ class AuthController extends Controller {
         Mail::send( 'emails.restore', ['user' => $user,'token'=> $token], function ( $mail ) use ( $inputs ) {
             $mail->to( $inputs['email'], '' )->subject( 'Restore password' );
             $mail->sender('info@gmail.com');
-            $mail->from('info@gmail.com');
+            $mail->from('info2@gmail.com');
         } );
 
         return $response->success( 'Email send to user!' );
