@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Mail;
 use Validator;
 use App\User;
+use App\Object;
+use App\Catalog;
 use App\Follow;
 use App\Friend;
 use App\Message;
@@ -168,21 +170,56 @@ class UserController extends Controller {
     }
 
     public function likes( $id, ApiResponse $response ) {
+        $entities = [];
+
         $user = User::find( $id );
 
         if ( is_null( $user ) )
             abort( 404 );
 
-        return $response->result( $user->likes );
+        $likes = $user->likes;
+
+        if ( ! sizeof( $likes ) > 0 )
+            return $response->result( $entities );
+
+        foreach ( $likes as $like ) {
+            if ( 'catalog' == $like->foreign_type )
+                $like->entity = Catalog::find( $like->foreign_id );
+            else
+                $like->entity = Object::find( $like->foreign_id );
+
+            $entities[] = $like;
+        }
+
+
+        return $response->result( $entities );
     }
 
     public function following( $id, ApiResponse $response ) {
+        $entities = [];
+
         $user = User::find( $id );
 
         if ( is_null( $user ) )
             abort( 404 );
 
-        return $response->result( $user->following );
+        $followings = $user->following;
+
+        if ( ! sizeof( $followings ) > 0 )
+            return $response->result( $entities );
+
+        foreach ( $followings as $following ) {
+            if ( 'catalog' == $following->foreign_type )
+                $following->entity = Catalog::find( $following->foreign_id );
+            elseif ( 'object' == $following->foreign_type )
+                $following->entity = Object::find( $following->foreign_id );
+            else
+                $following->entity = User::find( $following->foreign_id );
+
+            $entities[] = $following;
+        }
+
+        return $response->result( $entities );
     }
 
     public function follow( $id, ApiResponse $response ) {
