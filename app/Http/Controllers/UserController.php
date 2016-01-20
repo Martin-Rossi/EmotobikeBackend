@@ -7,6 +7,7 @@ use Validator;
 use App\User;
 use App\Follow;
 use App\Friend;
+use App\Message;
 use App\UserPreference;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
@@ -327,7 +328,10 @@ class UserController extends Controller {
         if ( is_null( $user ) )
             abort( 404 );
 
-        return $response->result( $user->outbox );
+        $messages = Message::where( 'sender', '=', $user->id )
+                           ->paginate( $this->pp );
+
+        return $response->result( $messages->toArray() );
     }
     
     public function messages_received( $id, ApiResponse $response ) {
@@ -336,7 +340,10 @@ class UserController extends Controller {
         if ( is_null( $user ) )
             abort( 404 );
 
-        return $response->result( $user->inbox );
+        $messages = Message::where( 'recipient', '=', $user->id )
+                           ->paginate( $this->pp );
+
+        return $response->result( $messages->toArray() );
     }
 
     public function invites_sent( $id, ApiResponse $response ) {
