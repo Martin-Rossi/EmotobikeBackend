@@ -16,7 +16,8 @@ class Message extends Model {
         'recipient',
         'message',
         'image',
-        'actstem'
+        'actstem',
+        'about'
     ];
 
     public function sender() {
