@@ -935,6 +935,17 @@ Like an object.
 		- response with type: success
 		- response with type: error  
 
+## /objects/{id}/likes
+
+List all likes for an object.
+
+	URL: /objects/{id}/likes  
+	Type: GET
+	Parameters: id
+	Returns:  
+		- response with type: result ([LikeObjects])
+		- response with type: error (object not found)  
+
 ## /objects/{id}/unlike
 
 Delete like object.
@@ -946,17 +957,6 @@ Delete like object.
 	Returns:
 		- response with type: success
 		- response with type: error
-
-## /objects/{id}/likes
-
-List all likes for an object.
-
-	URL: /objects/{id}/likes  
-	Type: GET
-	Parameters: id
-	Returns:  
-		- response with type: result ([LikeObjects])
-		- response with type: error (object not found)  
 
 ## /objects/{id}/follow
 
@@ -2036,7 +2036,7 @@ Send a new message. The sender is always the current, authenticated user - while
 
 	URL: /messages 
 	Type: POST  
-	Parameters: type, recipient, message, image, actstem, about, _token 
+	Parameters: type, recipient, message, image, actstem, _token 
 	Returns:  
 		- response with type: success
 		- response with type: error
@@ -2333,5 +2333,8 @@ Sample setting the per page:
 		
 		/collections
 		/deleted/collections
+		
+		users/{id}/messages/sent
+		users/{id}/messages/received
 
 ## -
