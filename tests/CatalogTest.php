@@ -9,14 +9,18 @@ class CatalogTest extends TestCase {
     use WithoutMiddleware;
 
     public function testIndexCatalogs() {
-        $this->visit( '/catalogs' )
+        $user = \App\User::find( 1 );
+
+        $this->actingAs( $user )->visit( '/catalogs' )
              ->seeJson( ['type' => 'result'] );
     }
 
     public function testShowCatalog() {
+        $user = \App\User::find( 1 );
+
         $catalog = factory( App\Catalog::class, 1 )->create();
 
-        $this->visit( '/catalogs/' . $catalog->id )
+        $this->actingAs( $user )->visit( '/catalogs/' . $catalog->id )
              ->see( $catalog->name );
     }
 
@@ -205,18 +209,22 @@ class CatalogTest extends TestCase {
     }
 
     public function testSearchCatalogs() {
+        $user = \App\User::find( 1 );
+
         $catalog = factory( App\Catalog::class, 1 )->create();
 
         $data = [
             'term' => substr( $catalog->name, 0, 4 )
         ];
 
-        $response = $this->call( 'POST', '/search/catalogs', $data );
+        $response = $this->actingAs( $user )->call( 'POST', '/search/catalogs', $data );
             
         $this->seeJson( ['type' => 'result'] );
     }
 
     public function testFilterCatalogs() {
+        $user = \App\User::find( 1 );
+
         $catalog = factory( App\Catalog::class, 1 )->create();
         
         $data = [
@@ -225,34 +233,40 @@ class CatalogTest extends TestCase {
             'value'    => $catalog->category_id
         ];
 
-        $response = $this->call( 'POST', '/filter/catalogs', $data );
+        $response = $this->actingAs( $user )->call( 'POST', '/filter/catalogs', $data );
             
         $this->seeJson( ['type' => 'result'] );
     }
 
     public function testIndexCatalogObjects() {
+        $user = \App\User::find( 1 );
+
         $object = factory( App\Object::class, 1 )->create();
 
-        $this->visit( '/catalogs/' . $object->catalog_id . '/objects' )
+        $this->actingAs( $user )->visit( '/catalogs/' . $object->catalog_id . '/objects' )
              ->see( $object->name );
     }
 
     public function testIndexCatalogProducts() {
+        $user = \App\User::find( 1 );
+
         $object = factory( App\Object::class, 1 )->create();
 
         $object->type_id = 2;
         $object->save();
 
-        $this->visit( '/catalogs/' . $object->catalog_id . '/products' )
+        $this->actingAs( $user )->visit( '/catalogs/' . $object->catalog_id . '/products' )
              ->see( $object->name );
     }
 
     public function testIndexCatalogContent() {
+        $user = \App\User::find( 1 );
+
         $object = factory( App\Object::class, 1 )->create();
 
         $catalog = \App\Catalog::find( $object->catalog_id );
 
-        $this->visit( '/catalogs/' . $object->catalog_id . '/content' )
+        $this->actingAs( $user )->visit( '/catalogs/' . $object->catalog_id . '/content' )
              ->see( $catalog->name )
              ->see( $object->name );
     }

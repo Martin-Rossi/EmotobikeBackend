@@ -46,11 +46,10 @@ class Catalog extends Model {
         return $this->hasMany( 'App\Object', 'catalog_id', 'id' )->with( 'category', 'type', 'author' ,'current_user_like');
     }
 
-    public function current_user_like(){
-
-        return $this->hasOne('\App\Like','foreign_id', 'id')
-            ->where('foreign_type', '=', 'catalog' )
-            ->where('author', '=', auth()->user()->id );
+    public function current_user_like() {
+        return $this->hasOne( '\App\Like','foreign_id', 'id' )
+                    ->where( 'foreign_type', '=', 'catalog' )
+                    ->where( 'author', '=', auth()->user()->id );
 
     }
 

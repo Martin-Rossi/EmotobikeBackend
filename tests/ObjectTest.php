@@ -9,14 +9,18 @@ class ObjectTest extends TestCase {
     use WithoutMiddleware;
 
     public function testIndexObjects() {
-        $this->visit( '/objects' )
+        $user = \App\User::find( 1 );
+
+        $this->actingAs( $user )->visit( '/objects' )
              ->seeJson( ['type' => 'result'] );
     }
 
     public function testShowObject() {
+        $user = \App\User::find( 1 );
+
         $object = factory( App\Object::class, 1 )->create();
 
-        $this->visit( '/objects/' . $object->id )
+        $this->actingAs( $user )->visit( '/objects/' . $object->id )
              ->see( $object->name );
     }
 
@@ -205,18 +209,22 @@ class ObjectTest extends TestCase {
     }
 
     public function testSearchObjects() {
+        $user = \App\User::find( 1 );
+
         $object = factory( App\Object::class, 1 )->create();
 
         $data = [
             'term' => substr( $object->name, 0, 4 )
         ];
 
-        $response = $this->call( 'POST', '/search/objects', $data );
+        $response = $this->actingAs( $user )->call( 'POST', '/search/objects', $data );
             
         $this->seeJson( ['type' => 'result'] );
     }
 
     public function testFilterObjects() {
+        $user = \App\User::find( 1 );
+
         $object = factory( App\Object::class, 1 )->create();
 
         $catalog = \App\Catalog::find( $object->catalog_id );
@@ -227,17 +235,19 @@ class ObjectTest extends TestCase {
             'value'    => $catalog->id
         ];
 
-        $response = $this->call( 'POST', '/filter/objects', $data );
+        $response = $this->actingAs( $user )->call( 'POST', '/filter/objects', $data );
             
         $this->seeJson( ['type' => 'result'] );
     }
 
     public function testIndexObjectsCatalog() {
+        $user = \App\User::find( 1 );
+
         $object = factory( App\Object::class, 1 )->create();
 
         $catalog = \App\Catalog::find( $object->catalog_id );
 
-        $this->visit( '/objects/' . $object->id . '/catalog' )
+        $this->actingAs( $user )->visit( '/objects/' . $object->id . '/catalog' )
              ->see( $catalog->name );
     }
 

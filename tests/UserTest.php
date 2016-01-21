@@ -64,9 +64,11 @@ class UserTest extends TestCase {
     }
 
     public function testIndexUserObjects() {
+        $user = \App\User::find( 1 );
+
         $object = factory( App\Object::class, 1 )->create();
         
-        $this->visit( '/users/' . $object->author . '/objects' )
+        $this->actingAs( $user )->visit( '/users/' . $object->author . '/objects' )
              ->see( $object->name );
     }
 

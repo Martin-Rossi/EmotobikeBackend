@@ -72,6 +72,8 @@ class GenericCollectionTest extends TestCase {
     }
 
     public function testIndexGenericCollectionObjects() {
+        $user = \App\User::find( 1 );
+
         $generic_collection = factory( App\GenericCollection::class, 1 )->create();
         $object = factory( App\Object::class, 1 )->create();
 
@@ -79,7 +81,7 @@ class GenericCollectionTest extends TestCase {
         $generic_collection->foreign_type = 'object';
         $generic_collection->save();
 
-        $this->visit( '/generic-collections/' . $generic_collection->collection_id . '/objects' )
+        $this->actingAs( $user )->visit( '/generic-collections/' . $generic_collection->collection_id . '/objects' )
              ->see( $object->name );
     }
 
