@@ -26,16 +26,15 @@ class ObjectController extends Controller {
 
     public function index( ApiResponse $response ) {
         $objects = Object::where( 'status', '>', 0 )
-                         ->paginate( $this->pp );
+                            ->with( 'current_user_like' )
+                            ->paginate( $this->pp );
 
         return $response->result( $objects->toArray() );
     }
 
     public function show( $id, ApiResponse $response ) {
         $object = Object::where( 'id', '=', $id )
-                        ->with( 'catalog' )
-                        ->with( 'type' )
-                        ->with( 'author' )
+                        ->with( 'catalog','type','author','current_user_like' )
                         ->first();
 
         if ( is_null( $object ) )
@@ -136,7 +135,7 @@ class ObjectController extends Controller {
         $objects = Object::where( 'status', '>', 0 )
                          ->where( 'name', 'LIKE', '%' . $request->get( 'term' ) . '%' )
                          ->orWhere( 'description', 'LIKE', '%' . $request->get( 'term' ) . '%' )
-                         ->with( 'catalog', 'category', 'type', 'author' )
+                         ->with( 'catalog', 'category', 'type', 'author' ,'current_user_like')
                          ->paginate( $this->pp );
 
         return $response->result( $objects->toArray() );
@@ -181,7 +180,7 @@ class ObjectController extends Controller {
 
         $objects = Object::where( 'status', '>', 0 )
                          ->where( $filter, $operator, $request->get( 'value' ) )
-                         ->with( 'catalog', 'category', 'type', 'author' )
+                         ->with( 'catalog', 'category', 'type', 'author','current_user_like' )
                          ->paginate( $this->pp );
 
         return $response->result( $objects->toArray() );
@@ -423,7 +422,7 @@ class ObjectController extends Controller {
         $objects = Object::where( 'status', '>', 0 )
             ->orderBy('position', 'asc')
             ->groupBy('position')
-            ->with( 'catalog', 'category', 'type', 'author' )
+            ->with( 'catalog', 'category', 'type', 'author','current_user_like' )
             ->take(19);
         if( !empty( $id ) ){
             $objects = $objects->where( 'catalog_id', '=', $id );
