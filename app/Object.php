@@ -47,7 +47,15 @@ class Object extends Model {
     }
 
     public function catalog() {
-        return $this->belongsTo( 'App\Catalog', 'catalog_id', 'id' )->with( 'category', 'type', 'author' );
+        return $this->belongsTo( 'App\Catalog', 'catalog_id', 'id' )->with( 'category', 'type', 'author','current_user_like' );
+    }
+
+    public function current_user_like(){
+
+        return $this->hasOne('\App\Like','foreign_id', 'id')
+            ->where('foreign_type', '=', 'object' )
+            ->where('author', '=', auth()->user()->id );
+
     }
 
     public function comments() {
@@ -94,6 +102,8 @@ class Object extends Model {
 
         return $feedbacks;
     }
+
+
 
     public function personal_price() {
         if ( ! auth()->user() )

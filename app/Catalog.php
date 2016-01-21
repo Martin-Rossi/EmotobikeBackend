@@ -43,7 +43,15 @@ class Catalog extends Model {
     }
 
     public function objects() {
-        return $this->hasMany( 'App\Object', 'catalog_id', 'id' )->with( 'category', 'type', 'author' );
+        return $this->hasMany( 'App\Object', 'catalog_id', 'id' )->with( 'category', 'type', 'author' ,'current_user_like');
+    }
+
+    public function current_user_like(){
+
+        return $this->hasOne('\App\Like','foreign_id', 'id')
+            ->where('foreign_type', '=', 'catalog' )
+            ->where('author', '=', auth()->user()->id );
+
     }
 
     public function activities() {
@@ -53,7 +61,7 @@ class Catalog extends Model {
     public function products() {
         $products = \App\Object::where( 'catalog_id', '=', $this->id )
                                ->where( 'type_id', '=', 2 )
-                               ->with( 'category', 'type', 'author' )
+                               ->with( 'category', 'type', 'author','current_user_like' )
                                ->get();
 
         return $products;
@@ -76,6 +84,8 @@ class Catalog extends Model {
 
         return $likes;
     }
+
+
 
     public function follows() {
         $follows = \App\Follow::where( 'foreign_id', '=', $this->id )

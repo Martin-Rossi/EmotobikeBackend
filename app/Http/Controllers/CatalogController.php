@@ -26,7 +26,8 @@ class CatalogController extends Controller {
 
     public function index( ApiResponse $response ) {
         $catalogs = Catalog::where( 'status', '>', 0 )
-                           ->paginate( $this->pp );
+                            ->with( 'current_user_like' )
+                            ->paginate( $this->pp );
 
         return $response->result( $catalogs->toArray() );
     }
@@ -35,6 +36,7 @@ class CatalogController extends Controller {
         $catalog = Catalog::where( 'id', '=', $id )
                           ->with( 'type' )
                           ->with( 'author' )
+                          ->with( 'current_user_like' )
                           ->first();
 
         if ( is_null( $catalog ) )
@@ -133,7 +135,7 @@ class CatalogController extends Controller {
                            ->where( 'name', 'LIKE', '%' . $request->get( 'term' ) . '%' )
                            ->orWhere( 'title', 'LIKE', '%' . $request->get( 'term' ) . '%' )
                            ->orWhere( 'description', 'LIKE', '%' . $request->get( 'term' ) . '%' )
-                           ->with( 'category', 'type', 'objects', 'author' )
+                           ->with( 'category', 'type', 'objects', 'author', 'current_user_like' )
                            ->paginate( $this->pp );
 
         return $response->result( $catalogs->toArray() );
@@ -170,7 +172,7 @@ class CatalogController extends Controller {
 
         $catalogs = Catalog::where( 'status', '>', 0 )
                            ->where( $filter, $operator, $request->get( 'value' ) )
-                           ->with( 'category', 'type', 'objects', 'author' )
+                           ->with( 'category', 'type', 'objects', 'author' , 'current_user_like' )
                            ->paginate( $this->pp );
 
         return $response->result( $catalogs->toArray() );
