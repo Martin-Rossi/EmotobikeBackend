@@ -39,8 +39,21 @@ class GenericCollectionController extends Controller {
     }
 
     public function show( $id, ApiResponse $response ) {
-        $generic_collection = GenericCollection::where( 'collection_id', '=', $id )
-                                               ->get();
+        $generic_collections = GenericCollection::where( 'collection_id', '=', $id )
+                                                ->get();
+
+        $i = 0;
+
+        if ( sizeof( $generic_collections ) > 0 ) {
+            foreach ( $generic_collections as $generic_collection ) {
+                if ( 'object' == $generic_collection->foreign_type )
+                    $generic_collections[$i]->object = Object::find( $generic_collection->foreign_id )->toArray();
+                else
+                    $generic_collections[$i]->catalog = Catalog::find( $generic_collection->foreign_id )->toArray();
+
+                $i++;
+            }
+        }
 
         return $response->result( $generic_collection->toArray() );
     }

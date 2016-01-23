@@ -40,9 +40,22 @@ class CollectionController extends Controller {
     }
 
     public function show( $id, ApiResponse $response ) {
-        $collection = Collection::where( 'collection_id', '=', $id )
-                                ->where( 'author', '=', auth()->user()->id )
-                                ->get();
+        $collections = Collection::where( 'collection_id', '=', $id )
+                                 ->where( 'author', '=', auth()->user()->id )
+                                 ->get();
+
+        $i = 0;
+
+        if ( sizeof( $collections ) > 0 ) {
+            foreach ( $collections as $collection ) {
+                if ( 'object' == $collection->foreign_type )
+                    $collections[$i]->object = Object::find( $collection->foreign_id );
+                else
+                    $collections[$i]->catalog = Catalog::find( $collection->foreign_id );
+
+                $i++;
+            }
+        }
 
         return $response->result( $collection->toArray() );
     }
