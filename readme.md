@@ -2332,6 +2332,8 @@ Sample setting the per page:
 
 ### Routes where the pagination is applied
 
+		/home
+
 		/objects
 		/search/objects
 		/filter/objects
