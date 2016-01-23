@@ -286,3 +286,10 @@ Route::group( ['middleware' => ['auth', 'cors']], function() {
 
 	Route::post( 'filter/commissions', 'CommissionController@filter' );
 } );
+
+/*
+| Home page
+*/
+Route::group( ['middleware' => ['auth', 'cors']], function() {
+	Route::get( '/home', 'HomeController@index' );
+} );
