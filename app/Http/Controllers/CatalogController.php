@@ -54,7 +54,7 @@ class CatalogController extends Controller {
         $inputs = $this->assignType( $inputs );
 
         try {
-            Catalog::create( $inputs );
+            $catalog = Catalog::create( $inputs );
         } catch ( Exception $e ) {
             return $response->error( $e->getMessage() );
         }
@@ -62,7 +62,7 @@ class CatalogController extends Controller {
         auth()->user()->count_authored++;
         auth()->user()->save();
 
-        return $response->success( 'Catalog created successfully' );
+        return $response->result( $catalog );
     }
 
     public function update( $id, Request $request, ApiResponse $response ) {

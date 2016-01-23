@@ -55,7 +55,7 @@ class ObjectController extends Controller {
         $inputs = $this->assignType( $inputs );
 
         try {
-            Object::create( $inputs );
+            $object = Object::create( $inputs );
         } catch ( Exception $e ) {
             return $response->error( $e->getMessage() );
         }
@@ -63,7 +63,7 @@ class ObjectController extends Controller {
         auth()->user()->count_authored++;
         auth()->user()->save();
 
-        return $response->success( 'Object created successfully' );
+        return $response->result( $object );
     }
 
     public function update( $id, Request $request, ApiResponse $response ) {
