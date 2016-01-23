@@ -460,7 +460,18 @@ User registration.
 	Returns:
 		- response with type: success
 		- response with type: error
+
+# Endpoints "home"
+
+## /home
 		
+Endpoint for listing catalogs on the HomePage
+
+	URL: /home
+	Type: GET
+	Parameters: -
+	Returns
+		- response with type: result ([CatalogObjects])
 
 # Endpoints "user"  
 
