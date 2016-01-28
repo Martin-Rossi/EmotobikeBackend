@@ -1045,6 +1045,15 @@ View objects deleted by the user
 	URL: /deleted/objects
 	Type: GET
 	Returns:
+		- response with type: result ([ObjectObjects])  
+
+## /draft/objects
+
+View objects marked as draft for the current user
+
+	URL: /draft/objects
+	Type: GET
+	Returns:
 		- response with type: result ([ObjectObjects])
 
 ## /search/objects
@@ -1314,6 +1323,15 @@ List all activities for a catalog.
 View catalogs deleted by the user
 
 	URL: /deleted/catalogs
+	Type: GET
+	Returns:
+		- response with type: result ([CatalogObjects]) 
+
+## /draft/catalogs
+
+View catalogs marked as draft by the current user
+
+	URL: /draft/catalogs
 	Type: GET
 	Returns:
 		- response with type: result ([CatalogObjects])
