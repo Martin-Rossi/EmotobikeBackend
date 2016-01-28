@@ -84,6 +84,7 @@ Route::group( ['middleware' => ['auth', 'cors']], function () {
 	Route::delete('objects/{id}/unlike','ObjectController@unlike' );
 
 	Route::get( 'deleted/objects', 'ObjectController@deleted' );
+	Route::get( 'draft/objects', 'ObjectController@drafts' );
 
 	Route::post( 'search/objects', 'ObjectController@search' );
 	Route::post( 'filter/objects', 'ObjectController@filter' );
@@ -116,6 +117,7 @@ Route::group( ['middleware' => ['auth', 'cors']], function () {
 	Route::post( 'catalogs/{id}/feedback', 'CatalogController@feedback' );
 
 	Route::get( 'deleted/catalogs', 'CatalogController@deleted' );
+	Route::get( 'draft/catalogs', 'CatalogController@drafts' );
 
 	Route::post( 'search/catalogs', 'CatalogController@search' );
 	Route::post( 'filter/catalogs', 'CatalogController@filter' );

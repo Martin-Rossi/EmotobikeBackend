@@ -208,6 +208,52 @@ class ObjectTest extends TestCase {
              ->seeJson( ['type' => 'result'] );
     }
 
+    public function testIndexDraftObjects() {
+        $object = factory( App\Object::class, 1 )->create();
+        
+        $user = \App\User::find( $object->author );
+
+        $object->status = 0;
+        $object->save();
+
+        $this->actingAs( $user )->visit( '/draft/objects' )
+             ->seeJson( ['type' => 'result'] );
+    }
+
+    public function testIndexDraftObjectsByCurator() {
+        $object = factory( App\Object::class, 1 )->create();
+        
+        $user = \App\User::find( $object->author );
+
+        $object->status = 0;
+        $object->save();
+
+        $curator = factory( App\User::class, 1 )->create();
+
+        $curator->parent_id = $user->id;
+        $curator->save(); 
+
+        $this->actingAs( $curator )->visit( '/draft/objects' )
+             ->seeJson( ['type' => 'result'] );
+    }
+
+    public function testIndexDraftObjectsByParent() {
+        $object = factory( App\Object::class, 1 )->create();
+        
+        $curator = \App\User::find( $object->author );
+
+        $object->status = 0;
+        $object->save();
+
+        $parent = factory( App\User::class, 1 )->create();
+
+        $curator->parent_id = $parent->id;
+        $curator->save(); 
+
+        $this->actingAs( $parent )->visit( '/draft/objects' )
+             ->seeJson( ['type' => 'result'] );
+    }
+
     public function testSearchObjects() {
         $user = \App\User::find( 1 );
 

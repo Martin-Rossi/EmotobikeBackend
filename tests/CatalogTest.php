@@ -208,6 +208,52 @@ class CatalogTest extends TestCase {
              ->seeJson( ['type' => 'result'] );
     }
 
+    public function testIndexDraftCatalogs() {
+        $catalog = factory( App\Catalog::class, 1 )->create();
+        
+        $user = \App\User::find( $catalog->author );
+
+        $catalog->status = 0;
+        $catalog->save();
+
+        $this->actingAs( $user )->visit( '/draft/catalogs' )
+             ->seeJson( ['type' => 'result'] );
+    }
+
+    public function testIndexDraftCatalogsByCurator() {
+        $catalog = factory( App\Catalog::class, 1 )->create();
+        
+        $user = \App\User::find( $catalog->author );
+
+        $catalog->status = 0;
+        $catalog->save();
+
+        $curator = factory( App\User::class, 1 )->create();
+
+        $curator->parent_id = $user->id;
+        $curator->save(); 
+
+        $this->actingAs( $curator )->visit( '/draft/catalogs' )
+             ->seeJson( ['type' => 'result'] );
+    }
+
+    public function testIndexDraftCatalogsByParent() {
+        $catalog = factory( App\Catalog::class, 1 )->create();
+        
+        $curator = \App\User::find( $catalog->author );
+
+        $catalog->status = 0;
+        $catalog->save();
+
+        $parent = factory( App\User::class, 1 )->create();
+
+        $curator->parent_id = $parent->id;
+        $curator->save(); 
+
+        $this->actingAs( $parent )->visit( '/draft/catalogs' )
+             ->seeJson( ['type' => 'result'] );
+    }
+
     public function testSearchCatalogs() {
         $user = \App\User::find( 1 );
 

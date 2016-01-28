@@ -131,6 +131,29 @@ class ObjectController extends Controller {
         return $response->result( $objects->toArray() );
     }
 
+    public function drafts( ApiResponse $response ) {
+        $user = auth()->user();
+
+        $user_ids = [$user->id];
+
+        $parent = $user->parent();
+
+        if ( $parent )
+            $user_ids[] = $parent->id;
+
+        $children = $user->children();
+
+        if ( sizeof( $children ) > 0 )
+            foreach ( $children as $child )
+                $user_ids[] = $child->id;
+
+        $objects = Object::where( 'status', '=', 0 )
+                         ->whereIn( 'author', $user_ids )
+                         ->paginate( $this->pp );
+
+        return $response->result( $objects->toArray() );
+    }
+
     public function search( Request $request, ApiResponse $response ) {
         $objects = Object::where( 'status', '>', 0 )
                          ->where( 'name', 'LIKE', '%' . $request->get( 'term' ) . '%' )
