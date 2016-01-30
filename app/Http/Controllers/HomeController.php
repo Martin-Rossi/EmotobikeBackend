@@ -123,5 +123,44 @@ class HomeController extends Controller {
 
         return $response->result( $catalogs->toArray() );
     }
+
+    public function noteworthy( ApiResponse $response ) {
+        $users_ids = [];
+
+        $nus = User::where( 'group_id', '>=', 200 )
+                   ->where( 'noteworthy', '=', 1 )
+                   ->get();
+
+        if ( sizeof( $nus ) > 0 ) {
+            foreach ( $nus as $nu ) {
+                $users_ids[] = $nu->id;
+
+                $follow_ids = [];
+
+                $follows = Follow::where( 'foreign_id', '=', $nu->id )
+                                 ->where( 'foreign_type', '=', 'user' )
+                                 ->get();
+
+                if ( sizeof( $follows ) > 0 ) {
+                    foreach ( $follows as $follow )
+                        $follow_ids[] = $follow->author;
+
+                    $focs = User::whereIn( 'id', $follow_ids )
+                                ->where( 'status', '>', 0 )
+                                ->get();
+
+                    if ( sizeof( $focs ) > 0 )
+                        foreach ( $focs as $foc )
+                            $users_ids[] = $foc->id;
+                }
+            }
+        }
+
+        $users = User::whereIn( 'id', $users_ids )
+                     ->with( 'catalogs' )
+                     ->get();
+
+        return $response->result( $users->toArray() );
+    }
     
 }

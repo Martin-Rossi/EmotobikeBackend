@@ -30,7 +30,8 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
         'profile_description',
         'personal_price_earned',
         'price_earner',
-        'chat'
+        'chat',
+        'noteworthy'
     ];
 
     protected $hidden = [

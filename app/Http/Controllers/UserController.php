@@ -54,6 +54,9 @@ class UserController extends Controller {
 
         $inputs['password'] = bcrypt( $inputs['password'] );
 
+        if ( auth()->user()->group_id > 2 ) {
+            unset( $inputs['noteworthy'] );
+
         try {
             $user  = User::create( $inputs );
         } catch ( Exception $e ) {
@@ -78,6 +81,9 @@ class UserController extends Controller {
             abort( 401 );
 
         $inputs = $request->all();
+
+        if ( auth()->user()->group_id > 2 ) {
+            unset( $inputs['noteworthy'] );
 
         try {
             $user->update( $inputs );

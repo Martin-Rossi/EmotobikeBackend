@@ -294,4 +294,5 @@ Route::group( ['middleware' => ['auth', 'cors']], function() {
 */
 Route::group( ['middleware' => ['auth', 'cors']], function() {
 	Route::get( '/home', 'HomeController@index' );
+	Route::get( '/home/noteworthy', 'HomeController@noteworthy' );
 } );
