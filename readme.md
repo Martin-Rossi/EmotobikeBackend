@@ -31,6 +31,7 @@
 		count_drafts (INT 10, default: 0)  
 		count_follows (INT 10, default: 0)
 		chat (ENUM [0,1])
+		noteworthy (ENUM [0,1])
 		created_at (TIMESTAMP)
 		updated_at (TIMESTAMP)  
 		
@@ -470,8 +471,18 @@ Endpoint for listing catalogs on the HomePage
 	URL: /home
 	Type: GET
 	Parameters: -
-	Returns
+	Returns:
 		- response with type: result ([CatalogObjects])
+
+## /home/noteworthy
+
+Endpoint for listing noteworthy users and their followers
+
+	URL: /home/noteworthy
+	Type: GET
+	Parameters: -
+	Returns:
+		- response with type: result ([UserObjects])
 
 # Endpoints "user"  
 
