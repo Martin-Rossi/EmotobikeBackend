@@ -54,7 +54,7 @@ class UserController extends Controller {
 
         $inputs['password'] = bcrypt( $inputs['password'] );
 
-        if ( auth()->user()->group_id > 2 ) {
+        if ( auth()->user()->group_id > 2 )
             unset( $inputs['noteworthy'] );
 
         try {
@@ -82,7 +82,7 @@ class UserController extends Controller {
 
         $inputs = $request->all();
 
-        if ( auth()->user()->group_id > 2 ) {
+        if ( auth()->user()->group_id > 2 )
             unset( $inputs['noteworthy'] );
 
         try {
@@ -97,9 +97,9 @@ class UserController extends Controller {
     public function search( Request $request, ApiResponse $response ) {
         $users = User::where( 'tags', 'LIKE', '%' . $request->get( 'term' ) . '%' )
                      ->orWhere( 'name', 'LIKE', '%' . $request->get( 'term' ) . '%' )
-                     ->get();
+                     ->paginate( $this->pp );
 
-        return $response->result( $users );
+        return $response->result( $users->toArray() );
     }
 
     public function getByField( Request $request, ApiResponse $response ) {
@@ -134,9 +134,9 @@ class UserController extends Controller {
             return $response->result( $users );
 
         $users = User::where( $filter, $operator, $request->get( 'value' ) )
-                     ->get();
+                     ->paginate( $this->pp );
 
-        return $response->result( $users );
+        return $response->result( $users->toArray() );
     }
 
     public function objects( $id, ApiResponse $response ) {
