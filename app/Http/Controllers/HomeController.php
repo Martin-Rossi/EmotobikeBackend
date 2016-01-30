@@ -118,6 +118,7 @@ class HomeController extends Controller {
 
         $catalogs = Catalog::whereIn( 'id', $catalog_ids )
                            ->orderBy( 'updated_at', 'DESC' )
+                           ->with( 'author' )
                            ->paginate( $this->pp );
 
         return $response->result( $catalogs->toArray() );
