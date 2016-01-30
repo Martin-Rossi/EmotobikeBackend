@@ -2380,7 +2380,10 @@ Sample setting the per page:
 		/collections
 		/deleted/collections
 		
-		users/{id}/messages/sent
-		users/{id}/messages/received
+		/search/users
+		/filter/users
+		
+		/users/{id}/messages/sent
+		/users/{id}/messages/received
 
 ## -
