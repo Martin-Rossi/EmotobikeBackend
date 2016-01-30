@@ -519,9 +519,11 @@ Add a new user.
 
 > Note: tags are divided by ";" (tag1;tag2;tag3;...;tagn)
 
+> Note: only admin users can set the noteworthy parameter
+
 	URL: /users
 	Type: POST
-	Parameters: tags, name, email, password, image, profile_name, profile_description, api_paypal, api_loyalty, api_gift, chat, _token
+	Parameters: tags, name, email, password, image, profile_name, profile_description, api_paypal, api_loyalty, api_gift, chat, noteworthy, _token
 	Returns:
 		- response with type: success
 		- response with type: error
@@ -533,12 +535,14 @@ Update user properties (users can only updated their own properties).
 
 > Note: not mandatory fields can be sent separately.  
 
-> Note: tags are divided by ";" (tag1;tag2;tag3;...;tagn)
+> Note: tags are divided by ";" (tag1;tag2;tag3;...;tagn)  
+ 
+> Note: only admin users can set the noteworthy parameter
 
 	URL: /users/{id} 
 	Type: PUT  
 	Parameters (URL): id
-	Parameters (POST): tags, name, email, password, image, profile_name, profile_description, api_paypal, api_loyalty, api_gift, commission_rate_flag, chat, _token  
+	Parameters (POST): tags, name, email, password, image, profile_name, profile_description, api_paypal, api_loyalty, api_gift, commission_rate_flag, chat, noteworthy, _token  
 	Returns:  
 		- response with type: success
 		- response with type: error  
