@@ -146,7 +146,6 @@ class HomeController extends Controller {
                         $follow_ids[] = $follow->author;
 
                     $focs = User::whereIn( 'id', $follow_ids )
-                                ->where( 'status', '>', 0 )
                                 ->get();
 
                     if ( sizeof( $focs ) > 0 )
