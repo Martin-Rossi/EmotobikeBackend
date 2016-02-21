@@ -119,6 +119,11 @@
 		earning_place (INT 10, default: 0)  
 		earning_cat_place (INT 10, default: 0)  
 		earning_potential (INT 10, default: 0)
+		average_present_month (INT 10, default: 0)
+		average_overall (INT 10, default: 0)
+		content_score (INT 10, default: 0)
+		sales_score (INT 10, default: 0)
+		chat (ENUM[0,1])
 		author (INT 10, references id on 'users')
 		status (ENUM[-1,0,1], default: 1)
 		created_at (TIMESTAMP)
@@ -1140,7 +1145,7 @@ Add a new catalog.
 
 	URL: /catalogs 
 	Type: POST  
-	Parameters: category, type, tags, name, title, description, image, layout, position, publish, trending, popular, earning_trend, earning_total, earning_place, earning_cat_place, earning_potential, _token  
+	Parameters: category, type, tags, name, title, description, image, layout, position, publish, trending, popular, earning_trend, earning_total, earning_place, earning_cat_place, earning_potential, average_present_month, average_overall, content_score, sales_score, chat, _token  
 	Returns:  
 		- response with type: success
 		- response with type: error
@@ -1158,7 +1163,7 @@ Update catalog properties (users can only update catalogs owned by them).
 	URL: /catalogs/{id} 
 	Type: PUT  
 	Parameters (URL): id
-	Parameters (POST): category, type, tags, name, title, description, image, layout, position, publish, trending, popular, earning_trend, earning_total, earning_place, earning_cat_place, earning_potential, _token 
+	Parameters (POST): category, type, tags, name, title, description, image, layout, position, publish, trending, popular, earning_trend, earning_total, earning_place, earning_cat_place, earning_potential, average_present_month, average_overall, content_score, sales_score, chat, _token 
 	Returns:  
 		- response with type: success
 		- response with type: error  
