@@ -156,7 +156,29 @@ class HomeController extends Controller {
 
         $users = User::whereIn( 'id', $users_ids )
                      ->with( 'catalogs' )
+                     ->with( 'following' )
                      ->get();
+
+        $i = 0;
+
+        if ( sizeof( $users ) > 0 ) {
+            foreach ( $users as $user ) {
+                if ( sizeof( $user->following ) > 0 ) {
+                    
+                    $j = 0;
+
+                    foreach ( $user->following as $follow ) {
+                        $fu = User::find( $follow->id );
+
+                        $users[$i]->following[$j]->user = $fu;
+
+                        $j++;
+                    }
+                }
+
+                $i++;
+            }
+        }
 
         return $response->result( $users->toArray() );
     }
