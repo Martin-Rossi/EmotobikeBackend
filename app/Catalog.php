@@ -27,6 +27,11 @@ class Catalog extends Model {
         'earning_place',
         'earning_cat_place',
         'earning_potential',
+        'average_present_month',
+        'average_overall',
+        'content_score',
+        'sales_score',
+        'chat',
         'author'
     ];
 
