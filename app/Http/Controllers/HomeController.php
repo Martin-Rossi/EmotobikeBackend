@@ -57,8 +57,7 @@ class HomeController extends Controller {
         }
 
         // Check to see if there are any catalogs for the user in which the tag 'recommended' is 1. Return those catalogs
-        $rcs = Catalog::where( 'author', '=', auth()->user()->id )
-                      ->where( 'count_recommended', '>', 0 )
+        $rcs = Catalog::where( 'count_recommended', '>', 0 )
                       ->where( 'status', '>', 0 )
                       ->get();
 
