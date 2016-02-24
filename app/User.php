@@ -31,7 +31,16 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
         'personal_price_earned',
         'price_earner',
         'chat',
-        'noteworthy'
+        'noteworthy',
+        'number_transaction',
+        'trend',
+        'total_earned',
+        'place',
+        'potential_place',
+        'potential_earning',
+        'total_commission',
+        'catalog_contribution',
+        'content_contribution'
     ];
 
     protected $hidden = [
