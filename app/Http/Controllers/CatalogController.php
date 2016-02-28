@@ -42,6 +42,8 @@ class CatalogController extends Controller {
         if ( is_null( $catalog ) )
             abort( 404 );
 
+        $catalog->routes = $catalog->get_routes();
+
         return $response->result( $catalog );
     }
 

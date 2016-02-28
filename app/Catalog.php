@@ -118,8 +118,36 @@ class Catalog extends Model {
         return $feedbacks;
     }
 
-    public function route() {
-        return $this->belongsTo( 'App\Route', 'catalog_id', 'id' );
+    public function get_routes() {
+        $routes = [];
+
+        $rs = \App\Route::where( 'catalog_id', '=', $this->id )->get();
+
+        if ( ! sizeof( $rs ) > 0 )
+            return $routes;
+
+        foreach ( $rs as $r ) {
+            $r->objects = [];
+
+            $oa = explode( ';', $r->object_ids );
+
+            if ( sizeof( $oa ) > 0 ) {
+                $objects = [];
+
+                foreach ( $oa as $oi ) {
+                    $object = \App\Object::find( $oi );
+
+                    if ( $object )
+                        $objects[] = $object;
+                }
+
+                $r->objects = $objects;
+            }
+
+            $routes[] = $r;
+        }
+
+        return $routes;
     }
 
 }
