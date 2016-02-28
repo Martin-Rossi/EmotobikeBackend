@@ -40,7 +40,8 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
         'potential_earning',
         'total_commission',
         'catalog_contribution',
-        'content_contribution'
+        'content_contribution',
+        'total_purchase'
     ];
 
     protected $hidden = [
