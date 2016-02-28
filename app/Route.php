@@ -13,7 +13,12 @@ class Route extends Model {
         'description',
         'data',
         'object_ids',
+        'catalog_id',
         'author'
     ];
+
+    public function catalog() {
+    	return $this->belongsTo( 'App\Catalog', 'id', 'catalog_id' );
+    }
 
 }

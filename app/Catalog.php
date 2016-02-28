@@ -118,4 +118,8 @@ class Catalog extends Model {
         return $feedbacks;
     }
 
+    public function route() {
+        return $this->belongsTo( 'App\Route', 'catalog_id', 'id' );
+    }
+
 }
