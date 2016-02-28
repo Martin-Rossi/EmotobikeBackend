@@ -175,6 +175,7 @@
 		description (TEXT, nullable, default: null)
 		data (BLOB, nullable, default: null)
 		object_ids (TEXT, nullable, default: null)
+		catalog_id (INT 10, default: 0)
 		author (INT 10, references id on 'users')
 		status (ENUM[-1,0,1], default: 1)
 		created_at (TIMESTAMP)
@@ -1740,7 +1741,7 @@ Add a new route.
 
 	URL: /routes 
 	Type: POST  
-	Parameters: name, description, data, object_ids, _token  
+	Parameters: name, description, data, object_ids, catalog_id, _token  
 	Returns:  
 		- response with type: success
 		- response with type: error
@@ -1754,7 +1755,7 @@ Update route properties (users can only update routes owned by them).
 	URL: /routes/{id} 
 	Type: PUT  
 	Parameters (URL): id
-	Parameters (POST): name, description, data, object_ids, _token
+	Parameters (POST): name, description, data, object_ids, catalog_id, _token
 	Returns:  
 		- response with type: success
 		- response with type: error  
