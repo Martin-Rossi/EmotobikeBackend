@@ -41,6 +41,10 @@
 		total_purchase (DOUBLE, 15, 8, default: 0)
 		catalog_contribution (INT 10, default: 0)
 		content_contribution (INT 10, default: 0)
+		proj_earning_to_date (INT 10, default: 0)
+		proj_earning_overall (INT 10, default: 0)
+		proj_place_to_date (INT 10, default: 0)
+		proj_place_overall (INT 10, default: 0)
 		noteworthy (ENUM [0,1])
 		created_at (TIMESTAMP)
 		updated_at (TIMESTAMP)  
@@ -539,7 +543,7 @@ Add a new user.
 
 	URL: /users
 	Type: POST
-	Parameters: tags, name, email, password, image, profile_name, profile_description, api_paypal, api_loyalty, api_gift, chat, number_transaction, trend, total_earned, place, potential_place, potential_earning, total_commission, total_purchase, catalog_contribution, content_contribution, noteworthy, _token
+	Parameters: tags, name, email, password, image, profile_name, profile_description, api_paypal, api_loyalty, api_gift, chat, number_transaction, trend, total_earned, place, potential_place, potential_earning, total_commission, total_purchase, catalog_contribution, content_contribution, proj_earning_to_date, proj_earning_overall, proj_place_to_date, proj_place_overall, noteworthy, _token
 	Returns:
 		- response with type: success
 		- response with type: error
@@ -558,7 +562,7 @@ Update user properties (users can only updated their own properties).
 	URL: /users/{id} 
 	Type: PUT  
 	Parameters (URL): id
-	Parameters (POST): tags, name, email, password, image, profile_name, profile_description, api_paypal, api_loyalty, api_gift, commission_rate_flag, chat, number_transaction, trend, total_earned, place, potential_place, potential_earning, total_commission, total_purchase, catalog_contribution, content_contribution, noteworthy, _token  
+	Parameters (POST): tags, name, email, password, image, profile_name, profile_description, api_paypal, api_loyalty, api_gift, commission_rate_flag, chat, number_transaction, trend, total_earned, place, potential_place, potential_earning, total_commission, total_purchase, catalog_contribution, content_contribution, proj_earning_to_date, proj_earning_overall, proj_place_to_date, proj_place_overall,  noteworthy, _token  
 	Returns:  
 		- response with type: success
 		- response with type: error  
