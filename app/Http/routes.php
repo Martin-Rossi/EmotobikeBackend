@@ -296,3 +296,35 @@ Route::group( ['middleware' => ['auth', 'cors']], function() {
 	Route::get( '/home', 'HomeController@index' );
 	Route::get( '/home/noteworthy', 'HomeController@noteworthy' );
 } );
+
+/*
+| Imports
+*/
+//Route::group( ['middleware' => ['auth']], function() {
+	Route::get( '/import', 'ImportController@index' );
+	Route::get( '/import/users', 'ImportController@users' );
+	Route::get( '/import/objects', 'ImportController@objects' );
+	Route::get( '/import/catalogs', 'ImportController@catalogs' );
+	Route::get( '/import/collections', 'ImportController@collections' );
+	Route::get( '/import/generic-collections', 'ImportController@generic_collections' );
+	Route::get( '/import/categories', 'ImportController@categories' );
+
+	Route::post( '/import/users', 'ImportController@import_users' );
+	Route::post( '/import/objects', 'ImportController@import_objects' );
+	Route::post( '/import/catalogs', 'ImportController@import_catalogs' );
+	Route::post( '/import/collections', 'ImportController@import_collections' );
+	Route::post( '/import/generic-collections', 'ImportController@import_generic_collections' );
+	Route::post( '/import/categories', 'ImportController@import_categories' );
+//} );
+
+/*
+| Exports
+*/
+//Route::group( ['middleware' => ['auth']], function() {
+	Route::get( '/export/users', 'ExportController@users' );
+	Route::get( '/export/objects', 'ExportController@objects' );
+	Route::get( '/export/catalogs', 'ExportController@catalogs' );
+	Route::get( '/export/collections', 'ExportController@collections' );
+	Route::get( '/export/generic-collections', 'ExportController@generic_collections' );
+	Route::get( '/export/categories', 'ExportController@categories' );
+//} );
