@@ -61,12 +61,12 @@ class ImportController extends Controller {
     		3 => 'tags',
     		4 => 'name',
     		5 => 'email',
-    		6 => 'image',
-    		7 => 'profile_name',
-    		8 => 'profile_description',
-    		9 => 'chat',
-    		10 => 'noteworthy',
-            11 => 'password'
+            6 => 'password',
+    		7 => 'image',
+    		8 => 'profile_name',
+    		9 => 'profile_description',
+    		10 => 'chat',
+    		11 => 'noteworthy'
     	];
 
     	return $this->import_entity( $request, '\App\User', $mappings );
