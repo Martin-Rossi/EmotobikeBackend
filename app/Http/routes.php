@@ -300,7 +300,7 @@ Route::group( ['middleware' => ['auth', 'cors']], function() {
 /*
 | Imports
 */
-//Route::group( ['middleware' => ['auth']], function() {
+Route::group( ['middleware' => 'auth.basic'], function() {
 	Route::get( '/import', 'ImportController@index' );
 	Route::get( '/import/users', 'ImportController@users' );
 	Route::get( '/import/objects', 'ImportController@objects' );
@@ -315,16 +315,16 @@ Route::group( ['middleware' => ['auth', 'cors']], function() {
 	Route::post( '/import/collections', 'ImportController@import_collections' );
 	Route::post( '/import/generic-collections', 'ImportController@import_generic_collections' );
 	Route::post( '/import/categories', 'ImportController@import_categories' );
-//} );
+} );
 
 /*
 | Exports
 */
-//Route::group( ['middleware' => ['auth']], function() {
+Route::group( ['middleware' => 'auth.basic'], function() {
 	Route::get( '/export/users', 'ExportController@users' );
 	Route::get( '/export/objects', 'ExportController@objects' );
 	Route::get( '/export/catalogs', 'ExportController@catalogs' );
 	Route::get( '/export/collections', 'ExportController@collections' );
 	Route::get( '/export/generic-collections', 'ExportController@generic_collections' );
 	Route::get( '/export/categories', 'ExportController@categories' );
-//} );
+} );
