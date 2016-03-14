@@ -1,6 +1,7 @@
 <?php
 
 return [
+    'CustomerID',
     'EmailYrCat',
     'EmailFrCat',
     'EmailComments',
