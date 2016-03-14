@@ -773,7 +773,7 @@ Get value for a user preference.
 	Returns:
 		- response with type: result (UserPreferenceObject)  
 
-* supported keys: [EmailYrCat, EmailFrCat, EmailComments, EmailLikes, EmailPrivateMessages, EmailMilestones, EmailYrReq, EmailFrReq, EmailReqComments, PushCom, PushLikes, PushFollows, PushPriMessages, PushFrCatalog, PushMilestones, PushReqCom, PushRequest, PushFillsAReq]  
+* supported keys: [CustomerID, EmailYrCat, EmailFrCat, EmailComments, EmailLikes, EmailPrivateMessages, EmailMilestones, EmailYrReq, EmailFrReq, EmailReqComments, PushCom, PushLikes, PushFollows, PushPriMessages, PushFrCatalog, PushMilestones, PushReqCom, PushRequest, PushFillsAReq]  
 
 ## /users/preferences/all
 
@@ -797,7 +797,7 @@ Set a user preference.
 		- response with type: success
 		- response with type: error   
 
-* supported keys: [EmailYrCat, EmailFrCat, EmailComments, EmailLikes, EmailPrivateMessages, EmailMilestones, EmailYrReq, EmailFrReq, EmailReqComments, PushCom, PushLikes, PushFollows, PushPriMessages, PushFrCatalog, PushMilestones, PushReqCom, PushRequest, PushFillsAReq]
+* supported keys: [CustomerID, EmailYrCat, EmailFrCat, EmailComments, EmailLikes, EmailPrivateMessages, EmailMilestones, EmailYrReq, EmailFrReq, EmailReqComments, PushCom, PushLikes, PushFollows, PushPriMessages, PushFrCatalog, PushMilestones, PushReqCom, PushRequest, PushFillsAReq]
 
 * supported values: [0, 1]  
 	
