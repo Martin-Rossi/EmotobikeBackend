@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use App\User;
 use App\Invite;
+use App\Collection;
 use App\PasswordResets;
 use Validator;
 use Mail;
@@ -147,6 +148,39 @@ class AuthController extends Controller {
 
         if(!($user instanceof User))
             return $response->error( 'Register failed' );
+
+        // create collections
+        if ( $user && $user->id ) {
+            $collections = [
+                'PromotedUsers',
+                'Search',
+                'Personalized',
+                'Drafts',
+                'Recent',
+                'Trending',
+                'Collections',
+                'Great Riders',
+                'Bike Night',
+                'Menu',
+                'Menu',
+                'Menu',
+                'Menu',
+                'Menu',
+                'Menu'
+            ];
+
+            for ( $i = 1; $i <= sizeof( $collections ); $i++ ) {
+                $uc = new Collection();
+
+                $uc->collection_id = $i;
+                $uc->foreign_id = 0;
+                $uc->foreign_type = 'object';
+                $uc->name = $collections[$i-1];
+                $uc->author = $user->id;
+
+                $uc->save();
+            }
+        }
 
         // invitation accepted
         if ( $user && $user->email ) {
