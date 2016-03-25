@@ -1098,9 +1098,11 @@ Search objects by name and description
 
 	URL: /search/objects
 	Type: POST
-	Parameters: term, _token
+	Parameters: term, type_id, _token
 	Returns:
 		- response with type: result ([ObjectObjects])
+
+* when given, the 'type_id' will act as a filter on the search results. Multiple type_ids are divided by: ;. (type_id=2;12;34)
 
 ## /filter/objects
 
@@ -1378,9 +1380,11 @@ Search catalogs by name, title and description
 
 	URL: /search/catalogs
 	Type: POST
-	Parameters: term, _token
+	Parameters: term, type_id, _token
 	Returns:
 		- response with type: result ([CatalogObjects])
+
+* when given, the 'type_id' will act as a filter on the search results. Multiple type_ids are divided by: ;. (type_id=2;12;34)
 
 ## /filter/catalogs
 
