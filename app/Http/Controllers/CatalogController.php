@@ -161,7 +161,25 @@ class CatalogController extends Controller {
                            ->orWhere( 'title', 'LIKE', '%' . $request->get( 'term' ) . '%' )
                            ->orWhere( 'description', 'LIKE', '%' . $request->get( 'term' ) . '%' )
                            ->with( 'category', 'type', 'objects', 'author', 'current_user_like' )
-                           ->paginate( $this->pp );
+                           ->get();
+
+        if ( sizeof( $catalogs ) > 0 ) {
+            $catalog_ids = [];
+
+            if ( $request->get( 'type_id' ) ) {
+                $tids = explode( ';', $request->get( 'type_id' ) );
+
+                foreach ( $catalogs as $catalog )
+                    if ( in_array( $catalog->type_id, $tids ) )
+                        $catalog_ids[] = $catalog->id;
+            } else {
+                foreach ( $catalogs as $catalog )
+                    $catalog_ids[] = $catalog->id;
+            }
+
+            $catalogs = Catalog::whereIn( 'id', $catalog_ids )
+                               ->paginate( $this->pp );
+        }
 
         return $response->result( $catalogs->toArray() );
     }

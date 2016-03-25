@@ -157,9 +157,27 @@ class ObjectController extends Controller {
     public function search( Request $request, ApiResponse $response ) {
         $objects = Object::where( 'status', '>', 0 )
                          ->where( 'name', 'LIKE', '%' . $request->get( 'term' ) . '%' )
+                         ->orWhere( 'tags', 'LIKE', '%' . $request->get( 'term' ) . '%' )
                          ->orWhere( 'description', 'LIKE', '%' . $request->get( 'term' ) . '%' )
-                         ->with( 'catalog', 'category', 'type', 'author' ,'current_user_like')
-                         ->paginate( $this->pp );
+                         ->get();
+
+        if ( sizeof( $objects ) > 0 ) {
+            $object_ids = [];
+
+            if ( $request->get( 'type_id' ) ) {
+                $tids = explode( ';', $request->get( 'type_id' ) );
+
+                foreach ( $objects as $object )
+                    if ( in_array( $object->type_id, $tids ) )
+                        $object_ids[] = $object->id;
+            } else {
+                foreach ( $objects as $object )
+                    $object_ids[] = $object->id;
+            }
+
+            $objects = Object::whereIn( 'id', $object_ids )
+                             ->paginate( $this->pp );
+        }
 
         return $response->result( $objects->toArray() );
     }
